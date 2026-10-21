@@ -54,9 +54,14 @@ jobs:
 
       - name: Decide whether to release
         id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          last="$(git tag --list 'v*-ledger.*' --sort=-creatordate | head -n 1)"
+          # Compare against the latest published release, not the latest tag: a tag whose
+          # release step failed must not block the next run. With an `upstream` remote present,
+          # gh would default to the parent repo, so --repo is always explicit here.
+          last="$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName -q .tagName 2>/dev/null || true)"
           if [ -n "$last" ] && [ "$(git rev-list -n 1 "$last")" = "$(git rev-parse HEAD)" ]; then
             echo "release=false" >> "$GITHUB_OUTPUT"
             echo "Nothing new since $last."
@@ -119,6 +124,8 @@ jobs:
             git log -n 30 --pretty=format:'- %h %s' "$tag" > release-notes.md
           fi
           gh release create "$tag" dist/management.html \
+            --repo "$GITHUB_REPOSITORY" \
+            --verify-tag \
             --title "$tag" \
             --notes-file release-notes.md \
             --latest
