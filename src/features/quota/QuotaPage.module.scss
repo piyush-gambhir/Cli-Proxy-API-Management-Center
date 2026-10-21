@@ -54,7 +54,7 @@
   height: 36px;
   border: 1px solid transparent;
   border-radius: 10px;
-  background: var(--bg-secondary);
+  background: var(--field-bg);
   color: var(--text-secondary);
 
   &:focus-within {
@@ -177,21 +177,39 @@
   line-height: 1.5;
   color: var(--danger-color);
   background: var(--bg-error-light);
-  border: 1px solid var(--warning-border);
   border-radius: 10px;
   padding: 9px 12px;
   overflow-wrap: anywhere;
 }
 
-/* ---------- 卡片网格 ----------
- * 列宽由 CSS 决定（不再用 JS 测量）：额度卡承载水位条，取 340px 下限，
- * 与认证文件页配额模式（.gridQuota）同一档。 */
+/* ---------- Ledger list: one row per account, grouped by provider ---------- */
 
-.grid {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-  align-items: stretch;
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.groupTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 14px 0 4px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+
+  &:first-child {
+    margin-top: 2px;
+  }
+}
+
+.groupCount {
+  font-family: $font-mono;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-tertiary);
 }
 
 /* ---------- 分页 ---------- */

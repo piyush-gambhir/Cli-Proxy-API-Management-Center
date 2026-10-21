@@ -49,12 +49,9 @@ describe('Kimi regional login', () => {
     expect(kimiAi).toMatchObject({ flow: 'device', domain: 'kimi.ai' });
     expect(kimi?.sponsor?.signUpUrl).toBe(KIMI_CHINESE_AFFILIATE_URL);
     expect(kimiAi?.sponsor?.signUpUrl).toBe(KIMI_INTERNATIONAL_AFFILIATE_URL);
-    // 赞助商：两站排在画廊最前，且只有它们是赞助位
+    // Both sites keep their place at the front, but the ledger fork shows no sponsor placement.
     expect(OAUTH_PROVIDERS.slice(0, 2).map((provider) => provider.id)).toEqual(['kimi', 'kimi-ai']);
-    expect(OAUTH_PROVIDERS.filter(isSponsor).map((provider) => provider.id)).toEqual([
-      'kimi',
-      'kimi-ai',
-    ]);
+    expect(OAUTH_PROVIDERS.filter(isSponsor)).toEqual([]);
     expect(new URL(KIMI_CHINESE_AFFILIATE_URL).hostname).toBe('platform.kimi.com');
     expect(new URL(KIMI_INTERNATIONAL_AFFILIATE_URL).hostname).toBe('platform.kimi.ai');
   });

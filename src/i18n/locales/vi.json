@@ -485,6 +485,8 @@
     "remaining_percent": "Còn lại {{percent}}%"
   },
   "claude_quota": {
+    "dollar_window_iguana_necktie": "Tín dụng Fable 5",
+    "dollar_window_additional_credit_balance": "Tín dụng bổ sung",
     "title": "Quota Claude",
     "empty_title": "Không có File OAuth Claude",
     "empty_desc": "Đăng nhập bằng Claude OAuth để xem quota.",
@@ -1534,6 +1536,14 @@
     "precise_save_recovery_required": "Không thể đọc lại kết quả lưu. Đã tạm dừng chỉnh sửa. Lưu lại để khôi phục mốc cơ sở của bản nháp, hoặc tải lại cấu hình."
   },
   "quota_management": {
+    "show_emails": "Hiện email",
+    "hide_emails": "Ẩn email",
+    "load_quota": "Tải hạn mức",
+    "summary_label": "Dung lượng theo nhà cung cấp",
+    "summary_of_total": "trên {{total}}% còn lại",
+    "summary_accounts": "{{count}} tài khoản",
+    "summary_soonest": "đặt lại gần nhất {{when}}",
+    "summary_limit_fallback": "Hạn mức {{n}}",
     "title": "Quản lý Quota",
     "description": "Theo dõi trạng thái quota OAuth của credential Antigravity, Codex, Claude, Kimi và xAI.",
     "refresh_all_credentials": "Làm mới mọi credential",

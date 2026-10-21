@@ -97,17 +97,17 @@
     "status": "Connection Status:"
   },
   "nav": {
-    "dashboard": "Dashboard",
+    "dashboard": "Overview",
     "quick_start": "Quick Start",
-    "ai_providers": "AI Providers",
-    "auth_files": "Auth Files",
-    "oauth": "OAuth Login",
-    "quota_management": "Quota Management",
+    "ai_providers": "Providers",
+    "auth_files": "Accounts",
+    "oauth": "Sign in",
+    "quota_management": "Quota",
     "plugins": "Plugins",
     "plugin_store": "Plugin Store",
-    "config_management": "Config Panel",
-    "logs": "Logs Viewer",
-    "system_info": "Management Center Info"
+    "config_management": "Config",
+    "logs": "Logs",
+    "system_info": "System"
   },
   "nav_groups": {
     "operate": "Operate",
@@ -217,7 +217,7 @@
     "routing_strategy_fill_first": "fill-first (prioritize)"
   },
   "auth_files": {
-    "title": "Auth Files Management",
+    "title": "Accounts",
     "meta_total": "{{count}} credentials",
     "meta_active": "{{count}} active",
     "meta_problem": "{{count}} problem",
@@ -485,6 +485,8 @@
     "remaining_percent": "{{percent}}% remaining"
   },
   "claude_quota": {
+    "dollar_window_iguana_necktie": "Fable 5 credit",
+    "dollar_window_additional_credit_balance": "Additional credit",
     "title": "Claude Quota",
     "empty_title": "No Claude OAuth Files",
     "empty_desc": "Log in with Claude OAuth to view quota.",
@@ -998,7 +1000,7 @@
     "clear_search": "Clear search",
     "reading_enabled": "Continuous reading",
     "filter_load_more": "Show more matching logs",
-    "title": "Logs Viewer",
+    "title": "Logs",
     "refresh_button": "Refresh Logs",
     "clear_button": "Clear Logs",
     "fullscreen_button": "Full Screen",
@@ -1065,7 +1067,7 @@
     "copy_failed": "Copy failed"
   },
   "config_management": {
-    "title": "Config Panel",
+    "title": "Config",
     "meta_fields": "{{count}} settings",
     "meta_dirty": "{{count}} unsaved",
     "meta_dirty_source": "Unsaved source edits",
@@ -1578,12 +1580,20 @@
     }
   },
   "quota_management": {
+    "show_emails": "Show emails",
+    "hide_emails": "Hide emails",
+    "load_quota": "Load quota",
+    "summary_label": "Capacity by provider",
+    "summary_of_total": "of {{total}}% left",
+    "summary_accounts": "{{count}} accounts",
+    "summary_soonest": "next reset {{when}}",
+    "summary_limit_fallback": "Limit {{n}}",
     "search_label": "Search accounts",
     "search_placeholder": "Search by filename or email",
     "search_empty_title": "No matching accounts",
     "search_empty_desc": "Try another filename or email, or clear the search.",
     "search_clear": "Clear search",
-    "title": "Quota Management",
+    "title": "Quota",
     "description": "Monitor OAuth quota status for Antigravity, Codex, Claude, Kimi, and xAI credentials.",
     "refresh_all_credentials": "Refresh all credentials",
     "sort_label": "Sort",
@@ -1790,7 +1800,7 @@
     "empty_src_desc": "This plugin menu does not provide an embeddable page URL."
   },
   "system_info": {
-    "title": "Management Center Info",
+    "title": "System",
     "about_title": "CLI Proxy API Management Center",
     "models_title": "Available Models",
     "models_desc": "Shows the /models response and uses saved API keys for auth automatically.",
@@ -1954,7 +1964,7 @@
       }
     },
     "header": {
-      "title": "AI Providers",
+      "title": "Providers",
       "activeResources": "{{active}}/{{total}} active resources",
       "providerFamilies": "{{count}} provider families",
       "updatedAt": "Updated {{time}}"

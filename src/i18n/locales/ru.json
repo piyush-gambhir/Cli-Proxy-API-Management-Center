@@ -475,6 +475,8 @@
     "fetch_all": "Получить все"
   },
   "claude_quota": {
+    "dollar_window_iguana_necktie": "Кредит Fable 5",
+    "dollar_window_additional_credit_balance": "Дополнительный кредит",
     "title": "Квота Claude",
     "empty_title": "Файлы авторизации Claude OAuth отсутствуют",
     "empty_desc": "Войдите через Claude OAuth, чтобы увидеть квоту.",
@@ -1581,6 +1583,14 @@
     }
   },
   "quota_management": {
+    "show_emails": "Показать почту",
+    "hide_emails": "Скрыть почту",
+    "load_quota": "Загрузить квоту",
+    "summary_label": "Остаток по провайдерам",
+    "summary_of_total": "из {{total}}% осталось",
+    "summary_accounts": "аккаунтов: {{count}}",
+    "summary_soonest": "ближайший сброс {{when}}",
+    "summary_limit_fallback": "Лимит {{n}}",
     "search_label": "Поиск аккаунтов",
     "search_placeholder": "Поиск по имени файла или электронной почте",
     "search_empty_title": "Аккаунты не найдены",

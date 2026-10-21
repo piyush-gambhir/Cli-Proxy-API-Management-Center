@@ -431,7 +431,8 @@ describe('Claude usage snapshot rendering and retention', () => {
     expect(markup).toContain('$94.96 remaining');
     expect(markup).toContain('Spent $5.04 / Limit $100.00');
     expect(markup).toContain(formatQuotaResetTime(fixture.iguana_necktie.resets_at));
-    expect(markup).toContain('additional_credit_balance');
+    // Known balance keys read as names; the raw key stays in the title attribute.
+    expect(markup).toContain('title="additional_credit_balance">Additional credit</span>');
     expect(markup).toContain('$20.00 remaining');
     expect(markup).toContain('Spent $0.00 / Limit $20.00');
     expect(markup).toContain('Not provided');
@@ -445,7 +446,7 @@ describe('Claude usage snapshot rendering and retention', () => {
       '<div class="quotaRowHeader"><span class="quotaModel">Extra Usage</span><div class="quotaMeta"><span class="quotaPercent">Enabled</span><span class="quotaResetRelative">25% used</span>'
     );
     expect(markup).toContain(
-      '<span class="quotaModel" title="iguana_necktie">iguana_necktie</span><div class="quotaMeta"><span class="quotaPercent">$94.96 remaining</span>'
+      '<span class="quotaModel" title="iguana_necktie">Fable 5 credit</span><div class="quotaMeta"><span class="quotaPercent">$94.96 remaining</span>'
     );
     expect(markup).toContain('<div class="quotaMeta"><span class="quotaReset">Resets</span>');
     expect(markup).not.toMatch(/<div class="quotaRow"><span class="quotaReset">/);

@@ -7,7 +7,7 @@
   align-items: center;
   gap: 6px;
   padding: 2px 8px;
-  border: 1px solid color-mix(in srgb, var(--siwc-tone) 26%, transparent);
+  border: 1px solid transparent;
   border-radius: $radius-full;
   background: color-mix(in srgb, var(--siwc-tone) 9%, transparent);
   font-family: $font-mono;

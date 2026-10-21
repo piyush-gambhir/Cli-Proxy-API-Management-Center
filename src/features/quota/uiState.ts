@@ -9,6 +9,8 @@ import {
 export type QuotaUiState = {
   tab?: QuotaTabId;
   sortMode?: QuotaSortMode;
+  /** Emails are masked unless this is true (the page gets screen-shared). */
+  showEmails?: boolean;
 };
 
 const QUOTA_UI_STATE_KEY = 'quotaPage.uiState';
@@ -32,6 +34,7 @@ export const readQuotaUiState = (): QuotaUiState | null => {
     return {
       tab: isQuotaTabId(parsed.tab) ? parsed.tab : undefined,
       sortMode: isQuotaSortMode(parsed.sortMode) ? parsed.sortMode : undefined,
+      showEmails: typeof parsed.showEmails === 'boolean' ? parsed.showEmails : undefined,
     };
   } catch {
     return null;

@@ -22,7 +22,7 @@
   height: 100%;
   /* 基线 + 两端渐隐：与 LiveWire 的水平 mask 同语汇 */
   padding-bottom: 3px;
-  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 85%, transparent);
+  border-bottom: 1px solid transparent;
   mask-image: linear-gradient(to right, transparent, #000 2%, #000 98%, transparent);
 }
 
@@ -83,7 +83,7 @@
 .idleLine {
   flex: 1;
   height: 0;
-  border-bottom: 2px dashed var(--text-quaternary);
+  border-bottom: 2px dashed transparent;
   opacity: 0.6;
   margin-bottom: 6px;
 }

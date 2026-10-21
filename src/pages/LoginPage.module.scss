@@ -217,7 +217,7 @@
 // 错误提示框
 .errorBox {
   background: rgba($error-color, 0.1);
-  border: 1px solid rgba($error-color, 0.4);
+  border: 1px solid transparent;
   border-radius: $radius-md;
   padding: $spacing-sm $spacing-md;
   color: $error-color;
@@ -308,7 +308,7 @@
 .splashLoader {
   width: 120px;
   height: 3px;
-  background: var(--border-color);
+  background: var(--track-color);
   border-radius: $radius-full;
   overflow: hidden;
   margin-top: $spacing-md;

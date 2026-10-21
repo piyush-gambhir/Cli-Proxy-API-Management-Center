@@ -470,6 +470,8 @@
     "fetch_all": "取得全部"
   },
   "claude_quota": {
+    "dollar_window_iguana_necktie": "Fable 5 額度",
+    "dollar_window_additional_credit_balance": "額外額度",
     "title": "Claude 配額",
     "empty_title": "暫無 Claude OAuth 驗證",
     "empty_desc": "使用 Claude OAuth 登入後即可查看配額。",
@@ -1605,6 +1607,14 @@
     }
   },
   "quota_management": {
+    "show_emails": "顯示信箱",
+    "hide_emails": "隱藏信箱",
+    "load_quota": "載入額度",
+    "summary_label": "各供應商剩餘額度",
+    "summary_of_total": "/ {{total}}% 剩餘",
+    "summary_accounts": "{{count}} 個帳號",
+    "summary_soonest": "最近重置 {{when}}",
+    "summary_limit_fallback": "額度 {{n}}",
     "search_label": "搜尋帳號",
     "search_placeholder": "依檔案名稱或電子郵件搜尋",
     "search_empty_title": "沒有符合的帳號",

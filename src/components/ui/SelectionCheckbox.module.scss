@@ -33,7 +33,8 @@
   flex-shrink: 0;
   border-radius: 7px;
   border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--bg-secondary) 92%, transparent);
+  // Borderless: the unchecked box reads as a filled field.
+  background: var(--field-bg);
   color: var(--primary-contrast, #fff);
   display: inline-flex;
   align-items: center;
@@ -46,7 +47,8 @@
 }
 
 .root:hover .box {
-  border-color: var(--primary-color);
+  border-color: transparent;
+  background-color: var(--bg-tertiary);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 16%, transparent);
 }
 
@@ -71,7 +73,7 @@
 }
 
 .boxChecked {
-  border-color: var(--primary-color);
+  border-color: transparent;
   background: var(--primary-color);
 }
 

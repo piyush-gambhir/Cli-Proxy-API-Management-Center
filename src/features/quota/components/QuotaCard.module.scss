@@ -1,31 +1,40 @@
 @use '../../../styles/mixins' as *;
 
 /* ============================================================
- * 额度卡片 — 继承凭证卡 statTile 配方（14px 圆角 / 1px 边框 / 82% 透感纸面）。
- * 提供商身份只由图标承载（混合网格下五色渐变卡底会互相打架，已退役）。
- * 遥测内容一律 mono + tabular-nums。
+ * Ledger row: account on the left, one column per limit window, actions on the right.
+ * Separation is tonal (no borders); telemetry stays mono + tabular-nums.
  * ============================================================ */
 
 .card {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-  padding: 15px 16px;
+  display: grid;
+  grid-template-columns: minmax(180px, 230px) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'head body'
+    'actions body';
+  align-items: start;
+  column-gap: 28px;
+  row-gap: 12px;
+  padding: 16px 18px;
   border-radius: 14px;
-  border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--bg-primary) 82%, transparent);
-  transition:
-    transform var(--dur-hover, 200ms) var(--ease-out-strong, ease-out),
-    border-color var(--dur-hover, 200ms) var(--ease-out-strong, ease-out),
-    box-shadow var(--dur-hover, 200ms) var(--ease-out-strong, ease-out);
+  background: var(--bg-primary);
+  transition: background-color var(--dur-hover, 200ms) var(--ease-out-strong, ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
-    transform: translateY(-2px);
-    border-color: var(--border-hover);
-    box-shadow: 0 12px 26px -14px rgb(0 0 0 / 0.16);
+    background: color-mix(in srgb, var(--bg-primary) 65%, var(--bg-tertiary));
+  }
+}
+
+@media (max-width: 960px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'head'
+      'body'
+      'actions';
   }
 }
 
@@ -42,13 +51,26 @@
   }
 }
 
-/* ---------- 头部：品牌图标 + 文件名 ---------- */
+/* ---------- Account: provider icon, masked email, provider label ---------- */
 
 .head {
+  grid-area: head;
   display: flex;
-  align-items: center;
-  gap: 9px;
+  align-items: flex-start;
+  gap: 10px;
   min-width: 0;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.subline {
+  font-size: 12px;
+  color: var(--text-tertiary);
 }
 
 .iconWrap {
@@ -59,7 +81,7 @@
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  background: color-mix(in srgb, var(--bg-tertiary) 60%, transparent);
+  background: var(--bg-tertiary);
 }
 
 .icon {
@@ -78,41 +100,46 @@
 .fileName {
   min-width: 0;
   font-family: $font-mono;
-  font-size: 12.5px;
+  font-size: 13.5px;
   font-weight: 600;
   letter-spacing: 0.01em;
   color: var(--text-primary);
   @include text-ellipsis;
 }
 
-/* ---------- body 容器 ---------- */
+/* ---------- Body: limit windows flow into aligned columns ---------- */
 
 .body {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
+  grid-area: body;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  align-items: start;
+  gap: 12px 26px;
   min-width: 0;
 }
 
-/* ---------- idle：整块 body 即点击加载的落点 ---------- */
+.idleBody,
+.skeleton,
+.errorStrip {
+  grid-column: 1 / -1;
+}
+
+/* ---------- Idle: a compact pill instead of a dashed drop zone ---------- */
 
 .idleBody {
-  display: flex;
-  flex-direction: column;
+  justify-self: start;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  min-height: 76px;
-  padding: 12px 10px;
+  gap: 7px;
+  padding: 7px 14px;
   cursor: pointer;
-  border: 1px dashed var(--border-color);
-  border-radius: 10px;
-  background: none;
-  color: var(--text-tertiary);
+  border: 0;
+  border-radius: $radius-full;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
   transition:
     transform var(--dur-press, 160ms) var(--ease-out-strong, ease-out),
-    border-color var(--dur-hover, 200ms) var(--ease-out-strong, ease-out),
+    background-color var(--dur-hover, 200ms) var(--ease-out-strong, ease-out),
     color var(--dur-hover, 200ms) var(--ease-out-strong, ease-out);
 
   &:disabled {
@@ -132,22 +159,19 @@
 
 @media (hover: hover) and (pointer: fine) {
   .idleBody:hover:not(:disabled) {
-    border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
-    border-style: solid;
-    color: var(--text-secondary);
+    background: var(--bg-hover);
+    color: var(--text-primary);
   }
 }
 
 .idleGlyph {
   flex-shrink: 0;
-  opacity: 0.8;
 }
 
 .idleHint {
-  font-family: $font-mono;
-  font-size: 11.5px;
-  line-height: 1.5;
-  text-align: center;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.3;
 }
 
 /* ---------- loading：双幽灵行骨架 ---------- */
@@ -219,20 +243,27 @@
   font-size: 11.5px;
   line-height: 1.5;
   color: var(--viz-failure);
-  background: color-mix(in srgb, var(--viz-failure) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--viz-failure) 32%, transparent);
+  background: color-mix(in srgb, var(--viz-failure) 10%, var(--bg-primary));
   border-radius: 9px;
   padding: 8px 10px;
   overflow-wrap: anywhere;
 }
 
-/* ---------- footer 动作 ---------- */
+/* ---------- Actions: under the account, aligned with its name ---------- */
 
 .actionRow {
+  grid-area: actions;
   display: flex;
-  justify-content: flex-end;
-  gap: 6px;
   flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px;
+  padding-left: 36px;
+}
+
+@media (max-width: 960px) {
+  .actionRow {
+    padding-left: 0;
+  }
 }
 
 /* 安静描边药丸（与凭证卡图标动作同族：hover 才显色块） */
@@ -241,10 +272,10 @@
   align-items: center;
   gap: 5px;
   cursor: pointer;
-  border: 1px solid var(--border-color);
+  border: 0;
   border-radius: $radius-full;
-  background: none;
-  padding: 5px 11px;
+  background: var(--bg-tertiary);
+  padding: 6px 12px;
   font-size: 11.5px;
   font-weight: 600;
   line-height: 1.4;
@@ -273,8 +304,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .actionPill:hover:not(:disabled) {
-    border-color: var(--border-hover);
-    background: color-mix(in srgb, var(--bg-tertiary) 55%, transparent);
+    background: var(--bg-hover);
     color: var(--text-primary);
   }
 }

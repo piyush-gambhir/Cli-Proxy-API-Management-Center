@@ -98,7 +98,7 @@
 }
 
 .option[data-checked] .radio {
-  border-color: var(--text-primary);
+  border-color: transparent;
 
   &::after {
     opacity: 1;
@@ -146,7 +146,8 @@
   }
 
   .option[data-checked]:hover .radio {
-    border-color: var(--text-primary);
+    border-color: transparent;
+    background-color: var(--bg-tertiary);
   }
 }
 

@@ -485,6 +485,8 @@
     "remaining_percent": "{{percent}}% 남음"
   },
   "claude_quota": {
+    "dollar_window_iguana_necktie": "Fable 5 크레딧",
+    "dollar_window_additional_credit_balance": "추가 크레딧",
     "title": "Claude 할당량",
     "empty_title": "Claude OAuth 인증 파일 없음",
     "empty_desc": "할당량을 확인하려면 Claude OAuth로 로그인하세요.",
@@ -1578,6 +1580,14 @@
     }
   },
   "quota_management": {
+    "show_emails": "이메일 표시",
+    "hide_emails": "이메일 숨기기",
+    "load_quota": "할당량 불러오기",
+    "summary_label": "제공자별 남은 용량",
+    "summary_of_total": "/ {{total}}% 남음",
+    "summary_accounts": "계정 {{count}}개",
+    "summary_soonest": "가장 빠른 초기화 {{when}}",
+    "summary_limit_fallback": "한도 {{n}}",
     "search_label": "계정 검색",
     "search_placeholder": "파일명 또는 이메일로 검색",
     "search_empty_title": "일치하는 계정 없음",

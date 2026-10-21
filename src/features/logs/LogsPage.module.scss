@@ -201,7 +201,7 @@
   }
   &[aria-pressed='true'] {
     color: var(--primary-color);
-    border-color: var(--primary-color);
+    border-color: transparent;
     background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-primary));
   }
 }
@@ -269,7 +269,7 @@
 }
 .filterChipActive {
   color: var(--primary-color);
-  border-color: var(--primary-color);
+  border-color: transparent;
   background: color-mix(in srgb, var(--primary-color) 8%, var(--bg-primary));
 }
 
@@ -419,10 +419,10 @@
   }
 }
 .rowWarn {
-  border-left-color: var(--warning-color);
+  border-left-color: transparent;
 }
 .rowError {
-  border-left-color: var(--error-color);
+  border-left-color: transparent;
 }
 .timestamp {
   color: var(--text-secondary);
@@ -601,7 +601,8 @@
     color: var(--text-primary);
   }
   .filterChip:hover:not(:disabled) {
-    border-color: var(--primary-color);
+    border-color: transparent;
+    background-color: var(--bg-tertiary);
   }
 }
 

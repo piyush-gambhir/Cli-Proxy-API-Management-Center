@@ -62,7 +62,8 @@
     border-color $transition-fast;
 
   &:hover:not(:disabled) {
-    border-color: var(--primary-color);
+    border-color: transparent;
+    background-color: var(--bg-tertiary);
     color: var(--primary-color);
   }
 
@@ -106,7 +107,8 @@
   cursor: pointer;
 
   &:hover:not(:disabled) {
-    border-color: var(--primary-color);
+    border-color: transparent;
+    background-color: var(--bg-tertiary);
     color: var(--primary-color);
   }
 

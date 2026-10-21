@@ -26,7 +26,7 @@
 .track {
   width: 44px;
   height: 24px;
-  background: var(--border-color);
+  background: var(--track-color);
   border-radius: $radius-full;
   position: relative;
   transition: background-color var(--dur-hover, 200ms) var(--ease-out-strong, ease-out);
@@ -60,6 +60,7 @@
 
 .root input:checked + .track .thumb {
   transform: translateX(20px);
+  background: var(--primary-contrast);
 }
 
 .label {

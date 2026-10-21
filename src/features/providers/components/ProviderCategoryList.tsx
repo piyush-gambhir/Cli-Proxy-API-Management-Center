@@ -16,8 +16,9 @@ const QUICK_FILL_BRANDS: ReadonlySet<ProviderBrand> = new Set(QUICK_FILL_BRAND_O
 export function ProviderCategoryList({ groups, activeBrand, onSelect }: ProviderCategoryListProps) {
   const { t } = useTranslation();
 
+  // Reseller presets stay out of the way until one is actually configured.
   const quickFillGroups = groups
-    .filter((g) => QUICK_FILL_BRANDS.has(g.id))
+    .filter((g) => QUICK_FILL_BRANDS.has(g.id) && g.resources.length > 0)
     .sort(
       (left, right) =>
         QUICK_FILL_BRAND_ORDER.indexOf(left.id) - QUICK_FILL_BRAND_ORDER.indexOf(right.id)

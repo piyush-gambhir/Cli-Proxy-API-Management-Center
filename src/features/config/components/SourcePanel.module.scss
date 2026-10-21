@@ -61,7 +61,7 @@
   width: 30px;
   height: 30px;
   border-radius: $radius-full;
-  border: 1px solid var(--text-primary);
+  border: 1px solid transparent;
   background: var(--text-primary);
   color: var(--bg-secondary);
   transition:

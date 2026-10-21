@@ -1,0 +1,28 @@
+/**
+ * IBM Plex (OFL), latin subset only. Faces are declared here instead of importing the
+ * @fontsource CSS so the single-file build inlines woff2 alone, not woff as well.
+ * CJK and Cyrillic text falls through to the system fonts in $font-family.
+ */
+
+$plex-sans: '../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin';
+$plex-mono: '../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin';
+
+@each $weight in 400, 500, 600, 700 {
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-display: swap;
+    font-weight: $weight;
+    src: url('#{$plex-sans}-#{$weight}-normal.woff2') format('woff2');
+  }
+}
+
+@each $weight in 400, 500, 600 {
+  @font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-display: swap;
+    font-weight: $weight;
+    src: url('#{$plex-mono}-#{$weight}-normal.woff2') format('woff2');
+  }
+}

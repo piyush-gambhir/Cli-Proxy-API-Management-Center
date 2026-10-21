@@ -470,6 +470,8 @@
     "fetch_all": "获取全部"
   },
   "claude_quota": {
+    "dollar_window_iguana_necktie": "Fable 5 额度",
+    "dollar_window_additional_credit_balance": "额外额度",
     "title": "Claude 额度",
     "empty_title": "暂无 Claude OAuth 认证",
     "empty_desc": "使用 Claude OAuth 登录后即可查看额度。",
@@ -1577,6 +1579,14 @@
     }
   },
   "quota_management": {
+    "show_emails": "显示邮箱",
+    "hide_emails": "隐藏邮箱",
+    "load_quota": "加载额度",
+    "summary_label": "各提供商剩余额度",
+    "summary_of_total": "/ {{total}}% 剩余",
+    "summary_accounts": "{{count}} 个账号",
+    "summary_soonest": "最近重置 {{when}}",
+    "summary_limit_fallback": "额度 {{n}}",
     "search_label": "搜索账号",
     "search_placeholder": "按文件名或邮箱搜索",
     "search_empty_title": "没有匹配的账号",

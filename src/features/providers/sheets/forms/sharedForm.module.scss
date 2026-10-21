@@ -235,7 +235,7 @@
 
   &:checked {
     background: var(--primary-color);
-    border-color: var(--primary-color);
+    border-color: transparent;
   }
 
   &:checked::after {
@@ -280,7 +280,7 @@
 }
 
 .errorBox {
-  border: 1px solid var(--destructive-30);
+  border: 1px solid transparent;
   background: var(--destructive-10);
   color: var(--destructive-color);
   padding: 10px 12px;
@@ -501,12 +501,13 @@
   }
 
   &:hover {
-    border-color: var(--primary-color);
+    border-color: transparent;
+    background-color: var(--bg-tertiary);
   }
 }
 
 .sponsorUrlOptionActive {
-  border-color: var(--primary-color);
+  border-color: transparent;
   background: var(--primary-10);
 }
 
@@ -582,7 +583,7 @@
   flex-direction: column;
   gap: 4px;
   padding: 8px 10px;
-  border: 1px solid color-mix(in srgb, var(--success-color) 34%, var(--border-color));
+  border: 1px solid transparent;
   border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--success-color) 8%, var(--bg-primary));
   color: var(--text-primary);
@@ -592,7 +593,7 @@
 
 .sponsorUsageResultWarning {
   color: var(--warning-text);
-  border-color: var(--warning-border);
+  border-color: transparent;
   background: var(--warning-bg);
 }
 
@@ -632,7 +633,8 @@
     border-color $transition-fast;
 
   &:hover:not(:disabled) {
-    border-color: var(--primary-color);
+    border-color: transparent;
+    background-color: var(--bg-tertiary);
     color: var(--primary-color);
   }
 
@@ -671,7 +673,7 @@
 }
 
 .connectivityError {
-  border: 1px solid var(--destructive-30);
+  border: 1px solid transparent;
   background: var(--destructive-10);
   color: var(--destructive-color);
   padding: 8px 10px;
@@ -1028,7 +1030,7 @@
 }
 
 .thinkingLevelOptionSelected {
-  border-color: color-mix(in srgb, var(--primary-color) 50%, var(--border-color));
+  border-color: transparent;
   background: color-mix(in srgb, var(--primary-color) 8%, var(--bg-primary));
 
   .thinkingLevelLabel {
@@ -1084,7 +1086,8 @@
   font-weight: 500;
 
   &:hover {
-    border-color: var(--primary-color);
+    border-color: transparent;
+    background-color: var(--bg-tertiary);
     color: var(--primary-color);
   }
 }
@@ -1126,7 +1129,8 @@
   align-self: flex-start;
 
   &:hover {
-    border-color: var(--primary-color);
+    border-color: transparent;
+    background-color: var(--bg-tertiary);
     color: var(--primary-color);
   }
 }

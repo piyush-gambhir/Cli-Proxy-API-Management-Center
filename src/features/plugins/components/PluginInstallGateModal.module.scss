@@ -23,7 +23,7 @@
   justify-content: center;
   overflow: hidden;
   border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+  border: 1px solid transparent;
   background: color-mix(in srgb, var(--bg-tertiary) 60%, transparent);
   color: var(--text-secondary);
 
@@ -102,7 +102,7 @@
   margin-top: $spacing-lg;
   padding: 12px 14px;
   border-radius: $radius-md;
-  border: 1px solid color-mix(in srgb, var(--quota-medium-color, #e0aa14) 45%, var(--border-color));
+  border: 1px solid transparent;
   background: color-mix(in srgb, var(--quota-medium-color, #e0aa14) 16%, var(--bg-secondary));
   color: var(--text-primary);
   font-weight: 600;
@@ -148,7 +148,7 @@
   margin-top: $spacing-lg;
   padding: 12px 14px;
   border-radius: $radius-md;
-  border: 1px solid rgba($warning-color, 0.35);
+  border: 1px solid transparent;
   background: rgba($warning-color, 0.1);
 }
 

@@ -45,6 +45,12 @@ export function CodexQuotaBody({ quota, classes }: QuotaBodyProps<CodexQuotaStat
   const planType = quota.planType ?? null;
   const subscriptionActiveUntil = quota.subscriptionActiveUntil ?? null;
   const creditBalance = quota.creditBalance ?? null;
+  // Upstream sends a decimal string such as "61794.2541450000"; show it as a grouped number.
+  const formatCredits = (value: string | null) => {
+    const amount = Number(value);
+    if (value === null || !Number.isFinite(amount)) return value;
+    return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(amount);
+  };
   const creditsUnlimited = quota.creditsUnlimited === true;
   const rateLimitResetCreditsAvailableCount = quota.rateLimitResetCreditsAvailableCount ?? null;
   const rateLimitResetCredits = quota.rateLimitResetCredits ?? [];
@@ -111,7 +117,7 @@ export function CodexQuotaBody({ quota, classes }: QuotaBodyProps<CodexQuotaStat
                 {t('codex_quota.credit_balance_label')}
               </span>
               <span className={classes.codexPlanValue}>
-                {creditsUnlimited ? t('codex_quota.credit_unlimited') : creditBalance}
+                {creditsUnlimited ? t('codex_quota.credit_unlimited') : formatCredits(creditBalance)}
               </span>
             </span>
           )}

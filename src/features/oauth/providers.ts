@@ -143,10 +143,14 @@ export const CALLBACK_SUPPORTED = new Set<string>([
 export const supportsManualCallback = (provider: OAuthProviderCard): boolean =>
   provider.kind === 'plugin' || CALLBACK_SUPPORTED.has(provider.id);
 
+// Ledger fork: no sponsor placement or affiliate sign-up links. The sponsor data stays as
+// upstream has it (cheap merges); Kimi's two sites render as ordinary sign-in tiles.
+const SHOW_SPONSORS = false;
+
 export const isSponsor = (
   provider: OAuthProviderCard
 ): provider is BuiltInOAuthProviderCard & { sponsor: SponsorSite } =>
-  provider.kind === 'builtin' && Boolean(provider.sponsor);
+  SHOW_SPONSORS && provider.kind === 'builtin' && Boolean(provider.sponsor);
 
 export const resolveThemedIcon = (icon: ThemedIcon, theme: 'light' | 'dark'): string =>
   typeof icon === 'string' ? icon : icon[theme];
