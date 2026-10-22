@@ -85,8 +85,7 @@
 
   &:hover {
     transform: translateY(-1px);
-    border-color: transparent;
-    background-color: var(--bg-tertiary);
+    border-color: var(--primary-color);
     box-shadow: 0 8px 18px rgba($primary-color, 0.18);
   }
 
@@ -290,7 +289,7 @@
 
   &:hover {
     background-color: var(--bg-hover);
-    border-color: transparent;
+    border-color: var(--primary-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }

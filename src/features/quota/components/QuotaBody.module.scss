@@ -20,12 +20,11 @@
   min-width: 0;
 }
 
-/* Ledger columns are narrow, so the window label sits above its telemetry. */
 .quotaRowHeader {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 3px;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -40,9 +39,8 @@
 /* 遥测：mono + 等宽数字，刷新时数字不跳位 */
 .quotaMeta {
   display: inline-flex;
-  flex-wrap: wrap;
   align-items: baseline;
-  gap: 2px 7px;
+  gap: 7px;
   flex-shrink: 0;
   font-family: $font-mono;
   font-size: 11.5px;
@@ -93,16 +91,6 @@
   color: var(--text-tertiary);
   text-align: center;
   padding: 6px 4px;
-}
-
-/* Ledger layout: the card body is a grid of limit columns (QuotaCard .body). Everything that is
-   not a single limit spans the full width. Layout only; the plan badge recipe below is untouched. */
-.quotaMessage,
-.codexPlan,
-.codexResetCredits,
-.codexResetCreditsError,
-.antigravityQuotaGroup {
-  grid-column: 1 / -1;
 }
 
 /* ---------- 水位条（QuotaMeter）----------

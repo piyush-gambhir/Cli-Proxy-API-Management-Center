@@ -172,12 +172,12 @@
 
 .sponsorLinkEmphasis {
   color: var(--amber-text);
-  border-color: transparent;
+  border-color: color-mix(in srgb, var(--amber-color) 48%, var(--border-color));
   background: color-mix(in srgb, var(--amber-color) 14%, var(--bg-primary));
   box-shadow: 0 1px 0 color-mix(in srgb, var(--amber-color) 18%, transparent);
 
   &:hover {
-    border-color: transparent;
+    border-color: color-mix(in srgb, var(--amber-color) 72%, var(--border-color));
     background: color-mix(in srgb, var(--amber-color) 20%, var(--bg-primary));
     box-shadow: 0 4px 12px color-mix(in srgb, var(--amber-color) 18%, transparent);
   }
@@ -189,12 +189,12 @@
 
 .sponsorLinkKimi {
   color: color-mix(in srgb, #1783ff 82%, var(--text-primary));
-  border-color: transparent;
+  border-color: color-mix(in srgb, #1783ff 48%, var(--border-color));
   background: color-mix(in srgb, #1783ff 14%, var(--bg-primary));
   box-shadow: 0 1px 0 color-mix(in srgb, #1783ff 18%, transparent);
 
   &:hover {
-    border-color: transparent;
+    border-color: color-mix(in srgb, #1783ff 72%, var(--border-color));
     background: color-mix(in srgb, #1783ff 20%, var(--bg-primary));
     box-shadow: 0 4px 12px color-mix(in srgb, #1783ff 18%, transparent);
   }
@@ -319,13 +319,13 @@
 
 .emptyActionButtonEmphasis {
   color: var(--amber-text);
-  border-color: transparent;
+  border-color: color-mix(in srgb, var(--amber-color) 48%, var(--border-color));
   background: color-mix(in srgb, var(--amber-color) 14%, var(--bg-primary));
   font-weight: 600;
   box-shadow: 0 1px 0 color-mix(in srgb, var(--amber-color) 18%, transparent);
 
   &:hover {
-    border-color: transparent;
+    border-color: color-mix(in srgb, var(--amber-color) 72%, var(--border-color));
     background: color-mix(in srgb, var(--amber-color) 20%, var(--bg-primary));
     box-shadow: 0 4px 12px color-mix(in srgb, var(--amber-color) 18%, transparent);
   }

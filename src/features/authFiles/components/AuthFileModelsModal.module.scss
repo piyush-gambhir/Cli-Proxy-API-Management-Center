@@ -33,7 +33,7 @@
 @media (hover: hover) and (pointer: fine) {
   .item:hover {
     background: var(--bg-tertiary);
-    border-color: transparent;
+    border-color: color-mix(in srgb, var(--border-color) 70%, transparent);
   }
 }
 
@@ -73,7 +73,7 @@
   font-weight: 600;
   color: var(--failure-badge-text);
   background: var(--failure-badge-bg);
-  border: 1px solid transparent;
+  border: 1px solid var(--failure-badge-border);
   border-radius: $radius-full;
   padding: 1px 7px;
   white-space: nowrap;

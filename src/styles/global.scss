@@ -4,7 +4,6 @@
 
 @use './variables.scss' as *;
 @use './mixins.scss' as *;
-@use './fonts.scss';
 @use './reset.scss';
 @use './themes.scss';
 @use './components.scss';
@@ -38,11 +37,11 @@ body.modal-open .content {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--track-color);
+  background: var(--border-color);
   border-radius: $radius-full;
 
   &:hover {
-    background: var(--text-quaternary);
+    background: var(--border-hover);
   }
 }
 

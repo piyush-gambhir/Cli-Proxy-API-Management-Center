@@ -1,0 +1,335 @@
+.row {
+  display: grid;
+  grid-template-columns: minmax(180px, 250px) minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px 24px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--bg-primary);
+}
+
+.paused {
+  .who,
+  .limits {
+    opacity: 0.5;
+  }
+}
+
+/* ---------- who ---------- */
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+
+  img {
+    width: 17px;
+    height: 17px;
+    object-fit: contain;
+  }
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+  color: var(--text-primary);
+  font-family: $font-mono;
+  font-size: 13px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sub {
+  min-height: 16px;
+  overflow: hidden;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.failed {
+  color: var(--danger-color);
+}
+
+/* ---------- limits ---------- */
+
+.limits {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 10px 20px;
+  min-width: 0;
+}
+
+.limit {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.limitTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.limitLabel {
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.limitValue {
+  flex-shrink: 0;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.track {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--track-color);
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--text-tertiary);
+  transition: width 400ms var(--ease-out-strong);
+}
+
+.high {
+  background: var(--success-color);
+}
+
+.medium {
+  background: var(--quota-medium-color);
+}
+
+.low {
+  background: var(--danger-color);
+}
+
+.reset {
+  color: var(--text-tertiary);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.error {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--danger-color);
+  font-size: 12px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- actions ---------- */
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.more {
+  display: inline-flex;
+  gap: 2px;
+}
+
+// Secondary actions stay out of the way until the row is pointed at or focused.
+@media (hover: hover) and (pointer: fine) {
+  .more {
+    opacity: 0;
+    transition: opacity var(--dur-hover) var(--ease-out-strong);
+  }
+
+  .row:hover .more,
+  .row:focus-within .more {
+    opacity: 1;
+  }
+}
+
+.iconButton,
+.textButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition:
+    background-color var(--dur-hover) var(--ease-out-strong),
+    color var(--dur-hover) var(--ease-out-strong);
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+}
+
+.iconButton {
+  width: 30px;
+}
+
+.textButton {
+  align-self: center;
+  justify-self: start;
+  padding: 0 10px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .iconButton:hover:not(:disabled) {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+
+  .danger:hover:not(:disabled) {
+    color: var(--danger-color);
+  }
+
+  .textButton:hover:not(:disabled) {
+    background: var(--bg-hover);
+  }
+}
+
+.spinning {
+  animation: row-spin 0.8s linear infinite;
+}
+
+@keyframes row-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- enable switch ---------- */
+
+.switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 34px;
+  height: 20px;
+  margin-left: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--track-color);
+  cursor: pointer;
+  transition: background-color var(--dur-hover) var(--ease-out-strong);
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &[aria-checked='true'] {
+    background: var(--primary-color);
+  }
+}
+
+.knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  transition:
+    transform var(--dur-hover) var(--ease-out-strong),
+    background-color var(--dur-hover) var(--ease-out-strong);
+
+  .switch[aria-checked='true'] & {
+    background: var(--primary-contrast);
+    transform: translateX(14px);
+  }
+}
+
+/* Phones: who and the main actions on top, limits below, secondary actions last. */
+@media (max-width: 760px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .who {
+    grid-area: 1 / 1;
+  }
+
+  .actions {
+    grid-area: 1 / 2;
+  }
+
+  .limits {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .limits:empty {
+    display: none;
+  }
+
+  .more {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-left: -6px;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinning {
+    animation: none;
+  }
+
+  .fill,
+  .more,
+  .iconButton,
+  .textButton,
+  .switch,
+  .knob {
+    transition: none;
+  }
+}

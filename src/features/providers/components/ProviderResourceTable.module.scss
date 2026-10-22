@@ -95,7 +95,7 @@
   align-items: center;
   padding: 3px 9px;
   border-radius: var(--radius-md);
-  border: 1px solid transparent;
+  border: 1px solid var(--primary-30);
   background: var(--primary-10);
   color: var(--primary-color);
   font-size: 12px;
@@ -149,23 +149,23 @@
 .statSuccess {
   background-color: var(--success-badge-bg);
   color: var(--success-badge-text);
-  border-color: transparent;
+  border-color: var(--success-badge-border);
 }
 
 .statFailure {
   background-color: var(--failure-badge-bg);
   color: var(--failure-badge-text);
-  border-color: transparent;
+  border-color: var(--failure-badge-border);
 }
 
 .statusActive {
-  border-color: transparent;
+  border-color: var(--success-badge-border);
   background: var(--success-badge-bg);
   color: var(--success-badge-text);
 }
 
 .statusDisabled {
-  border-color: transparent;
+  border-color: var(--amber-30);
   background: var(--amber-10);
   color: var(--amber-text);
 }

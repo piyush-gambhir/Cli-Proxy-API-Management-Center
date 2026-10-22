@@ -246,7 +246,7 @@
 @media (hover: hover) and (pointer: fine) {
   .deleteAction:hover:not(:disabled) {
     background: var(--destructive-10);
-    border-color: transparent;
+    border-color: var(--destructive-30);
   }
 }
 

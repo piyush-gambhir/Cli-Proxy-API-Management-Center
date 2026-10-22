@@ -7,8 +7,8 @@
   justify-content: center;
   gap: $spacing-sm;
   border: 1px solid transparent;
-  border-radius: $radius-full;
-  padding: 10px 16px;
+  border-radius: $radius-md;
+  padding: 10px 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all $transition-fast;
@@ -18,11 +18,11 @@
   &.btn-primary {
     background-color: var(--primary-color);
     color: var(--primary-contrast, #fff);
-    border-color: transparent;
+    border-color: var(--primary-color);
 
     &:hover {
       background-color: var(--primary-hover);
-      border-color: transparent;
+      border-color: var(--primary-hover);
     }
   }
 
@@ -50,7 +50,7 @@
 
   &.btn-danger {
     background-color: $error-color;
-    border-color: transparent;
+    border-color: $error-color;
     color: #fff;
 
     &:hover {
@@ -74,8 +74,7 @@
 }
 
 [data-theme='dark'] {
-  // The primary button is paper on ink here, so it keeps its own contrast color.
-  .btn:not(.btn-primary) {
+  .btn {
     color: #fff;
   }
 
@@ -91,7 +90,7 @@ textarea {
   border: 1px solid var(--border-color);
   border-radius: $radius-md;
   padding: 10px 12px;
-  background-color: var(--field-bg);
+  background-color: var(--bg-secondary);
   color: var(--text-primary);
   transition:
     border-color $transition-fast,
@@ -167,19 +166,19 @@ textarea {
 
   &.success {
     color: $success-color;
-    border-color: transparent;
+    border-color: rgba($success-color, 0.35);
     background: rgba($success-color, 0.08);
   }
 
   &.warning {
     color: $warning-color;
-    border-color: transparent;
+    border-color: rgba($warning-color, 0.35);
     background: rgba($warning-color, 0.08);
   }
 
   &.error {
     color: $error-color;
-    border-color: transparent;
+    border-color: rgba($error-color, 0.35);
     background: rgba($error-color, 0.08);
   }
 
@@ -539,7 +538,7 @@ textarea {
 
 .error-box {
   background: rgba($error-color, 0.1);
-  border: 1px solid transparent;
+  border: 1px solid rgba($error-color, 0.4);
   border-radius: $radius-md;
   padding: $spacing-sm $spacing-md;
   color: $error-color;

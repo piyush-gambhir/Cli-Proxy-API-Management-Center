@@ -141,13 +141,13 @@
 }
 
 .chipPrimary {
-  border-color: transparent;
+  border-color: var(--primary-30);
   background: var(--primary-10);
   color: var(--primary-color);
 }
 
 .chipAmber {
-  border-color: transparent;
+  border-color: var(--amber-30);
   background: var(--amber-10);
   color: var(--amber-text);
 }

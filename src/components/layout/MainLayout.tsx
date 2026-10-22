@@ -592,9 +592,6 @@ export function MainLayout() {
     icon: sidebarIcons.quickStart,
   };
 
-  // Ledger nav: daily checks first, sign-in and providers next, controls last. Quick Start
-  // (a reseller integration) only appears once configured; the plugin store is reached from
-  // the Plugins page instead of the sidebar.
   const navGroups: SidebarNavGroup[] = [
     {
       id: 'operate',
@@ -606,18 +603,19 @@ export function MainLayout() {
           metaKey: 'nav_meta.dashboard',
           icon: sidebarIcons.dashboard,
         },
-        {
-          path: '/quota',
-          labelKey: 'nav.quota_management',
-          metaKey: 'nav_meta.quota_management',
-          icon: sidebarIcons.quota,
-        },
+        ...(!isApiKeyFunConfigured ? [quickStartNavItem] : []),
       ],
     },
     {
       id: 'gateway',
       labelKey: 'nav_groups.gateway',
       items: [
+        {
+          path: '/ai-providers',
+          labelKey: 'nav.ai_providers',
+          metaKey: 'nav_meta.ai_providers',
+          icon: sidebarIcons.aiProviders,
+        },
         {
           path: '/auth-files',
           labelKey: 'nav.auth_files',
@@ -635,12 +633,6 @@ export function MainLayout() {
           metaKey: 'nav_meta.oauth',
           icon: sidebarIcons.oauth,
         },
-        {
-          path: '/ai-providers',
-          labelKey: 'nav.ai_providers',
-          metaKey: 'nav_meta.ai_providers',
-          icon: sidebarIcons.aiProviders,
-        },
         ...(isApiKeyFunConfigured ? [quickStartNavItem] : []),
       ],
     },
@@ -648,6 +640,12 @@ export function MainLayout() {
       id: 'observe',
       labelKey: 'nav_groups.observe',
       items: [
+        {
+          path: '/quota',
+          labelKey: 'nav.quota_management',
+          metaKey: 'nav_meta.quota_management',
+          icon: sidebarIcons.quota,
+        },
         {
           path: '/logs',
           labelKey: 'nav.logs',
@@ -673,6 +671,12 @@ export function MainLayout() {
                 labelKey: 'nav.plugins',
                 metaKey: 'nav_meta.plugins',
                 icon: sidebarIcons.plugins,
+              },
+              {
+                path: '/plugin-store',
+                labelKey: 'nav.plugin_store',
+                metaKey: 'nav_meta.plugin_store',
+                icon: sidebarIcons.pluginStore,
               },
             ]
           : []),

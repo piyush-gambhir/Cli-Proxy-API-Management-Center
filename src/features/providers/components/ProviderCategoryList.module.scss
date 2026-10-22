@@ -63,7 +63,7 @@
   }
 
   &.active {
-    border-color: transparent;
+    border-color: var(--primary-30);
     background: var(--primary-10);
     color: var(--primary-color);
   }
@@ -71,7 +71,7 @@
 
 .itemKimi {
   &.active {
-    border-color: transparent;
+    border-color: color-mix(in srgb, #1783ff 30%, transparent);
     background: color-mix(in srgb, #1783ff 10%, var(--bg-primary));
     color: color-mix(in srgb, #1783ff 82%, var(--text-primary));
 
@@ -176,12 +176,12 @@
 
 .badgeAmber {
   background: var(--amber-10);
-  border-color: transparent;
+  border-color: var(--amber-30);
   color: var(--amber-text);
 }
 
 .badgeKimi {
   background: color-mix(in srgb, #1783ff 14%, var(--bg-primary));
-  border-color: transparent;
+  border-color: color-mix(in srgb, #1783ff 48%, var(--border-color));
   color: color-mix(in srgb, #1783ff 82%, var(--text-primary));
 }

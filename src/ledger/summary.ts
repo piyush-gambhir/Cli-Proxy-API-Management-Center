@@ -1,11 +1,11 @@
 /**
- * Per-provider capacity for the quota ledger's summary tiles.
+ * Per-provider capacity for the accounts screen's summary tiles.
  *
- * Callers pass each account's limits with a stable id and a display label (see QuotaSummary,
+ * Callers pass each account's limits with a stable id and a display label (see CapacityTiles,
  * which derives them from timeline lanes) plus the account's next reset. Remaining percents add
  * up across accounts per limit id: two weekly windows at 95% and 100% read "195% of 200%".
  */
-import type { QuotaProviderType } from './providers/types';
+import type { QuotaProviderType } from '@/features/quota/providers/types';
 
 export interface CapacityLimitInput {
   /** Stable identity used to add the same limit across accounts. */

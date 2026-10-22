@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { Outlet, RouterProvider, createHashRouter } from 'react-router-dom';
-import { LoginPage } from '@/pages/LoginPage';
 import { NotificationContainer } from '@/components/common/NotificationContainer';
 import { ConfirmationModal } from '@/components/common/ConfirmationModal';
-import { MainLayout } from '@/components/layout/MainLayout';
+import { ClassicEntry, LoginEntry } from '@/ledger/LandingRoutes';
+import { LedgerLayout } from '@/ledger/LedgerLayout';
 import { ProtectedRoute } from '@/router/ProtectedRoute';
 import { useLanguageStore, useThemeStore } from '@/stores';
 
@@ -21,12 +21,22 @@ const router = createHashRouter([
   {
     element: <RootShell />,
     children: [
-      { path: '/login', element: <LoginPage /> },
+      // Ledger fork: our screens live under /ledger with their own shell and are the landing after
+      // login; upstream's login page and shell are wrapped only to route that landing.
+      { path: '/login', element: <LoginEntry /> },
+      {
+        path: '/ledger/*',
+        element: (
+          <ProtectedRoute>
+            <LedgerLayout />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: '/*',
         element: (
           <ProtectedRoute>
-            <MainLayout />
+            <ClassicEntry />
           </ProtectedRoute>
         ),
       },

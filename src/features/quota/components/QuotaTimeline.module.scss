@@ -274,14 +274,14 @@ $lane-width: 210px;
 // Current window: solid, in the provider's colour — the row's focal point.
 .windowLive {
   background: color-mix(in srgb, var(--provider-accent) 26%, transparent);
-  border: 1px solid transparent;
+  border: 1px solid color-mix(in srgb, var(--provider-accent) 45%, transparent);
   color: var(--text-primary);
 }
 
 // Upcoming: dashed outline, nothing consumed yet.
 .windowNext {
   background: transparent;
-  border: 1px dashed transparent;
+  border: 1px dashed color-mix(in srgb, var(--provider-accent) 32%, transparent);
   color: var(--text-quaternary);
 }
 
@@ -359,11 +359,11 @@ $lane-width: 210px;
 
 .swatchLive {
   background: color-mix(in srgb, var(--text-tertiary, #888) 34%, transparent);
-  border: 1px solid transparent;
+  border: 1px solid color-mix(in srgb, var(--text-tertiary, #888) 50%, transparent);
 }
 
 .swatchNext {
-  border: 1px dashed transparent;
+  border: 1px dashed color-mix(in srgb, var(--text-tertiary, #888) 45%, transparent);
 }
 
 .swatchPast {

@@ -126,8 +126,7 @@ export function ClaudeQuotaBody({
           <div key={balance.key} className={classes.quotaRow}>
             <div className={classes.quotaRowHeader}>
               <span className={classes.quotaModel} title={balance.key}>
-                {/* Known upstream keys get a readable name; unknown ones keep the raw key. */}
-                {t(`claude_quota.dollar_window_${balance.key}`, { defaultValue: balance.key })}
+                {balance.key}
               </span>
               <div className={classes.quotaMeta}>
                 <span className={classes.quotaPercent}>

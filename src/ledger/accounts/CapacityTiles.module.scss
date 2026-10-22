@@ -1,6 +1,6 @@
-@use '../../../styles/mixins' as *;
+@use '../../styles/mixins' as *;
 
-/* Capacity tiles: tonal surfaces, a mono headline figure, one bar segment per account. */
+/* Capacity tiles: tonal surfaces, a headline figure, one bar segment per account. */
 
 .tiles {
   display: grid;
@@ -62,13 +62,12 @@
   align-items: baseline;
   gap: 6px;
   margin: 0;
-  font-family: $font-mono;
   font-variant-numeric: tabular-nums;
 }
 
 .big {
-  font-size: 26px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 650;
   letter-spacing: -0.02em;
   color: var(--text-primary);
 }
@@ -98,7 +97,7 @@
 }
 
 .high {
-  background: var(--viz-success);
+  background: var(--success-color);
 }
 
 .medium {
@@ -106,7 +105,7 @@
 }
 
 .low {
-  background: var(--viz-failure);
+  background: var(--danger-color);
 }
 
 .meta {

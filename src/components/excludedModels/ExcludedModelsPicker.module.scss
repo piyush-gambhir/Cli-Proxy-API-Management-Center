@@ -49,8 +49,7 @@
 
   @media (hover: hover) and (pointer: fine) {
     &:hover:not(:disabled) {
-      border-color: transparent;
-      background-color: var(--bg-tertiary);
+      border-color: color-mix(in srgb, var(--primary-color) 40%, var(--border-color));
     }
   }
 }
@@ -221,7 +220,7 @@
 }
 
 .rowExcluded .checkbox {
-  border-color: transparent;
+  border-color: var(--primary-color);
   background: var(--primary-color);
   color: var(--bg-primary);
 }
@@ -276,7 +275,7 @@
 .badge {
   flex-shrink: 0;
   padding: 2px 6px;
-  border: 1px dashed transparent;
+  border: 1px dashed color-mix(in srgb, var(--primary-color) 38%, var(--border-color));
   border-radius: $radius-full;
   color: var(--text-secondary);
   font-size: 10px;

@@ -1,43 +1,39 @@
 /**
  * 主题样式
- *
- * Ledger look: graphite neutrals, a monochrome primary (ink on paper, paper on ink) and no
- * visible borders. Border tokens are transparent so separation comes from surface steps;
- * --track-color covers the few fills that used to borrow --border-color.
  */
 
 // 浅色主题（默认）
 :root {
   // 极简暖灰：浅色模式
-  --bg-secondary: #f4f4f2; // 页面背景（纸感）
-  --bg-primary: #ffffff; // 容器/卡片背景
-  --bg-tertiary: #ebebe8; // hover/次级背景
-  --bg-hover: #e4e4e0;
-  --bg-quinary: #f9f9f8;
+  --bg-secondary: #faf9f5; // 页面背景（纸感）
+  --bg-primary: #f0eee8; // 容器/卡片背景
+  --bg-tertiary: #e9e6df; // hover/次级背景
+  --bg-hover: var(--bg-tertiary);
+  --bg-quinary: #f6f4ee;
   --bg-error-light: rgba(198, 87, 70, 0.1);
-  --floating-surface: #ffffff;
-  --floating-shadow: 0 18px 44px rgba(20, 22, 26, 0.12);
+  --floating-surface: #fffdf9;
+  --floating-shadow: 0 12px 26px rgba(0, 0, 0, 0.14);
 
-  --text-primary: #16171a;
-  --text-secondary: #4b4d53;
-  --text-tertiary: #7c7e85;
-  --text-quaternary: #aeb0b5;
+  --text-primary: #2d2a26;
+  --text-secondary: #6d6760;
+  --text-tertiary: #a29c95;
+  --text-quaternary: #c0bab3;
   --text-muted: var(--text-tertiary);
 
-  --border-color: transparent; // 边框/分割线
+  --border-color: #e3e1db; // 边框/分割线
   --border-secondary: var(--border-color);
-  --border-primary: transparent;
-  --border-hover: transparent;
+  --border-primary: #d5d2cb;
+  --border-hover: #cecac4;
 
-  --primary-color: #16171a; // 行动色（主色）
-  --primary-hover: #2c2d33;
-  --primary-active: #000000;
-  --primary-contrast: #f6f6f4;
+  --primary-color: #8b8680; // 行动色（主色）
+  --primary-hover: #7f7a74;
+  --primary-active: #726d67;
+  --primary-contrast: #ffffff;
 
-  --success-color: #1f8a5b;
-  --quota-medium-color: #b77a12;
-  --warning-color: #c63d36; // 错误/警告色
-  --error-color: #c63d36;
+  --success-color: #10b981;
+  --quota-medium-color: #e0aa14;
+  --warning-color: #c65746; // 错误/警告色
+  --error-color: #c65746;
   --danger-color: var(--error-color);
   --info-color: var(--primary-color);
 
@@ -53,13 +49,13 @@
   --failure-badge-text: #8a3a30;
   --failure-badge-border: rgba(198, 87, 70, 0.35);
 
-  --count-badge-bg: rgba(22, 23, 26, 0.07);
-  --count-badge-text: var(--text-secondary);
+  --count-badge-bg: rgba(139, 134, 128, 0.18);
+  --count-badge-text: var(--primary-active);
 
-  --shadow: none;
+  --shadow: 0 1px 2px 0 rgb(0 0 0 / 0.08);
   --shadow-lg: 0 10px 18px -3px rgb(0 0 0 / 0.1);
 
-  --radius-md: 10px;
+  --radius-md: 8px;
 
   // Workbench tokens (Home parity)
   --primary-8: color-mix(in srgb, var(--primary-color) 8%, transparent);
@@ -82,7 +78,7 @@
   --glass-filter: blur(var(--glass-blur));
   --glass-bg: color-mix(in srgb, var(--bg-primary) 82%, transparent);
   --glass-bg-secondary: color-mix(in srgb, var(--bg-secondary) 82%, transparent);
-  --glass-border: transparent;
+  --glass-border: color-mix(in srgb, var(--border-color) 60%, transparent);
 
   // 可视化配色：与语义色同源；深色模式下重新取步阶（见 [data-theme='dark']）。
   // 规则：翡翠绿只表达「活的流量」。
@@ -94,44 +90,39 @@
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   --dur-press: 160ms;
   --dur-hover: 200ms;
-
-  // Fills for meter tracks and separators; borders themselves stay transparent.
-  --track-color: #e3e3df;
-  // Form fields read as a filled step instead of an outline.
-  --field-bg: var(--bg-tertiary);
 }
 
 // 纯白主题
 [data-theme='white'] {
   --bg-secondary: #ffffff;
-  --bg-primary: #f5f5f3;
-  --bg-tertiary: #ececea;
-  --bg-hover: #e5e5e2;
-  --bg-quinary: #fafaf9;
+  --bg-primary: #ffffff;
+  --bg-tertiary: #f6f6f6;
+  --bg-hover: var(--bg-tertiary);
+  --bg-quinary: #ffffff;
   --bg-error-light: rgba(198, 87, 70, 0.08);
   --floating-surface: #ffffff;
-  --floating-shadow: 0 18px 44px rgba(20, 22, 26, 0.12);
+  --floating-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
 
-  --text-primary: #16171a;
-  --text-secondary: #4b4d53;
-  --text-tertiary: #7c7e85;
-  --text-quaternary: #aeb0b5;
+  --text-primary: #2d2a26;
+  --text-secondary: #6d6760;
+  --text-tertiary: #a29c95;
+  --text-quaternary: #c0bab3;
   --text-muted: var(--text-tertiary);
 
-  --border-color: transparent;
+  --border-color: #e5e5e5;
   --border-secondary: var(--border-color);
-  --border-primary: transparent;
-  --border-hover: transparent;
+  --border-primary: #d9d9d9;
+  --border-hover: #cccccc;
 
-  --primary-color: #16171a;
-  --primary-hover: #2c2d33;
-  --primary-active: #000000;
-  --primary-contrast: #f6f6f4;
+  --primary-color: #8b8680;
+  --primary-hover: #7f7a74;
+  --primary-active: #726d67;
+  --primary-contrast: #ffffff;
 
-  --success-color: #1f8a5b;
-  --quota-medium-color: #b77a12;
-  --warning-color: #c63d36;
-  --error-color: #c63d36;
+  --success-color: #10b981;
+  --quota-medium-color: #e0aa14;
+  --warning-color: #c65746;
+  --error-color: #c65746;
   --danger-color: var(--error-color);
   --info-color: var(--primary-color);
 
@@ -147,13 +138,13 @@
   --failure-badge-text: #8a3a30;
   --failure-badge-border: rgba(198, 87, 70, 0.35);
 
-  --count-badge-bg: rgba(22, 23, 26, 0.07);
-  --count-badge-text: var(--text-secondary);
+  --count-badge-bg: rgba(139, 134, 128, 0.18);
+  --count-badge-text: var(--primary-active);
 
-  --shadow: none;
+  --shadow: 0 1px 2px 0 rgb(0 0 0 / 0.08);
   --shadow-lg: 0 10px 18px -3px rgb(0 0 0 / 0.1);
 
-  --radius-md: 10px;
+  --radius-md: 8px;
 
   // Workbench tokens (Home parity)
   --primary-8: color-mix(in srgb, var(--primary-color) 8%, transparent);
@@ -169,43 +160,40 @@
   --muted-bg: var(--bg-tertiary);
   --muted-foreground: var(--text-secondary);
   --accent-bg: var(--bg-tertiary);
-
-  // Fills for meter tracks and separators; borders themselves stay transparent.
-  --track-color: #e6e6e3;
 }
 
 // 深色主题（#191919）
 [data-theme='dark'] {
   // 极简暖灰：深色模式（提升对比度与层级）
-  --bg-secondary: #121315; // 页面背景
-  --bg-primary: #1a1b1e; // 容器/卡片背景
-  --bg-tertiary: #232428; // hover/次级背景
-  --bg-hover: #2b2c31;
-  --bg-quinary: #16171a;
+  --bg-secondary: #151412; // 页面背景
+  --bg-primary: #1d1b18; // 容器/卡片背景
+  --bg-tertiary: #262320; // hover/次级背景
+  --bg-hover: #2e2a26;
+  --bg-quinary: #191714;
   --bg-error-light: rgba(198, 87, 70, 0.18);
-  --floating-surface: #26272b;
-  --floating-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  --floating-surface: #2a2723;
+  --floating-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
 
-  --text-primary: #ecebe7;
-  --text-secondary: #b3b5bb;
-  --text-tertiary: #8a8c93;
-  --text-quaternary: #5f6168;
+  --text-primary: #f6f4f1;
+  --text-secondary: #c9c3bb;
+  --text-tertiary: #9c958d;
+  --text-quaternary: #6f6962;
   --text-muted: var(--text-tertiary);
 
-  --border-color: transparent;
+  --border-color: #3a3530;
   --border-secondary: var(--border-color);
-  --border-primary: transparent;
-  --border-hover: transparent;
+  --border-primary: #4a453f;
+  --border-hover: #5a544d;
 
-  --primary-color: #f1f0ec;
-  --primary-hover: #ffffff;
-  --primary-active: #d9d8d3;
-  --primary-contrast: #121315;
+  --primary-color: #8b8680;
+  --primary-hover: #9a948e;
+  --primary-active: #a6a099;
+  --primary-contrast: #ffffff;
 
-  --success-color: #3fb27f;
-  --quota-medium-color: #e0a43a;
-  --warning-color: #e5534b;
-  --error-color: #e5534b;
+  --success-color: #10b981;
+  --quota-medium-color: #ffd862;
+  --warning-color: #c65746;
+  --error-color: #c65746;
   --danger-color: var(--error-color);
   --info-color: var(--primary-color);
 
@@ -221,13 +209,13 @@
   --failure-badge-text: #f1b0a6;
   --failure-badge-border: rgba(198, 87, 70, 0.5);
 
-  --count-badge-bg: rgba(241, 240, 236, 0.08);
-  --count-badge-text: var(--text-secondary);
+  --count-badge-bg: rgba(139, 134, 128, 0.28);
+  --count-badge-text: var(--primary-active);
 
-  --shadow: none;
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3);
 
-  --radius-md: 10px;
+  --radius-md: 8px;
 
   // Workbench tokens (Home parity, deeper amber for dark)
   --primary-8: color-mix(in srgb, var(--primary-color) 8%, transparent);
@@ -244,15 +232,12 @@
   --muted-foreground: var(--text-secondary);
   --accent-bg: var(--bg-tertiary);
 
-  --glass-border: transparent;
+  --glass-border: color-mix(in srgb, var(--border-color) 55%, transparent);
 
   // 深色卡面上 #10b981 亮度超出 OKLCH 0.48–0.67 区间，且与失败色的色盲分离度不足，
   // 因此深色单独降一档。三套主题均已通过对比度/色盲/亮度校验。
   --viz-success: #0fae78;
   --viz-failure: #cf4b3a;
-
-  // Fills for meter tracks and separators; borders themselves stay transparent.
-  --track-color: #2a2b30;
 }
 
 @media (max-width: 768px),
@@ -263,6 +248,6 @@
     --glass-filter: none;
     --glass-bg: var(--bg-primary);
     --glass-bg-secondary: var(--bg-secondary);
-    --glass-border: transparent;
+    --glass-border: var(--border-color);
   }
 }

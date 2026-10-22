@@ -38,7 +38,7 @@
 
 /* 进行中的磁贴边框略加深：扫一眼就能找到「还没完成」的那个 */
 .tile[data-status='waiting'] {
-  border-color: transparent;
+  border-color: color-mix(in srgb, var(--text-primary) 24%, var(--border-color));
 }
 
 /* ---------- 图标 ---------- */
@@ -186,7 +186,7 @@
 
   .tile:hover .trail {
     background: var(--text-primary);
-    border-color: transparent;
+    border-color: var(--text-primary);
     color: var(--bg-secondary);
   }
 

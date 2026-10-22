@@ -97,17 +97,17 @@
     "status": "Connection Status:"
   },
   "nav": {
-    "dashboard": "Overview",
+    "dashboard": "Dashboard",
     "quick_start": "Quick Start",
-    "ai_providers": "Providers",
-    "auth_files": "Accounts",
-    "oauth": "Sign in",
-    "quota_management": "Quota",
+    "ai_providers": "AI Providers",
+    "auth_files": "Auth Files",
+    "oauth": "OAuth Login",
+    "quota_management": "Quota Management",
     "plugins": "Plugins",
     "plugin_store": "Plugin Store",
-    "config_management": "Config",
-    "logs": "Logs",
-    "system_info": "System"
+    "config_management": "Config Panel",
+    "logs": "Logs Viewer",
+    "system_info": "Management Center Info"
   },
   "nav_groups": {
     "operate": "Operate",
@@ -217,7 +217,7 @@
     "routing_strategy_fill_first": "fill-first (prioritize)"
   },
   "auth_files": {
-    "title": "Accounts",
+    "title": "Auth Files Management",
     "meta_total": "{{count}} credentials",
     "meta_active": "{{count}} active",
     "meta_problem": "{{count}} problem",
@@ -485,8 +485,6 @@
     "remaining_percent": "{{percent}}% remaining"
   },
   "claude_quota": {
-    "dollar_window_iguana_necktie": "Fable 5 credit",
-    "dollar_window_additional_credit_balance": "Additional credit",
     "title": "Claude Quota",
     "empty_title": "No Claude OAuth Files",
     "empty_desc": "Log in with Claude OAuth to view quota.",
@@ -1000,7 +998,7 @@
     "clear_search": "Clear search",
     "reading_enabled": "Continuous reading",
     "filter_load_more": "Show more matching logs",
-    "title": "Logs",
+    "title": "Logs Viewer",
     "refresh_button": "Refresh Logs",
     "clear_button": "Clear Logs",
     "fullscreen_button": "Full Screen",
@@ -1067,7 +1065,7 @@
     "copy_failed": "Copy failed"
   },
   "config_management": {
-    "title": "Config",
+    "title": "Config Panel",
     "meta_fields": "{{count}} settings",
     "meta_dirty": "{{count}} unsaved",
     "meta_dirty_source": "Unsaved source edits",
@@ -1580,20 +1578,12 @@
     }
   },
   "quota_management": {
-    "show_emails": "Show emails",
-    "hide_emails": "Hide emails",
-    "load_quota": "Load quota",
-    "summary_label": "Capacity by provider",
-    "summary_of_total": "of {{total}}% left",
-    "summary_accounts": "{{count}} accounts",
-    "summary_soonest": "next reset {{when}}",
-    "summary_limit_fallback": "Limit {{n}}",
     "search_label": "Search accounts",
     "search_placeholder": "Search by filename or email",
     "search_empty_title": "No matching accounts",
     "search_empty_desc": "Try another filename or email, or clear the search.",
     "search_clear": "Clear search",
-    "title": "Quota",
+    "title": "Quota Management",
     "description": "Monitor OAuth quota status for Antigravity, Codex, Claude, Kimi, and xAI credentials.",
     "refresh_all_credentials": "Refresh all credentials",
     "sort_label": "Sort",
@@ -1800,7 +1790,7 @@
     "empty_src_desc": "This plugin menu does not provide an embeddable page URL."
   },
   "system_info": {
-    "title": "System",
+    "title": "Management Center Info",
     "about_title": "CLI Proxy API Management Center",
     "models_title": "Available Models",
     "models_desc": "Shows the /models response and uses saved API keys for auth automatically.",
@@ -1964,7 +1954,7 @@
       }
     },
     "header": {
-      "title": "Providers",
+      "title": "AI Providers",
       "activeResources": "{{active}}/{{total}} active resources",
       "providerFamilies": "{{count}} provider families",
       "updatedAt": "Updated {{time}}"
@@ -2318,5 +2308,55 @@
     "error": "Binding failed. Please start over.",
     "unsupported": "This backend does not support SIWC binding.",
     "expired": "The binding session expired. Please start over."
+  },
+  "ledger": {
+    "nav_label": "Navigation",
+    "nav_accounts": "Accounts",
+    "nav_providers": "Providers",
+    "nav_logs": "Logs",
+    "nav_config": "Config",
+    "nav_plugins": "Plugins",
+    "nav_system": "System",
+    "theme_auto": "Theme: auto",
+    "theme_light": "Theme: light",
+    "theme_dark": "Theme: dark",
+    "classic": "Classic dashboard",
+    "sign_out": "Sign out",
+    "accounts_title": "Accounts",
+    "meta_accounts_one": "{{count}} account",
+    "meta_accounts": "{{count}} accounts",
+    "meta_enabled": "{{count}} enabled",
+    "meta_attention_one": "{{count}} needs attention",
+    "meta_attention": "{{count}} need attention",
+    "show_emails": "Show emails",
+    "hide_emails": "Hide emails",
+    "refresh_quota": "Refresh quota",
+    "add_account": "Add account",
+    "search_placeholder": "Search accounts",
+    "clear_search": "Clear search",
+    "search_empty": "No accounts match this search",
+    "empty_title": "No accounts yet",
+    "paused": "Paused",
+    "resets_left_one": "{{count}} reset",
+    "resets_left": "{{count}} resets",
+    "failed_requests": "{{count}} failed",
+    "toggle_enabled": "Enable {{name}}",
+    "refresh": "Refresh quota",
+    "models": "Models",
+    "settings": "Settings",
+    "download": "Download",
+    "delete": "Delete",
+    "upload_file": "Upload credential file",
+    "upload_caption": ".json file",
+    "capacity_label": "Capacity by provider",
+    "capacity_of_total": "of {{total}}% left",
+    "capacity_soonest": "Next reset {{when}}",
+    "limit_fallback": "Limit {{n}}",
+    "limit_weekly": "Weekly",
+    "limit_monthly": "Monthly",
+    "limit_on_demand": "On-demand",
+    "limit_extra_usage": "Extra usage",
+    "dollar_window_iguana_necktie": "Fable 5 credit",
+    "dollar_window_additional_credit_balance": "Additional credit"
   }
 }

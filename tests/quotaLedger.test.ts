@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
-import { summarizeCapacity, type CapacityInput } from '@/features/quota/summary';
-import { maskEmails } from '@/utils/maskEmail';
+import { summarizeCapacity, type CapacityInput } from '@/ledger/summary';
+import { maskEmails } from '@/ledger/maskEmail';
 
 const input = (
   provider: CapacityInput['provider'],

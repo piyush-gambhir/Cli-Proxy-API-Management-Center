@@ -95,7 +95,7 @@ export function QuotaTimeline({
         name: getQuotaCacheKey(entry.file),
         displayName:
           entry.type === 'devin'
-            ? displayNameFor(getQuotaDisplayName(entry.file))
+            ? getQuotaDisplayName(entry.file)
             : displayNameFor(entry.file.name),
         provider: entry.type,
         quota: quotaFor(entry),

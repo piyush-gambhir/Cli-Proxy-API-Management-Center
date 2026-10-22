@@ -1,0 +1,128 @@
+/**
+ * Ledger look, scoped to the ledger shell.
+ *
+ * LedgerLayout sets html[data-ui='ledger'] while it is mounted, so these rules never reach the
+ * original dashboard, and they still cover dialogs that portal to <body>. The look: graphite
+ * neutrals, a monochrome primary, and no borders or shadows anywhere, including the upstream
+ * components the shell reuses. Separation comes from surface steps and spacing.
+ */
+
+html[data-ui='ledger'] {
+  --bg-secondary: #f4f4f2;
+  --bg-primary: #ffffff;
+  --bg-tertiary: #ebebe8;
+  --bg-hover: #e4e4e0;
+  --bg-quinary: #f9f9f8;
+  --bg-error-light: rgba(198, 87, 70, 0.1);
+  --floating-surface: #ffffff;
+  --floating-shadow: none;
+  --text-primary: #16171a;
+  --text-secondary: #4b4d53;
+  --text-tertiary: #7c7e85;
+  --text-quaternary: #aeb0b5;
+  --text-muted: var(--text-tertiary);
+  --border-color: transparent;
+  --border-secondary: transparent;
+  --border-primary: transparent;
+  --border-hover: transparent;
+  --primary-color: #16171a;
+  --primary-hover: #2c2d33;
+  --primary-active: #000000;
+  --primary-contrast: #f6f6f4;
+  --success-color: #1f8a5b;
+  --quota-medium-color: #b77a12;
+  --warning-color: #c63d36;
+  --error-color: #c63d36;
+  --danger-color: var(--error-color);
+  --info-color: var(--primary-color);
+  --warning-bg: rgba(198, 87, 70, 0.12);
+  --warning-text: var(--warning-color);
+  --failure-badge-bg: rgba(198, 87, 70, 0.14);
+  --failure-badge-text: #8a3a30;
+  --count-badge-bg: rgba(22, 23, 26, 0.07);
+  --count-badge-text: var(--text-secondary);
+  --shadow: none;
+  --shadow-lg: none;
+  --glass-border: transparent;
+  --glass-bg: var(--bg-primary);
+  --glass-bg-secondary: var(--bg-secondary);
+  --muted-bg: var(--bg-tertiary);
+  --accent-bg: var(--bg-tertiary);
+  --track-color: #e3e3df;
+  --field-bg: var(--bg-tertiary);
+}
+
+html[data-ui='ledger'][data-theme='dark'] {
+  --bg-secondary: #121315;
+  --bg-primary: #1a1b1e;
+  --bg-tertiary: #232428;
+  --bg-hover: #2b2c31;
+  --bg-quinary: #16171a;
+  --bg-error-light: rgba(198, 87, 70, 0.18);
+  --floating-surface: #26272b;
+  --text-primary: #ecebe7;
+  --text-secondary: #b3b5bb;
+  --text-tertiary: #8a8c93;
+  --text-quaternary: #5f6168;
+  --primary-color: #f1f0ec;
+  --primary-hover: #ffffff;
+  --primary-active: #d9d8d3;
+  --primary-contrast: #121315;
+  --success-color: #3fb27f;
+  --quota-medium-color: #e0a43a;
+  --warning-color: #e5534b;
+  --error-color: #e5534b;
+  --warning-bg: rgba(198, 87, 70, 0.22);
+  --warning-text: #f1b0a6;
+  --failure-badge-bg: rgba(198, 87, 70, 0.24);
+  --failure-badge-text: #f1b0a6;
+  --count-badge-bg: rgba(241, 240, 236, 0.08);
+  --track-color: #2a2b30;
+}
+
+html[data-ui='ledger'] {
+  // No borders, no shadows. Border widths stay so nothing shifts; only the colour goes.
+  *,
+  *::before,
+  *::after {
+    box-shadow: none !important;
+    border-color: transparent !important;
+  }
+
+  // Spinners draw their ring with a border.
+  .loading-spinner {
+    border-color: color-mix(in srgb, currentColor 22%, transparent) !important;
+    border-top-color: currentColor !important;
+  }
+
+  // Focus rings were often shadows; keep keyboard focus visible with an outline instead.
+  :focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+
+  // Upstream checkboxes hide the native input and drew focus with a border or shadow; outline
+  // the label that wraps it instead.
+  label:has(> input:is([type='checkbox'], [type='radio']):focus-visible) {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  // Without borders, fields need a fill to read as fields.
+  :is(
+    input:not([type='checkbox'], [type='radio'], [type='range'], [type='file']),
+    textarea,
+    select
+  ) {
+    background-color: var(--field-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--track-color);
+
+    &:hover {
+      background: var(--text-quaternary);
+    }
+  }
+}

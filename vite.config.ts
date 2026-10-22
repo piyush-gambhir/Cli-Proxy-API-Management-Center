@@ -46,6 +46,17 @@ export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify(getVersion())
   },
+  // Dev only: forward API calls to a local CLIProxyAPI so `bun run dev` shows real data at the
+  // dev server's own origin (no custom connection URL). Set CPA_DEV_PROXY_TARGET to point
+  // elsewhere. The management key is still entered in the login screen.
+  server: {
+    proxy: Object.fromEntries(
+      ['/v0', '/v1', '/v8'].map((prefix) => [
+        prefix,
+        { target: process.env.CPA_DEV_PROXY_TARGET ?? 'http://127.0.0.1:8317', changeOrigin: true }
+      ])
+    )
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')

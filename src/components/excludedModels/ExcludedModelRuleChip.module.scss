@@ -33,13 +33,13 @@
 
 /* 显式勾选：实线 + primary 染色，读起来是「我选的」。 */
 .exact {
-  border: 1px solid transparent;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 45%, var(--border-color));
   background: color-mix(in srgb, var(--primary-color) 8%, var(--bg-primary));
 }
 
 /* 规则派生：虚线 = 「不是逐个挑的，是某条规则算出来的」。 */
 .wildcard {
-  border: 1px dashed transparent;
+  border: 1px dashed color-mix(in srgb, var(--primary-color) 38%, var(--border-color));
   background: transparent;
   color: var(--text-secondary);
 }

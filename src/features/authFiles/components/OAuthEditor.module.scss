@@ -192,7 +192,7 @@
 
   @media (hover: hover) and (pointer: fine) {
     &:hover:not(:disabled) {
-      border-color: transparent;
+      border-color: var(--primary-color);
       background: var(--bg-tertiary);
       color: var(--text-primary);
     }
@@ -204,7 +204,7 @@
 }
 
 .providerOptionActive {
-  border-color: transparent;
+  border-color: var(--primary-color);
   background: var(--primary-10);
   color: var(--text-primary);
 

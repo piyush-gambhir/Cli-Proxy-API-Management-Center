@@ -151,13 +151,13 @@
 }
 
 .emptyActionButtonPrimary {
-  border-color: transparent;
+  border-color: var(--primary-color);
   background: var(--primary-color);
   color: var(--primary-contrast);
   font-weight: 600;
 
   &:hover:not(:disabled) {
-    border-color: transparent;
+    border-color: var(--primary-hover);
     background: var(--primary-hover);
   }
 
@@ -168,13 +168,13 @@
 
 .emptyActionButtonEmphasis {
   color: var(--amber-text);
-  border-color: transparent;
+  border-color: color-mix(in srgb, var(--amber-color) 48%, var(--border-color));
   background: color-mix(in srgb, var(--amber-color) 14%, var(--bg-primary));
   font-weight: 600;
   box-shadow: 0 1px 0 color-mix(in srgb, var(--amber-color) 18%, transparent);
 
   &:hover {
-    border-color: transparent;
+    border-color: color-mix(in srgb, var(--amber-color) 72%, var(--border-color));
     background: color-mix(in srgb, var(--amber-color) 20%, var(--bg-primary));
     box-shadow: 0 4px 12px color-mix(in srgb, var(--amber-color) 18%, transparent);
   }
