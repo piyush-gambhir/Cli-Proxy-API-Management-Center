@@ -77,7 +77,7 @@ jobs:
         if: steps.plan.outputs.release == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '24.22.1'
 
       - name: Setup Bun
         if: steps.plan.outputs.release == 'true'
