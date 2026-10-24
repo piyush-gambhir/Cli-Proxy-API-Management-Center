@@ -19,7 +19,7 @@
     "@codemirror/merge": "^6.12.3",
     "@noble/hashes": "^2.4.0",
     "@uiw/react-codemirror": "^4.25.12",
-    "axios": "1.18.1",
+    "axios": "1.20.0",
     "i18next": "^26.3.6",
     "motion": "^12.42.2",
     "react": "^19.2.9",
@@ -48,7 +48,15 @@
     "vite-plugin-singlefile": "^2.3.4"
   },
   "overrides": {
-    "form-data": "4.0.6"
+    "form-data": "4.0.6",
+    "@babel/core": "7.29.7",
+    "@humanfs/node": "0.16.8",
+    "brace-expansion": "5.0.12",
+    "browserslist": "4.28.7",
+    "follow-redirects": "1.16.1",
+    "immutable": "5.1.8",
+    "source-map-js": "1.2.2",
+    "zod": "4.6.7"
   },
   "engines": {
     "node": ">=24.22.1 <25"
