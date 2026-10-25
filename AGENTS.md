@@ -15,7 +15,7 @@ This is a React 19 + TypeScript + Vite management frontend for CLI Proxy API, no
 
 ## Build, Test, and Development Commands
 
-Use Bun; `package.json` pins `bun@1.3.14`, and CI uses Node.js 24. Keep dependency changes consistent with `bun.lock`; do not introduce another package manager's lockfile.
+Use Bun; `package.json` pins `bun@1.4.4`, and CI uses Node.js 26.12.1. Keep dependency changes consistent with `bun.lock`; do not introduce another package manager's lockfile.
 
 - `bun install --frozen-lockfile`: install locked dependencies.
 - `bun run dev`: start Vite at `http://localhost:5173` by default.
@@ -24,7 +24,7 @@ Use Bun; `package.json` pins `bun@1.3.14`, and CI uses Node.js 24. Keep dependen
 - `bun run test`: run all Bun tests.
 - `bun test tests/apiError.test.ts`: example focused test run.
 - `bun run lint`: run ESLint over TypeScript/TSX files. Some rules emit warnings; the current command does not enforce zero warnings.
-- `bun run type-check`: run `tsc --noEmit`; the main TypeScript config includes `src`, not `tests`.
+- `bun run type-check`: run the explicit TypeScript 7 CLI with `--noEmit`; the main TypeScript config includes `src`, not `tests`.
 - `bun run verify`: run tests, lint, and build (which includes TypeScript compilation).
 - `bun run format`: format all `src/**/*.{ts,tsx,css,scss}`. Prefer targeted formatting of changed files during routine work to avoid unrelated diffs.
 
