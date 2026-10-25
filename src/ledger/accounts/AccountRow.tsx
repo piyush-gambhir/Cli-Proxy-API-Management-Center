@@ -94,8 +94,9 @@ export function AccountRow(props: AccountRowProps) {
   const providerKey = normalizeProviderKey(String(file.type ?? file.provider ?? ''));
   const entry = runtimeOnly ? null : quotaEntry;
   const adapter = entry ? QUOTA_ADAPTERS[entry.type] : null;
+  // Paused only means out of rotation: quota still loads, shows and refreshes.
   const enabled = !isDisabledAuthFile(file);
-  const canRefresh = Boolean(entry) && enabled && !disableControls;
+  const canRefresh = Boolean(entry) && !disableControls;
 
   const rawIdentity = file.email?.trim() || getQuotaDisplayName(file);
   const identity = showEmails ? rawIdentity : maskEmails(rawIdentity);
@@ -106,7 +107,7 @@ export function AccountRow(props: AccountRowProps) {
   // Claude keeps its last good snapshot through a failed or running refresh.
   const retained = isClaude && hasClaudeUsageData(quota as ClaudeQuotaState | undefined);
   const readable = status === 'success' || retained ? { ...quota, status: 'success' } : undefined;
-  const limits = entry && enabled ? accountLimits(entry.type, readable, t, i18n.language) : [];
+  const limits = entry ? accountLimits(entry.type, readable, t, i18n.language) : [];
   const facts = entry ? accountFacts(entry.type, readable, t) : { plan: null, manualResets: null };
 
   const claudeReset = useClaudeResetGrants(
@@ -122,7 +123,7 @@ export function AccountRow(props: AccountRowProps) {
     quota !== undefined &&
     Boolean(adapter?.resetQuota) &&
     Boolean(adapter?.canResetQuota?.(quota));
-  const showClaudeReset = isClaude && enabled && (resetsLeft ?? 0) > 0 && !claudeReset.blocked;
+  const showClaudeReset = isClaude && (resetsLeft ?? 0) > 0 && !claudeReset.blocked;
 
   const error =
     status === 'error' && adapter
@@ -148,6 +149,7 @@ export function AccountRow(props: AccountRowProps) {
   const failed = file.failureCount ?? 0;
 
   const factsLine = [
+    enabled ? null : t('ledger.paused'),
     facts.plan,
     resetsLeft ? t('ledger.resets_left', { count: resetsLeft }) : null,
   ].filter(Boolean);
@@ -169,18 +171,12 @@ export function AccountRow(props: AccountRowProps) {
         <span className={styles.identity}>
           <span className={styles.name}>{identity}</span>
           <span className={styles.sub}>
-            {!enabled ? (
-              t('ledger.paused')
-            ) : (
-              <>
-                {factsLine.join(' · ')}
-                {failed > 0 && (
-                  <span className={styles.failed}>
-                    {factsLine.length > 0 ? ' · ' : ''}
-                    {t('ledger.failed_requests', { count: failed })}
-                  </span>
-                )}
-              </>
+            {factsLine.join(' · ')}
+            {failed > 0 && (
+              <span className={styles.failed}>
+                {factsLine.length > 0 ? ' · ' : ''}
+                {t('ledger.failed_requests', { count: failed })}
+              </span>
             )}
           </span>
         </span>

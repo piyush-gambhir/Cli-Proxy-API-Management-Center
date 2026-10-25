@@ -8,11 +8,9 @@
   background: var(--bg-primary);
 }
 
-.paused {
-  .who,
-  .limits {
-    opacity: 0.5;
-  }
+// A paused account is out of rotation, not gone: only its icon fades; numbers stay readable.
+.paused .icon {
+  opacity: 0.45;
 }
 
 /* ---------- who ---------- */

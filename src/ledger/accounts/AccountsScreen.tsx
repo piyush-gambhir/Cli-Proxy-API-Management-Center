@@ -54,6 +54,13 @@ const SEARCH_MIN_ACCOUNTS = 9;
 const providerKeyOf = (file: AuthFileItem) =>
   normalizeProviderKey(String(file.type ?? file.provider ?? ''));
 
+/**
+ * Upstream's quota actions skip disabled files. Pausing only takes an account out of rotation and
+ * the backend still answers quota lookups for it, so paused rows refresh and reset like any other.
+ */
+const asActive = (file: AuthFileItem): AuthFileItem =>
+  isDisabledAuthFile(file) ? { ...file, disabled: false } : file;
+
 /** Providers with quota first, in upstream's tab order, then everything else alphabetically. */
 const providerRank = (key: string) => {
   const index = QUOTA_TAB_ORDER.indexOf(key as QuotaProviderType);
@@ -227,17 +234,23 @@ export function AccountsScreen() {
     [rows, search, wildcard]
   );
 
-  const enabledEntries = useCallback(
-    (list: typeof rows) =>
+  const quotaEntries = useCallback(
+    (list: typeof rows, enabledOnly = false) =>
       list
         .map((row) => row.entry)
         .filter(
-          (entry): entry is QuotaFileEntry => entry !== null && !isDisabledAuthFile(entry.file)
+          (entry): entry is QuotaFileEntry =>
+            entry !== null && !(enabledOnly && isDisabledAuthFile(entry.file))
         ),
     []
   );
-  const visibleEntries = useMemo(() => enabledEntries(visibleRows), [enabledEntries, visibleRows]);
-  const allEntries = useMemo(() => enabledEntries(rows), [enabledEntries, rows]);
+  // Paused accounts still load and show their quota; capacity counts only what is in rotation.
+  const visibleEntries = useMemo(() => quotaEntries(visibleRows), [quotaEntries, visibleRows]);
+  const capacityEntries = useMemo(
+    () => quotaEntries(visibleRows, true),
+    [quotaEntries, visibleRows]
+  );
+  const allEntries = useMemo(() => quotaEntries(rows), [quotaEntries, rows]);
 
   useQuotaAutoLoad(
     visibleEntries,
@@ -271,7 +284,9 @@ export function AccountsScreen() {
   const { enabledCount, attentionCount } = useMemo(
     () => ({
       enabledCount: rows.filter((row) => !isDisabledAuthFile(row.file)).length,
-      attentionCount: allEntries.filter((entry) => getQuota(entry)?.status === 'error').length,
+      attentionCount: allEntries.filter(
+        (entry) => !isDisabledAuthFile(entry.file) && getQuota(entry)?.status === 'error'
+      ).length,
     }),
     [allEntries, getQuota, rows]
   );
@@ -388,7 +403,7 @@ export function AccountsScreen() {
         </div>
       )}
 
-      <CapacityTiles entries={visibleEntries} quotaFor={getQuota} resolvedTheme={resolvedTheme} />
+      <CapacityTiles entries={capacityEntries} quotaFor={getQuota} resolvedTheme={resolvedTheme} />
 
       {error && (
         <p className={styles.error} role="alert">
@@ -425,10 +440,11 @@ export function AccountsScreen() {
                   resetting={resettingQuotaName === cacheKey}
                   onToggleStatus={(enabled) => void handleStatusToggle(row.file, enabled)}
                   onRefreshQuota={() => {
-                    if (row.entry) void refreshQuota(row.file, QUOTA_ADAPTERS[row.entry.type]);
+                    if (row.entry)
+                      void refreshQuota(asActive(row.file), QUOTA_ADAPTERS[row.entry.type]);
                   }}
                   onResetQuota={() => {
-                    if (row.entry) resetQuota(row.file, QUOTA_ADAPTERS[row.entry.type]);
+                    if (row.entry) resetQuota(asActive(row.file), QUOTA_ADAPTERS[row.entry.type]);
                   }}
                   onShowModels={() => showModels(row.file)}
                   onOpenSettings={() => openPrefixProxyEditor(row.file)}

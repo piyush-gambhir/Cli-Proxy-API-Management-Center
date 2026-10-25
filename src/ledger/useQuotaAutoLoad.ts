@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useQuotaStore } from '@/stores/useQuotaStore';
 import { getQuotaCacheKey } from '@/utils/quota/identity';
-import { isDisabledAuthFile } from '@/utils/quota/validators';
 import type { QuotaFileEntry } from '@/features/quota/logic';
 import type { QuotaCardState } from '@/features/quota/providers';
 
@@ -12,8 +11,8 @@ const AUTO_LOAD_TTL_MS = 5 * 60_000;
 const lastAutoLoadAt = new Map<string, number>();
 
 /**
- * Load quota for every visible, enabled credential when the accounts screen opens, so rows show numbers
- * instead of a load button. Each credential loads at most once per visit, and not again within
+ * Load quota for every visible credential, paused ones too, when the accounts screen opens, so
+ * rows show numbers instead of a load button. Each credential loads at most once per visit, and not again within
  * AUTO_LOAD_TTL_MS of a successful load. No polling: "Refresh all" and the row refresh stay
  * manual. Covers Devin too, so a screen using this must not also run Devin's dedicated
  * auto-load (two auto-loaders in one render collide on the batch loader's single-flight guard).
@@ -32,7 +31,6 @@ export function useQuotaAutoLoad(
     if (disabled) return;
     const now = Date.now();
     const targets = entries.filter((entry) => {
-      if (isDisabledAuthFile(entry.file)) return false;
       const key = JSON.stringify([
         session,
         fileGenerations[entry.file.name] ?? 0,
