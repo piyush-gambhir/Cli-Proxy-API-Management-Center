@@ -2365,6 +2365,8 @@
     "limit_on_demand": "Theo nhu cầu",
     "limit_extra_usage": "Mức dùng thêm",
     "dollar_window_iguana_necktie": "Tín dụng Fable 5",
-    "dollar_window_additional_credit_balance": "Tín dụng bổ sung"
+    "dollar_window_additional_credit_balance": "Tín dụng bổ sung",
+    "reauthenticate": "Xác thực lại",
+    "reauthenticate_account": "Xác thực lại {{name}}"
   }
 }

@@ -2353,6 +2353,8 @@
     "limit_on_demand": "По запросу",
     "limit_extra_usage": "Доп. использование",
     "dollar_window_iguana_necktie": "Кредит Fable 5",
-    "dollar_window_additional_credit_balance": "Дополнительный кредит"
+    "dollar_window_additional_credit_balance": "Дополнительный кредит",
+    "reauthenticate": "Войти заново",
+    "reauthenticate_account": "Войти заново: {{name}}"
   }
 }

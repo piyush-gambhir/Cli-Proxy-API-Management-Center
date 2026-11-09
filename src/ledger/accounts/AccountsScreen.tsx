@@ -44,7 +44,9 @@ import { maskEmails } from '@/ledger/maskEmail';
 import { useLedgerUi } from '@/ledger/uiState';
 import { useQuotaAutoLoad } from '@/ledger/useQuotaAutoLoad';
 import { AccountRow } from './AccountRow';
-import { AddAccountSheet } from './AddAccountSheet';
+import { AddAccountSheet, type AddAccountSheetHandle } from './AddAccountSheet';
+import { OAUTH_PROVIDERS } from '@/features/oauth/providers';
+import { reauthenticationProvider } from './reauthentication';
 import { CapacityTiles } from './CapacityTiles';
 import styles from './AccountsScreen.module.scss';
 
@@ -77,6 +79,7 @@ export function AccountsScreen() {
 
   const [search, setSearch] = useState('');
   const [addOpen, setAddOpen] = useState(false);
+  const accountSignIn = useRef<AddAccountSheetHandle>(null);
   const disableControls = connectionStatus !== 'connected';
 
   /* ---------- account data and actions (upstream hooks) ---------- */
@@ -447,6 +450,11 @@ export function AccountsScreen() {
                     if (row.entry) resetQuota(asActive(row.file), QUOTA_ADAPTERS[row.entry.type]);
                   }}
                   onShowModels={() => showModels(row.file)}
+                  onReauthenticate={
+                    reauthenticationProvider(row.file, OAUTH_PROVIDERS)
+                      ? () => accountSignIn.current?.reauthenticate(row.file)
+                      : undefined
+                  }
                   onOpenSettings={() => openPrefixProxyEditor(row.file)}
                   onDownload={() => handleDownload(row.file.name)}
                   onDelete={() => handleDelete(row.file.name)}
@@ -481,6 +489,7 @@ export function AccountsScreen() {
       />
 
       <AddAccountSheet
+        ref={accountSignIn}
         open={addOpen}
         uploading={uploading}
         disableControls={disableControls}

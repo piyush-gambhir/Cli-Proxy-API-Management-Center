@@ -55,6 +55,7 @@ export type AccountRowProps = {
   onOpenSettings: () => void;
   onDownload: () => void;
   onDelete: () => void;
+  onReauthenticate?: () => void;
 };
 
 const toneOf = (remaining: number | null) =>
@@ -84,6 +85,7 @@ export function AccountRow(props: AccountRowProps) {
     onOpenSettings,
     onDownload,
     onDelete,
+    onReauthenticate,
   } = props;
   const { t, i18n } = useTranslation();
   const now = useNow();
@@ -283,6 +285,17 @@ export function AccountRow(props: AccountRowProps) {
         )}
       </span>
       <div className={styles.actions}>
+        {onReauthenticate && (
+          <button
+            type="button"
+            className={styles.textButton}
+            onClick={onReauthenticate}
+            disabled={disableControls || deleting || statusUpdating}
+            aria-label={t('ledger.reauthenticate_account', { name: identity })}
+          >
+            {t('ledger.reauthenticate')}
+          </button>
+        )}
         {entry && (
           <button
             type="button"

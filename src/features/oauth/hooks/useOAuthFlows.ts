@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore, useNotificationStore } from '@/stores';
 import { oauthApi, pluginsApi } from '@/services/api';
+import type { OAuthTarget } from '@/services/api/oauth';
 import { getErrorMessage, isRecord } from '@/utils/helpers';
 import { notifyAuthFilesChanged } from '@/features/authFiles/authFilesEvents';
 import { createOAuthAttempts, type OAuthAttempt } from '../oauthAttempts';
@@ -243,7 +244,7 @@ export function useOAuthFlows({ providerCards, isFocused }: UseOAuthFlowsOptions
     startPolling(provider, state, attempt);
   };
 
-  const startAuth = async (provider: string) => {
+  const startAuth = async (provider: string, target?: OAuthTarget) => {
     // A network error can stop polling while the server is still waiting. Require
     // explicit cancellation before replacing that Devin session.
     if (provider === 'devin' && states[provider]?.state) return;
@@ -264,7 +265,7 @@ export function useOAuthFlows({ providerCards, isFocused }: UseOAuthFlowsOptions
       callbackSubmitting: false,
     });
     try {
-      const res = await oauthApi.startAuth(provider, attempt.signal);
+      const res = await oauthApi.startAuth(provider, attempt.signal, target);
       if (!attempt.isCurrent()) return;
       if (!res.state) {
         const message = t('auth_login.missing_state');
