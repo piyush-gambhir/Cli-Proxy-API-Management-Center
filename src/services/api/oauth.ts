@@ -11,6 +11,10 @@ import {
 export type BuiltInOAuthProvider =
   'codex' | 'anthropic' | 'antigravity' | 'kimi' | 'kimi-ai' | 'xai' | 'devin' | 'meta';
 
+export interface OAuthTarget {
+  name: string;
+}
+
 export interface OAuthStartResponse {
   url: string;
   state?: string;
@@ -50,9 +54,10 @@ export const oauthApi = {
   startSiwcBind: (name: string, signal?: AbortSignal) =>
     apiClient.post<SiwcBindResponse>('/oauth/siwc/bind', { name }, signal ? { signal } : undefined),
 
-  startAuth: (provider: string, signal?: AbortSignal) => {
+  startAuth: (provider: string, signal?: AbortSignal, target?: OAuthTarget) => {
     const providerKey = normalizeProviderForManagementPath(provider);
     const params: Record<string, string | boolean> = { provider: providerKey };
+    if (target) params.target_auth_id = target.name;
     if (WEBUI_SUPPORTED.has(providerKey)) {
       params.is_webui = true;
     }

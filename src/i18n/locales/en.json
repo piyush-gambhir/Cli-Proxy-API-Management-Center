@@ -2359,6 +2359,8 @@
     "limit_on_demand": "On-demand",
     "limit_extra_usage": "Extra usage",
     "dollar_window_iguana_necktie": "Fable 5 credit",
-    "dollar_window_additional_credit_balance": "Additional credit"
+    "dollar_window_additional_credit_balance": "Additional credit",
+    "reauthenticate": "Reauthenticate",
+    "reauthenticate_account": "Reauthenticate {{name}}"
   }
 }

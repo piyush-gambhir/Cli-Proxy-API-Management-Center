@@ -549,7 +549,6 @@
     "reset_confirm_button": "確認重置",
     "reset_not_confirmed": "尚未確認額度重置成功，請重新整理額度後再決定是否重試。",
     "reset_cooldown_failed": "額度已重置，但代理冷卻清除失敗。請在原連線的認證檔案頁面使用「清除冷卻」，不要再次消耗重置卡。",
-
     "reset_success": "已重置「{{name}}」的 Codex 配額",
     "reset_failed": "重置「{{name}}」的 Codex 配額失敗：{{message}}",
     "plan_plus": "Plus",
@@ -2386,6 +2385,8 @@
     "limit_on_demand": "按需",
     "limit_extra_usage": "額外用量",
     "dollar_window_iguana_necktie": "Fable 5 額度",
-    "dollar_window_additional_credit_balance": "額外額度"
+    "dollar_window_additional_credit_balance": "額外額度",
+    "reauthenticate": "重新驗證",
+    "reauthenticate_account": "重新驗證 {{name}}"
   }
 }

@@ -7,11 +7,23 @@
  * sign-in that is still polling.
  */
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import {
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+  type Ref,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconUpload } from '@/components/ui/icons';
 import { Sheet } from '@/components/ui/Sheet/Sheet';
 import { useAuthStore, useThemeStore } from '@/stores';
+import type { AuthFileItem } from '@/types';
+import { getQuotaDisplayName } from '@/utils/quota/identity';
+import { maskEmails } from '@/ledger/maskEmail';
+import { useLedgerUi } from '@/ledger/uiState';
 import iconCodex from '@/assets/icons/codex.svg';
 import iconVertex from '@/assets/icons/vertex.svg';
 import { OAuthFlowDialog } from '@/features/oauth/components/OAuthFlowDialog';
@@ -26,12 +38,18 @@ import {
   type OAuthProviderCard,
 } from '@/features/oauth/providers';
 import styles from './AddAccountSheet.module.scss';
+import { reauthenticationProvider } from './reauthentication';
 
 const VERTEX_ID = '__vertex__';
 
-type Dialog = { kind: 'oauth'; id: string } | { kind: 'vertex' } | null;
+type Dialog = { kind: 'oauth'; id: string; account?: AuthFileItem } | { kind: 'vertex' } | null;
+
+export type AddAccountSheetHandle = {
+  reauthenticate: (file: AuthFileItem) => void;
+};
 
 export type AddAccountSheetProps = {
+  ref?: Ref<AddAccountSheetHandle>;
   open: boolean;
   uploading: boolean;
   disableControls: boolean;
@@ -66,10 +84,11 @@ function SheetItem({ icon, label, caption, emphasis, disabled, onOpen }: SheetIt
 }
 
 export function AddAccountSheet(props: AddAccountSheetProps) {
-  const { open, uploading, disableControls, onClose, onUpload, onAdded } = props;
+  const { ref, open, uploading, disableControls, onClose, onUpload, onAdded } = props;
   const { t } = useTranslation();
   const apiBase = useAuthStore((state) => state.apiBase);
   const resolvedTheme = useThemeStore((state) => state.resolvedTheme);
+  const showEmails = useLedgerUi((state) => state.showEmails);
 
   const pluginProviders = usePluginOAuthProviders(apiBase);
   const cards = useMemo<OAuthProviderCard[]>(
@@ -93,9 +112,22 @@ export function AddAccountSheet(props: AddAccountSheetProps) {
   });
 
   const addedCount = flows.addedCount;
+  const handledAddedCount = useRef(0);
   useEffect(() => {
-    if (addedCount > 0) onAdded();
+    if (addedCount > handledAddedCount.current) onAdded();
+    handledAddedCount.current = addedCount;
   }, [addedCount, onAdded]);
+
+  useImperativeHandle(ref, () => ({
+    reauthenticate: (file) => {
+      const card = reauthenticationProvider(file, cards);
+      if (!card || disableControls) return;
+      focusedRef.current = card.id;
+      setDialog({ kind: 'oauth', id: card.id, account: file });
+      setDialogOpen(true);
+      void flows.startAuth(card.id, { name: file.name });
+    },
+  }));
 
   const labelOf = (card: OAuthProviderCard) =>
     card.kind === 'plugin'
@@ -146,6 +178,10 @@ export function AddAccountSheet(props: AddAccountSheetProps) {
 
   const dialogCard =
     dialog?.kind === 'oauth' ? cards.find((card) => card.id === dialog.id) : undefined;
+  const accountName =
+    dialog?.kind === 'oauth' && dialog.account
+      ? dialog.account.email?.trim() || getQuotaDisplayName(dialog.account)
+      : null;
 
   return (
     <>
@@ -205,13 +241,22 @@ export function AddAccountSheet(props: AddAccountSheetProps) {
               dialogCard.kind === 'plugin'
                 ? t('auth_login.plugin_oauth_title', { name: dialogCard.title })
                 : t(dialogCard.titleKey),
-            caption: methodOf(dialogCard),
+            caption: accountName
+              ? t('ledger.reauthenticate_account', {
+                  name: showEmails ? accountName : maskEmails(accountName),
+                })
+              : methodOf(dialogCard),
             icon: iconOf(dialogCard),
           }}
           state={flows.states[dialogCard.id] ?? {}}
           text={(suffix) => flows.providerText(dialogCard.id, suffix)}
           supportsCallback={supportsManualCallback(dialogCard)}
-          onStart={() => void flows.startAuth(dialogCard.id)}
+          onStart={() =>
+            void flows.startAuth(
+              dialogCard.id,
+              dialog?.kind === 'oauth' && dialog.account ? { name: dialog.account.name } : undefined
+            )
+          }
           onCancel={() => void flows.cancelAuth(dialogCard.id)}
           onCallbackChange={(value) => flows.setCallbackInput(dialogCard.id, value)}
           onCallbackSubmit={() => void flows.submitCallback(dialogCard.id)}
