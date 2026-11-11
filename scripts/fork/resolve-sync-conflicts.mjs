@@ -117,7 +117,11 @@ const VERSION_PATTERNS = [
   /(`bun@)([0-9][0-9.]*)(`)/g,
   /(CI uses Node\.js )([0-9][0-9.]*[0-9])()/g,
 ];
-const ACTION = /(uses:\s*)([\w.-]+\/[\w./-]+)@(v[0-9][0-9.]*)/g;
+const ACTION = /(uses:\s*)([\w.-]+\/[\w./-]+)@(v[0-9][0-9.]*|[0-9a-f]{40} # v[0-9][0-9.]*)/g;
+/** Version of an action ref: `v3` or a pinned `<sha> # v3.0.4`. */
+const actionVersion = (ref) => ref.match(/v([0-9][0-9.]*)\s*$/)?.[1] ?? '0';
+const higherAction = (ours, theirs) =>
+  compare(actionVersion(ours), actionVersion(theirs)) > 0 ? ours : theirs;
 
 const blank = (text) =>
   [...VERSION_PATTERNS, ACTION].reduce(
@@ -138,7 +142,7 @@ function mergeToolchain(path, baseText, oursText, theirsText) {
   }
   const actions = new Map([...oursText.matchAll(ACTION)].map((m) => [m[2], m[3]]));
   text = text.replace(ACTION, (_, pre, name, version) =>
-    `${pre}${name}@${actions.has(name) ? higher(actions.get(name), version) : version}`
+    `${pre}${name}@${actions.has(name) ? higherAction(actions.get(name), version) : version}`
   );
   return text;
 }
