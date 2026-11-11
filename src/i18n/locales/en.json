@@ -2505,7 +2505,8 @@
     "paused": "Paused",
     "resets_left_one": "{{count}} reset",
     "resets_left": "{{count}} resets",
-    "failed_requests": "{{count}} failed",
+    "failed_requests": "{{count}} failed requests total",
+    "failed_requests_one": "{{count}} failed request total",
     "toggle_enabled": "Enable {{name}}",
     "refresh": "Refresh quota",
     "models": "Models",
@@ -2525,6 +2526,12 @@
     "dollar_window_iguana_necktie": "Fable 5 credit",
     "dollar_window_additional_credit_balance": "Additional credit",
     "reauthenticate": "Reauthenticate",
-    "reauthenticate_account": "Reauthenticate {{name}}"
+    "reauthenticate_account": "Reauthenticate {{name}}",
+    "auth_revoked": "Access token revoked. Reauthenticate this account.",
+    "auth_expired": "Session expired. Reauthenticate this account.",
+    "auth_required": "Authentication failed. Update this account’s credentials.",
+    "quota_rate_limited": "Quota check rate limited (429). Try again later.",
+    "account_retry": "Account cooldown ends {{when}}.",
+    "quota_stale": "Showing last known quota."
   }
 }
