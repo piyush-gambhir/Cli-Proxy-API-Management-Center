@@ -35,6 +35,7 @@ import { useClaudeResetGrants } from '@/features/quota/providers/claude/ClaudeRe
 import { hasClaudeUsageData } from '@/features/quota/providers/claude/data';
 import { accountFacts, accountLimits } from '@/ledger/limits';
 import { maskEmails } from '@/ledger/maskEmail';
+import { accountHealth, accountRetryAt } from './accountHealth';
 import styles from './AccountRow.module.scss';
 
 export type AccountRowProps = {
@@ -111,6 +112,8 @@ export function AccountRow(props: AccountRowProps) {
   const readable = status === 'success' || retained ? { ...quota, status: 'success' } : undefined;
   const limits = entry ? accountLimits(entry.type, readable, t, i18n.language) : [];
   const facts = entry ? accountFacts(entry.type, readable, t) : { plan: null, manualResets: null };
+  const health = accountHealth(file, quota);
+  const retryAt = accountRetryAt(file, now);
 
   const claudeReset = useClaudeResetGrants(
     file,
@@ -127,15 +130,21 @@ export function AccountRow(props: AccountRowProps) {
     Boolean(adapter?.canResetQuota?.(quota));
   const showClaudeReset = isClaude && (resetsLeft ?? 0) > 0 && !claudeReset.blocked;
 
+  // A 429 on the quota lookup is its own message, and a 401 is already covered by the
+  // authentication line below, so neither repeats the provider's raw error.
   const error =
     status === 'error' && adapter
-      ? t(`${adapter.i18nPrefix}.load_failed`, {
-          message: resolveQuotaErrorMessage(
-            t,
-            quota?.errorStatus,
-            quota?.error || t('common.unknown_error')
-          ),
-        })
+      ? quota?.errorStatus === 429
+        ? t('ledger.quota_rate_limited')
+        : health.authentication && quota?.errorStatus === 401
+          ? null
+          : t(`${adapter.i18nPrefix}.load_failed`, {
+              message: resolveQuotaErrorMessage(
+                t,
+                quota?.errorStatus,
+                quota?.error || t('common.unknown_error')
+              ),
+            })
       : isClaude && claudeReset.message
         ? t(`claude_reset.${claudeReset.message}`)
         : null;
@@ -155,6 +164,9 @@ export function AccountRow(props: AccountRowProps) {
     facts.plan,
     resetsLeft ? t('ledger.resets_left', { count: resetsLeft }) : null,
   ].filter(Boolean);
+  const failedLabel = failed > 0 ? t('ledger.failed_requests', { count: failed }) : null;
+  // The sub-line stays on one line and truncates; the title keeps the full text reachable.
+  const subTitle = [...factsLine, failedLabel].filter(Boolean).join(' · ') || undefined;
 
   return (
     <article className={`${styles.row} ${enabled ? '' : styles.paused}`}>
@@ -172,12 +184,12 @@ export function AccountRow(props: AccountRowProps) {
         </span>
         <span className={styles.identity}>
           <span className={styles.name}>{identity}</span>
-          <span className={styles.sub}>
+          <span className={styles.sub} title={subTitle}>
             {factsLine.join(' · ')}
-            {failed > 0 && (
+            {failedLabel && (
               <span className={styles.failed}>
                 {factsLine.length > 0 ? ' · ' : ''}
-                {t('ledger.failed_requests', { count: failed })}
+                {failedLabel}
               </span>
             )}
           </span>
@@ -229,10 +241,25 @@ export function AccountRow(props: AccountRowProps) {
             {t('codex_quota.reset_button')}
           </button>
         )}
+        {health.authentication && (
+          <p className={styles.error} role="alert">
+            {t(`ledger.auth_${health.authentication}`)}
+          </p>
+        )}
         {error && (
           <p className={styles.error} role="alert">
             {error}
           </p>
+        )}
+        {retryAt !== null && (
+          <p className={styles.error}>
+            {t('ledger.account_retry', {
+              when: formatRelativeInstant(retryAt, now, i18n.language),
+            })}
+          </p>
+        )}
+        {retained && status !== 'success' && (
+          <p className={styles.stale}>{t('ledger.quota_stale')}</p>
         )}
       </div>
 

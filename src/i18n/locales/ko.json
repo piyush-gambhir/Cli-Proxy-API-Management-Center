@@ -2505,7 +2505,8 @@
     "paused": "일시 중지됨",
     "resets_left_one": "초기화 {{count}}회",
     "resets_left": "초기화 {{count}}회",
-    "failed_requests": "실패 {{count}}건",
+    "failed_requests": "실패한 요청 총 {{count}}개",
+    "failed_requests_one": "실패한 요청 총 {{count}}개",
     "toggle_enabled": "{{name}} 사용",
     "refresh": "할당량 새로고침",
     "models": "모델",
@@ -2525,6 +2526,12 @@
     "dollar_window_iguana_necktie": "Fable 5 크레딧",
     "dollar_window_additional_credit_balance": "추가 크레딧",
     "reauthenticate": "다시 인증",
-    "reauthenticate_account": "{{name}} 다시 인증"
+    "reauthenticate_account": "{{name}} 다시 인증",
+    "auth_revoked": "액세스 토큰이 취소되었습니다. 이 계정을 다시 인증하세요.",
+    "auth_expired": "세션이 만료되었습니다. 이 계정을 다시 인증하세요.",
+    "auth_required": "인증에 실패했습니다. 계정의 인증 정보를 갱신하세요.",
+    "quota_rate_limited": "할당량 조회 요청이 제한되었습니다(429). 나중에 다시 시도하세요.",
+    "account_retry": "계정 대기 시간이 {{when}} 종료됩니다.",
+    "quota_stale": "마지막으로 확인된 할당량을 표시합니다."
   }
 }

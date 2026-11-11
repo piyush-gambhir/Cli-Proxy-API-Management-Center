@@ -2505,7 +2505,8 @@
     "paused": "Duraklatıldı",
     "resets_left_one": "{{count}} sıfırlama",
     "resets_left": "{{count}} sıfırlama",
-    "failed_requests": "{{count}} başarısız",
+    "failed_requests": "Toplam {{count}} başarısız istek",
+    "failed_requests_one": "Toplam {{count}} başarısız istek",
     "toggle_enabled": "Etkinleştir: {{name}}",
     "refresh": "Kotayı yenile",
     "models": "Modeller",
@@ -2525,6 +2526,12 @@
     "dollar_window_iguana_necktie": "Fable 5 kredisi",
     "dollar_window_additional_credit_balance": "Ek kredi",
     "reauthenticate": "Yeniden kimlik doğrula",
-    "reauthenticate_account": "{{name}} için yeniden kimlik doğrula"
+    "reauthenticate_account": "{{name}} için yeniden kimlik doğrula",
+    "auth_revoked": "Erişim belirteci iptal edildi. Bu hesabın kimliğini yeniden doğrulayın.",
+    "auth_expired": "Oturumun süresi doldu. Bu hesabın kimliğini yeniden doğrulayın.",
+    "auth_required": "Kimlik doğrulama başarısız. Bu hesabın kimlik bilgilerini güncelleyin.",
+    "quota_rate_limited": "Kota sorgusu hız sınırına takıldı (429). Daha sonra tekrar deneyin.",
+    "account_retry": "Hesap bekleme süresi {{when}} sona eriyor.",
+    "quota_stale": "Bilinen son kota gösteriliyor."
   }
 }
