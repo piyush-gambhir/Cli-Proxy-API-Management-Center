@@ -2511,7 +2511,8 @@
     "paused": "Đã tạm dừng",
     "resets_left_one": "{{count}} lượt đặt lại",
     "resets_left": "{{count}} lượt đặt lại",
-    "failed_requests": "{{count}} lỗi",
+    "failed_requests": "Tổng cộng {{count}} yêu cầu thất bại",
+    "failed_requests_one": "Tổng cộng {{count}} yêu cầu thất bại",
     "toggle_enabled": "Bật {{name}}",
     "refresh": "Làm mới hạn mức",
     "models": "Mô hình",
@@ -2531,6 +2532,12 @@
     "dollar_window_iguana_necktie": "Tín dụng Fable 5",
     "dollar_window_additional_credit_balance": "Tín dụng bổ sung",
     "reauthenticate": "Xác thực lại",
-    "reauthenticate_account": "Xác thực lại {{name}}"
+    "reauthenticate_account": "Xác thực lại {{name}}",
+    "auth_revoked": "Mã truy cập đã bị thu hồi. Hãy xác thực lại tài khoản này.",
+    "auth_expired": "Phiên đã hết hạn. Hãy xác thực lại tài khoản này.",
+    "auth_required": "Xác thực thất bại. Hãy cập nhật thông tin xác thực của tài khoản.",
+    "quota_rate_limited": "Truy vấn hạn mức bị giới hạn tần suất (429). Hãy thử lại sau.",
+    "account_retry": "Thời gian chờ của tài khoản kết thúc {{when}}.",
+    "quota_stale": "Đang hiển thị hạn mức gần nhất."
   }
 }

@@ -2499,7 +2499,8 @@
     "paused": "Приостановлен",
     "resets_left_one": "сбросов: {{count}}",
     "resets_left": "сбросов: {{count}}",
-    "failed_requests": "ошибок: {{count}}",
+    "failed_requests": "Всего неудачных запросов: {{count}}",
+    "failed_requests_one": "Всего неудачных запросов: {{count}}",
     "toggle_enabled": "Включить {{name}}",
     "refresh": "Обновить квоту",
     "models": "Модели",
@@ -2519,6 +2520,12 @@
     "dollar_window_iguana_necktie": "Кредит Fable 5",
     "dollar_window_additional_credit_balance": "Дополнительный кредит",
     "reauthenticate": "Войти заново",
-    "reauthenticate_account": "Войти заново: {{name}}"
+    "reauthenticate_account": "Войти заново: {{name}}",
+    "auth_revoked": "Токен доступа отозван. Войдите в этот аккаунт заново.",
+    "auth_expired": "Сессия истекла. Войдите в этот аккаунт заново.",
+    "auth_required": "Ошибка аутентификации. Обновите учётные данные аккаунта.",
+    "quota_rate_limited": "Слишком много запросов квоты (429). Повторите позже.",
+    "account_retry": "Ожидание для аккаунта закончится {{when}}.",
+    "quota_stale": "Показана последняя известная квота."
   }
 }

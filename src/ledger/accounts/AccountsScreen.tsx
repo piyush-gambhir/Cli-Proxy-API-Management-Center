@@ -46,6 +46,7 @@ import { useQuotaAutoLoad } from '@/ledger/useQuotaAutoLoad';
 import { AccountRow } from './AccountRow';
 import { AddAccountSheet, type AddAccountSheetHandle } from './AddAccountSheet';
 import { OAUTH_PROVIDERS } from '@/features/oauth/providers';
+import { accountHealth } from './accountHealth';
 import { reauthenticationProvider } from './reauthentication';
 import { CapacityTiles } from './CapacityTiles';
 import styles from './AccountsScreen.module.scss';
@@ -287,11 +288,14 @@ export function AccountsScreen() {
   const { enabledCount, attentionCount } = useMemo(
     () => ({
       enabledCount: rows.filter((row) => !isDisabledAuthFile(row.file)).length,
-      attentionCount: allEntries.filter(
-        (entry) => !isDisabledAuthFile(entry.file) && getQuota(entry)?.status === 'error'
-      ).length,
+      // A sign-in problem needs attention even when the provider has no quota lookup.
+      attentionCount: rows.filter((row) => {
+        if (isDisabledAuthFile(row.file)) return false;
+        const quota = row.entry ? getQuota(row.entry) : undefined;
+        return Boolean(accountHealth(row.file, quota).authentication) || quota?.status === 'error';
+      }).length,
     }),
-    [allEntries, getQuota, rows]
+    [getQuota, rows]
   );
 
   /* ---------- handlers ---------- */
@@ -303,6 +307,12 @@ export function AccountsScreen() {
   const reloadFiles = useCallback(() => {
     void loadFiles({ background: true });
   }, [loadFiles]);
+
+  // A new or reauthenticated credential can change models and quota, not just the file list.
+  const credentialsAdded = useCallback(() => {
+    invalidateDerivedCaches();
+    reloadFiles();
+  }, [invalidateDerivedCaches, reloadFiles]);
 
   const closeAddAccount = useCallback(() => {
     setAddOpen(false);
@@ -495,7 +505,7 @@ export function AccountsScreen() {
         disableControls={disableControls}
         onClose={closeAddAccount}
         onUpload={handleUploadClick}
-        onAdded={reloadFiles}
+        onAdded={credentialsAdded}
       />
     </div>
   );

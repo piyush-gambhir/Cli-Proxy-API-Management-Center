@@ -2531,7 +2531,8 @@
     "paused": "已暫停",
     "resets_left_one": "可重置 {{count}} 次",
     "resets_left": "可重置 {{count}} 次",
-    "failed_requests": "{{count}} 次失敗",
+    "failed_requests": "累計 {{count}} 次請求失敗",
+    "failed_requests_one": "累計 {{count}} 次請求失敗",
     "toggle_enabled": "啟用 {{name}}",
     "refresh": "重新整理額度",
     "models": "模型",
@@ -2551,6 +2552,12 @@
     "dollar_window_iguana_necktie": "Fable 5 額度",
     "dollar_window_additional_credit_balance": "額外額度",
     "reauthenticate": "重新驗證",
-    "reauthenticate_account": "重新驗證 {{name}}"
+    "reauthenticate_account": "重新驗證 {{name}}",
+    "auth_revoked": "存取權杖已撤銷。請重新驗證此帳號。",
+    "auth_expired": "工作階段已過期。請重新驗證此帳號。",
+    "auth_required": "驗證失敗。請更新此帳號的憑證。",
+    "quota_rate_limited": "配額查詢受到限流（429）。請稍後重試。",
+    "account_retry": "帳號冷卻期{{when}}結束。",
+    "quota_stale": "顯示上次取得的配額。"
   }
 }
