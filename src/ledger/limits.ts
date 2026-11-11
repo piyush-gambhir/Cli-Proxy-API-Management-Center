@@ -10,7 +10,12 @@
 import type { TFunction } from 'i18next';
 import type { QuotaProviderType } from '@/features/quota/providers/types';
 import { normalizePlanType } from '@/utils/quota/parsers';
-import { PREMIUM_CODEX_PLAN_TYPES } from '@/utils/quota/planTier';
+import {
+  BUSINESS_PREMIUM_CODEX_PLAN_TYPE,
+  PRO_CODEX_PLAN_TYPE,
+  PRO_LITE_CODEX_PLAN_TYPES,
+  PRO_MAX_CODEX_PLAN_TYPES,
+} from '@/utils/quota/planTier';
 
 export interface LedgerLimit {
   id: string;
@@ -244,18 +249,21 @@ export function accountFacts(
   const q = quota as Record<string, unknown>;
 
   if (provider === 'codex') {
+    // Same order as upstream's CodexQuotaBody plan label.
     const normalized = normalizePlanType(q.planType);
     const plan = !normalized
       ? null
-      : normalized === 'self_serve_business_prolite'
+      : normalized === BUSINESS_PREMIUM_CODEX_PLAN_TYPE
         ? t('codex_quota.plan_business_premium')
-        : normalized === 'pro'
-          ? t('codex_quota.plan_pro')
-          : PREMIUM_CODEX_PLAN_TYPES.has(normalized)
-            ? t('codex_quota.plan_prolite')
-            : ['plus', 'team', 'free'].includes(normalized)
-              ? t(`codex_quota.plan_${normalized}`)
-              : capitalize(String(q.planType ?? normalized));
+        : PRO_MAX_CODEX_PLAN_TYPES.has(normalized)
+          ? t('codex_quota.plan_promax')
+          : normalized === PRO_CODEX_PLAN_TYPE
+            ? t('codex_quota.plan_pro')
+            : PRO_LITE_CODEX_PLAN_TYPES.has(normalized)
+              ? t('codex_quota.plan_prolite')
+              : ['plus', 'team', 'free'].includes(normalized)
+                ? t(`codex_quota.plan_${normalized}`)
+                : capitalize(String(q.planType ?? normalized));
     const resets = q.rateLimitResetCreditsAvailableCount;
     return { plan, manualResets: typeof resets === 'number' ? resets : null };
   }

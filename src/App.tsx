@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Outlet, RouterProvider, createHashRouter } from 'react-router-dom';
 import { NotificationContainer } from '@/components/common/NotificationContainer';
 import { ConfirmationModal } from '@/components/common/ConfirmationModal';
+import { LoginRevealVeil } from '@/components/common/LoginRevealVeil';
 import { ClassicEntry, LoginEntry } from '@/ledger/LandingRoutes';
 import { LedgerLayout } from '@/ledger/LedgerLayout';
 import { ProtectedRoute } from '@/router/ProtectedRoute';
@@ -13,14 +14,31 @@ function RootShell() {
       <NotificationContainer />
       <ConfirmationModal />
       <Outlet />
+      <LoginRevealVeil />
     </>
   );
 }
+
+// DEV-only design previews: statically false in production builds, so the
+// branch and its dynamic import are dropped from the single-file bundle.
+const devPreviewRoutes = import.meta.env.DEV
+  ? [
+      {
+        path: '/__preview/quota-tiers',
+        HydrateFallback: () => null,
+        lazy: async () => {
+          const { QuotaTierPreview } = await import('@/features/quota/preview/QuotaTierPreview');
+          return { Component: QuotaTierPreview };
+        },
+      },
+    ]
+  : [];
 
 const router = createHashRouter([
   {
     element: <RootShell />,
     children: [
+      ...devPreviewRoutes,
       // Ledger fork: our screens live under /ledger with their own shell and are the landing after
       // login; upstream's login page and shell are wrapped only to route that landing.
       { path: '/login', element: <LoginEntry /> },
