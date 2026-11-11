@@ -1,0 +1,36 @@
+name: Fork
+
+# Fork only (see FORK.md): every file this fork changes relative to upstream must be documented.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  documented:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '26.13.1'
+
+      - name: Fetch upstream main
+        run: |
+          git remote add upstream https://github.com/router-for-me/Cli-Proxy-API-Management-Center.git
+          git fetch --no-tags upstream main
+
+      - name: Check FORK.md lists every difference from upstream
+        run: node scripts/fork/check-fork-diff.mjs upstream/main

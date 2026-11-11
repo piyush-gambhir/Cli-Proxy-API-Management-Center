@@ -34,6 +34,16 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '26.13.1'
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.4'
+
       - name: Merge upstream main
         id: merge
         run: |
@@ -46,11 +56,19 @@ jobs:
             echo "merged=false" >> "$GITHUB_OUTPUT"
           elif git merge --no-edit upstream/main; then
             echo "merged=true" >> "$GITHUB_OUTPUT"
+          elif node scripts/fork/resolve-sync-conflicts.mjs && [ -z "$(git diff --name-only --diff-filter=U)" ]; then
+            # Version and locale conflicts only (FORK.md, "How a sync resolves conflicts").
+            # Verify below decides whether this merge is pushed.
+            git commit --no-edit
+            echo "merged=true" >> "$GITHUB_OUTPUT"
           else
             git merge --abort
-            echo "::error::Upstream main ($(git rev-parse --short upstream/main)) conflicts with this fork. Merge it locally: git fetch upstream && git merge upstream/main, resolve, push."
+            echo "::error::Upstream main ($(git rev-parse --short upstream/main)) conflicts with this fork outside the files FORK.md resolves automatically. Merge it locally: git fetch upstream && git merge upstream/main, resolve, push."
             exit 1
           fi
+
+      - name: Check FORK.md lists every difference from upstream
+        run: node scripts/fork/check-fork-diff.mjs upstream/main --allow-stale
 
       - name: Decide whether to release
         id: plan
@@ -72,18 +90,6 @@ jobs:
           echo "release=true" >> "$GITHUB_OUTPUT"
           echo "tag=${base}-ledger.$(( ${n:-0} + 1 ))" >> "$GITHUB_OUTPUT"
           echo "previous=${last}" >> "$GITHUB_OUTPUT"
-
-      - name: Setup Node.js
-        if: steps.plan.outputs.release == 'true'
-        uses: actions/setup-node@v7
-        with:
-          node-version: '26.13.1'
-
-      - name: Setup Bun
-        if: steps.plan.outputs.release == 'true'
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: '1.4.4'
 
       - name: Verify
         if: steps.plan.outputs.release == 'true'
