@@ -1,0 +1,577 @@
+// Account settings sheet. Upstream's Sheet keeps its structure (overlay, focus trap, footer);
+// only what sits inside it is styled here. No borders: groups separate by surface and spacing.
+
+$field-height: 34px;
+$label-width: 168px;
+
+/* ---------- header ---------- */
+
+.sheet {
+  // Upstream's header gap and footer padding are sized for larger content; tighten them.
+  [class*='Sheet-module__header'] {
+    gap: 6px;
+    padding-bottom: 16px;
+  }
+
+  [class*='Sheet-module__footer'] {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background: var(--bg-primary);
+  }
+
+  [class*='Sheet-module__body'] {
+    padding-top: 8px;
+  }
+}
+
+.title {
+  display: block;
+  overflow: hidden;
+  color: var(--text-primary);
+  font-family: $font-mono;
+  font-size: 15px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subtitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-tertiary);
+  font-size: 12.5px;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+
+  img {
+    width: 13px;
+    height: 13px;
+    object-fit: contain;
+  }
+}
+
+/* ---------- body ---------- */
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+.alert {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--bg-error-light);
+  color: var(--error-color);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px 16px;
+  border-radius: 12px;
+  background: var(--bg-secondary);
+}
+
+.sectionTitle {
+  margin: 0 0 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+
+  label {
+    cursor: default;
+  }
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: $label-width minmax(0, 1fr);
+  align-items: start;
+  gap: 4px 16px;
+}
+
+.stacked {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+
+.rowHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.label {
+  // Centres single-line labels on the field beside them.
+  padding-top: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+
+  .stacked > &,
+  .rowHead > &,
+  .switchText > & {
+    padding-top: 0;
+  }
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.hint {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.error {
+  margin: 0;
+  color: var(--error-color);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.link {
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+/* ---------- controls ---------- */
+
+.input {
+  width: 100%;
+  min-width: 0;
+  height: $field-height;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  outline: none;
+  background: var(--field-bg);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 13px;
+  transition: background-color var(--dur-hover) var(--ease-out-strong);
+
+  &::placeholder {
+    color: var(--text-quaternary);
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--bg-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 1px;
+  }
+
+  &[aria-invalid='true'] {
+    outline: 1px solid var(--error-color);
+    outline-offset: -1px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  // Native number spinners are tiny and loud on a filled field; the keyboard arrows still work.
+  &[type='number'] {
+    appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      margin: 0;
+      appearance: none;
+    }
+  }
+}
+
+.short {
+  max-width: 160px;
+}
+
+.count {
+  width: 88px;
+}
+
+.mono {
+  font-family: $font-mono;
+  font-size: 12.5px;
+}
+
+.textarea {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.switchRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.switchText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.segments {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--field-bg);
+}
+
+.segment {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 6px;
+  color: var(--text-tertiary);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-hover) var(--ease-out-strong),
+    color var(--dur-hover) var(--ease-out-strong);
+
+  input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  &[data-checked='true'] {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+  }
+
+  &:has(input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &:has(input:focus-visible) {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 1px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .segment:not([data-checked='true']):hover {
+    color: var(--text-primary);
+  }
+}
+
+.unsupported {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+// Upstream editors carry their own form-group spacing; flatten it inside our rows.
+.editor,
+.upstreamField {
+  min-width: 0;
+
+  :global(.form-group) {
+    margin-bottom: 0;
+  }
+}
+
+// Upstream's picker sits on the page surface by default; in a section it reads as one of our
+// fields instead. Module class names are stable by config (vite.config.ts generateScopedName).
+.upstreamField {
+  [class*='ExcludedModelsPicker-module__trigger'] {
+    min-height: $field-height;
+    padding: 0 10px;
+    background: var(--field-bg);
+  }
+
+  [class*='ExcludedModelsPicker-module__ruleLabel'] {
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+
+  textarea {
+    min-height: 64px;
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  :global(.hint) {
+    margin-top: 0;
+    color: var(--text-tertiary);
+    font-size: 12px;
+  }
+}
+
+.upstreamField :global(.form-group) > label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.noteField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ---------- raw file ---------- */
+
+.raw {
+  margin-top: 4px;
+  border-radius: 12px;
+  background: var(--bg-secondary);
+}
+
+.rawSummary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  list-style: none;
+  cursor: pointer;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+  transform: rotate(-90deg);
+  transition: transform var(--dur-hover) var(--ease-out-strong);
+
+  .raw[open] & {
+    transform: none;
+  }
+}
+
+.rawTitle {
+  flex-shrink: 0;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fileName {
+  overflow: hidden;
+  margin-left: auto;
+  color: var(--text-tertiary);
+  font-family: $font-mono;
+  font-size: 11.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rawBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 16px 16px;
+}
+
+.reveal {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--dur-hover) var(--ease-out-strong);
+
+  &[aria-pressed='true'] {
+    color: var(--text-primary);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .reveal:hover {
+    background: var(--bg-hover);
+  }
+}
+
+.rawBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.rawLabel {
+  color: var(--text-tertiary);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.pre {
+  max-height: 260px;
+  margin: 0;
+  overflow: auto;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-family: $font-mono;
+  font-size: 11.5px;
+  line-height: 1.55;
+  white-space: pre;
+}
+
+/* ---------- footer ---------- */
+
+.footer {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.status,
+.statusError {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 12.5px;
+}
+
+.statusError {
+  color: var(--error-color);
+}
+
+.button {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+/* ---------- phone ---------- */
+
+@media (max-width: 600px) {
+  .section {
+    padding: 12px;
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .label {
+    padding-top: 0;
+  }
+
+  .short {
+    max-width: none;
+  }
+
+  .footer {
+    flex-wrap: wrap;
+  }
+
+  .status:empty,
+  .statusError:empty {
+    display: none;
+  }
+
+  .status,
+  .statusError {
+    flex-basis: 100%;
+  }
+
+  .button {
+    flex: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input,
+  .segment,
+  .chevron,
+  .reveal {
+    transition: none;
+  }
+}

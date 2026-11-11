@@ -24,12 +24,12 @@ and push (`.github/workflows/fork.yml`) and before every sync release.
 | `.github/workflows/security.yml` | fork only | CodeQL and the security gate. |
 | `.github/dependabot.yml` | fork only | Weekly updates for GitHub Actions and Bun dependencies. |
 | `.nvmrc` | fork only | Node version for local work. |
-| `src/ledger/**` | fork only | The Ledger shell, accounts screen, account health, limits model and theme. |
+| `src/ledger/**` | fork only | The Ledger shell (with upstream pages embedded under `/ledger`), accounts screen, account health, limits model and theme. |
 | `tests/accountHealth.test.ts` | fork only | Ledger tests. |
 | `tests/accountReauthentication.test.ts` | fork only | Ledger tests. |
 | `tests/ledger*.test.ts` | fork only | Ledger tests. |
 | `tests/quotaLedger.test.ts` | fork only | Ledger tests. |
-| `src/App.tsx` | modified | Mounts `/ledger/*` and wraps upstream's login page and shell (`src/ledger/LandingRoutes.tsx`), so the Ledger is the landing after login. Upstream's routes are otherwise unchanged. |
+| `src/App.tsx` | modified | Mounts `/ledger/*` and wraps upstream's login page and shell (`src/ledger/LandingRoutes.tsx`), so the Ledger is the landing after login. Also wraps the classic routes in `ClassicRedirect` (`src/ledger/classicRedirect.tsx`), so links from upstream pages embedded in the Ledger to classic paths open the Ledger equivalent. Upstream's routes are otherwise unchanged. |
 | `src/services/api/oauth.ts` | modified | `startAuth()` takes an optional target account and sends `target_auth_id`, so Reauthenticate refreshes an existing credential instead of adding a new one. |
 | `src/features/oauth/hooks/useOAuthFlows.ts` | modified | Passes that target through. |
 | `vite.config.ts` | modified | Dev server only: proxies `/v0`, `/v1` and `/v8` to a local CLIProxyAPI (`CPA_DEV_PROXY_TARGET`). No effect on the build. |

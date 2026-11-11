@@ -25,6 +25,8 @@ export interface LedgerLimit {
   /** Replaces the percent for amount-based limits (Claude dollar credit). */
   amount?: string;
   resetAtMs: number | null;
+  /** The provider refused requests in this window (proxy snapshot only). */
+  hardLimited?: boolean;
 }
 
 export interface LedgerFacts {
@@ -268,6 +270,8 @@ export function accountFacts(
     return { plan, manualResets: typeof resets === 'number' ? resets : null };
   }
   if (provider === 'claude' && typeof q.planType === 'string' && q.planType) {
+    // Anthropic renamed the $200 Max 20x plan to Ultra; upstream still says Max 20x.
+    if (q.planType === 'plan_max20') return { ...none, plan: String(t('ledger.plan_ultra')) };
     return { ...none, plan: String(t(`claude_quota.${q.planType}`, { defaultValue: q.planType })) };
   }
   if (provider === 'devin' && typeof q.plan === 'string') return { ...none, plan: q.plan };

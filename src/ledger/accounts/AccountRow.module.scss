@@ -1,11 +1,31 @@
 .row {
   display: grid;
-  grid-template-columns: minmax(180px, 250px) minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 12px 24px;
   padding: 14px 16px;
   border-radius: 12px;
   background: var(--bg-primary);
+}
+
+// A failed sign-in tints the whole row so it reads at a glance, even in a long list.
+.needsAuth {
+  background: color-mix(in srgb, var(--danger-color) 10%, var(--bg-primary));
+}
+
+.authAlert {
+  display: inline-flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-self: start;
+  gap: 8px;
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--danger-color) 18%, transparent);
+  color: var(--danger-color);
+  font-size: 12.5px;
+  font-weight: 600;
 }
 
 // A paused account is out of rotation, not gone: only its icon fades; numbers stay readable.
@@ -76,8 +96,9 @@
 
 .limits {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
-  gap: 10px 20px;
+  // Fixed-width cells keep limit columns aligned across rows and wide enough for full labels.
+  grid-template-columns: repeat(auto-fill, 164px);
+  gap: 10px 16px;
   min-width: 0;
 }
 
@@ -125,6 +146,10 @@
   border-radius: inherit;
   background: var(--text-tertiary);
   transition: width 400ms var(--ease-out-strong);
+}
+
+.limited {
+  color: var(--danger-color);
 }
 
 .high {
@@ -175,16 +200,43 @@
   gap: 2px;
 }
 
-// Secondary actions stay out of the way until the row is pointed at or focused.
-@media (hover: hover) and (pointer: fine) {
-  .more {
+// Icon actions explain themselves on hover or keyboard focus, on a solid fill.
+.iconButton[data-tip],
+.textButton[data-tip] {
+  position: relative;
+
+  &::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    z-index: 5;
+    padding: 6px 9px;
+    border-radius: 7px;
+    background: var(--text-primary);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+    color: var(--bg-primary);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: left;
+    // Keeps the reset list's line breaks but still wraps long translated hints.
+    width: max-content;
+    max-width: min(320px, 80vw);
+    white-space: pre-line;
     opacity: 0;
-    transition: opacity var(--dur-hover) var(--ease-out-strong);
+    pointer-events: none;
+    transform: translate(-50%, 3px);
+    transition:
+      opacity var(--dur-hover) var(--ease-out-strong),
+      transform var(--dur-hover) var(--ease-out-strong);
   }
 
-  .row:hover .more,
-  .row:focus-within .more {
+  &:hover::after,
+  &:focus-visible::after {
     opacity: 1;
+    transform: translate(-50%, 0);
+    transition-delay: 250ms;
   }
 }
 
@@ -237,6 +289,23 @@
 
   .textButton:hover:not(:disabled) {
     background: var(--bg-hover);
+  }
+}
+
+.count {
+  margin-left: 6px;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.reauthUrgent {
+  background: var(--danger-color);
+  color: #fff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .reauthUrgent:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--danger-color) 85%, #000);
   }
 }
 
@@ -320,7 +389,20 @@
     grid-column: 1 / -1;
     grid-row: 3;
     margin-left: -6px;
-    opacity: 1;
+  }
+
+  // Actions sit at the row's left edge here, so hints open rightwards instead of centred.
+  .iconButton[data-tip]::after,
+  .textButton[data-tip]::after {
+    left: 0;
+    transform: translateY(3px);
+  }
+
+  .iconButton[data-tip]:hover::after,
+  .iconButton[data-tip]:focus-visible::after,
+  .textButton[data-tip]:hover::after,
+  .textButton[data-tip]:focus-visible::after {
+    transform: none;
   }
 }
 
@@ -330,8 +412,8 @@
   }
 
   .fill,
-  .more,
   .iconButton,
+  .iconButton::after,
   .textButton,
   .switch,
   .knob {

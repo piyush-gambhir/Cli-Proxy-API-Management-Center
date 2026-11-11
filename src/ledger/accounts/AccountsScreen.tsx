@@ -21,7 +21,6 @@ import { copyToClipboard } from '@/utils/clipboard';
 import { getQuotaCacheKey } from '@/utils/quota/identity';
 import { isDisabledAuthFile } from '@/utils/quota/validators';
 import { invalidateAuthFileDerivedCaches } from '@/features/authFiles/cacheInvalidation';
-import { AuthFileDetailsSheet } from '@/features/authFiles/components/AuthFileDetailsSheet';
 import { AuthFileModelsModal } from '@/features/authFiles/components/AuthFileModelsModal';
 import {
   getTypeLabel,
@@ -43,12 +42,13 @@ import { useQuotaBatchLoader } from '@/features/quota/hooks/useQuotaBatchLoader'
 import { maskEmails } from '@/ledger/maskEmail';
 import { useLedgerUi } from '@/ledger/uiState';
 import { useQuotaAutoLoad } from '@/ledger/useQuotaAutoLoad';
+import { useSchedulerStatus } from '@/ledger/useSchedulerStatus';
 import { AccountRow } from './AccountRow';
+import { AccountSheet } from './AccountSheet';
 import { AddAccountSheet, type AddAccountSheetHandle } from './AddAccountSheet';
 import { OAUTH_PROVIDERS } from '@/features/oauth/providers';
 import { accountHealth } from './accountHealth';
 import { reauthenticationProvider } from './reauthentication';
-import { CapacityTiles } from './CapacityTiles';
 import styles from './AccountsScreen.module.scss';
 
 /** Search earns its space only once the list is long. */
@@ -248,17 +248,24 @@ export function AccountsScreen() {
         ),
     []
   );
-  // Paused accounts still load and show their quota; capacity counts only what is in rotation.
+  // Paused accounts still load and show their quota.
   const visibleEntries = useMemo(() => quotaEntries(visibleRows), [quotaEntries, visibleRows]);
-  const capacityEntries = useMemo(
-    () => quotaEntries(visibleRows, true),
-    [quotaEntries, visibleRows]
-  );
   const allEntries = useMemo(() => quotaEntries(rows), [quotaEntries, rows]);
 
+  // The proxy's poller already reads Claude and Codex usage on a rate-limited schedule. Paint those
+  // rows from its snapshot and never call Anthropic or OpenAI on load; only providers the poller
+  // does not cover (xAI and others) load directly, once per visit.
+  const scheduler = useSchedulerStatus(!disableControls);
+  const autoLoadEntries = useMemo(
+    () =>
+      visibleEntries.filter(
+        (entry) => !(scheduler.supported && (entry.type === 'claude' || entry.type === 'codex'))
+      ),
+    [visibleEntries, scheduler.supported]
+  );
   useQuotaAutoLoad(
-    visibleEntries,
-    disableControls || loading || batchLoading || Boolean(error),
+    autoLoadEntries,
+    disableControls || loading || batchLoading || Boolean(error) || !scheduler.loaded,
     loadQuota,
     getQuota
   );
@@ -300,9 +307,12 @@ export function AccountsScreen() {
 
   /* ---------- handlers ---------- */
 
+  // Re-reads the proxy's snapshot and the file list: no provider calls. A live provider read is
+  // per account (the row's refresh button), so one click can never fan out into rate limits.
   const refreshQuotaAll = useCallback(() => {
-    void loadQuota(visibleEntries);
-  }, [loadQuota, visibleEntries]);
+    void scheduler.reload();
+    void loadFiles({ background: true });
+  }, [scheduler, loadFiles]);
 
   const reloadFiles = useCallback(() => {
     void loadFiles({ background: true });
@@ -416,8 +426,6 @@ export function AccountsScreen() {
         </div>
       )}
 
-      <CapacityTiles entries={capacityEntries} quotaFor={getQuota} resolvedTheme={resolvedTheme} />
-
       {error && (
         <p className={styles.error} role="alert">
           {error}
@@ -445,6 +453,7 @@ export function AccountsScreen() {
                   file={row.file}
                   entry={row.entry}
                   quota={row.entry ? getQuota(row.entry) : undefined}
+                  scheduled={scheduler.status?.accounts[row.file.name]}
                   resolvedTheme={resolvedTheme}
                   showEmails={showEmails}
                   disableControls={disableControls}
@@ -487,7 +496,7 @@ export function AccountsScreen() {
         onCopyText={copyTextWithNotification}
       />
 
-      <AuthFileDetailsSheet
+      <AccountSheet
         disableControls={disableControls}
         editor={prefixProxyEditor}
         updatedText={prefixProxyUpdatedText}

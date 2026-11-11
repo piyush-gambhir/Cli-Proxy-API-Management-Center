@@ -8,42 +8,65 @@
 
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
+import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { ConfigPage } from '@/features/config/ConfigPage';
 import { LogsPage } from '@/features/logs/LogsPage';
+import { PluginResourcePage } from '@/features/plugins/PluginResourcePage';
 import { PluginsPage } from '@/features/plugins/PluginsPage';
-import { ProvidersWorkbenchPage } from '@/features/providers/ProvidersWorkbenchPage';
+import { PluginStorePage } from '@/features/plugins/PluginStorePage';
 import { SystemPage } from '@/pages/SystemPage';
-import { useAuthStore, useConfigStore, useThemeStore } from '@/stores';
+import { useAuthStore, useConfigStore, useLanguageStore, useThemeStore } from '@/stores';
 import type { Theme } from '@/types';
+import { LANGUAGE_LABEL_KEYS, LANGUAGE_ORDER } from '@/utils/constants';
+import { isSupportedLanguage } from '@/utils/language';
 import { AccountsScreen } from './accounts/AccountsScreen';
+import { setInLedger } from './classicRedirectState';
 import { setLanding } from './landingState';
+import { usePluginPageEntries } from './navPluginPages';
+import { ModelsRoutes, ProvidersRoute } from './routesModels';
 import { useMaskedNotifications } from './useMaskedNotifications';
 import styles from './LedgerLayout.module.scss';
 import './theme.scss';
 
 const NEXT_THEME: Record<Theme, Theme> = {
   auto: 'light',
-  light: 'dark',
+  light: 'white',
   white: 'dark',
   dark: 'auto',
 };
 
+interface NavItem {
+  to: string;
+  label: string;
+  end?: boolean;
+  /** Extra path prefixes that also mark this item active. */
+  also?: string[];
+  sub?: boolean;
+  title?: string;
+}
+
 export function LedgerLayout() {
   const { t } = useTranslation();
+  const { pathname } = useLocation();
   const theme = useThemeStore((state) => state.theme);
   const setTheme = useThemeStore((state) => state.setTheme);
+  const language = useLanguageStore((state) => state.language);
+  const setLanguage = useLanguageStore((state) => state.setLanguage);
   const logout = useAuthStore((state) => state.logout);
   const supportsPlugin = useAuthStore((state) => state.supportsPlugin);
   const fetchConfig = useConfigStore((state) => state.fetchConfig);
+  const pluginPages = usePluginPageEntries();
   useMaskedNotifications();
 
   useEffect(() => {
     // Reaching the ledger shell ends a landing, so the Classic link opens the original.
     setLanding(false);
+    // While the shell is open, links from embedded upstream pages to classic paths stay here.
+    setInLedger(true);
     const root = document.documentElement;
     root.dataset.ui = 'ledger';
     return () => {
+      setInLedger(false);
       delete root.dataset.ui;
     };
   }, []);
@@ -53,14 +76,31 @@ export function LedgerLayout() {
     fetchConfig().catch(() => {});
   }, [fetchConfig]);
 
-  const nav = [
+  const nav: NavItem[] = [
     { to: '/ledger', label: t('ledger.nav_accounts'), end: true },
-    { to: '/ledger/providers', label: t('ledger.nav_providers') },
+    { to: '/ledger/providers', label: t('ledger.nav_providers'), also: ['/ledger/models'] },
     { to: '/ledger/logs', label: t('ledger.nav_logs') },
     { to: '/ledger/config', label: t('ledger.nav_config') },
-    ...(supportsPlugin ? [{ to: '/ledger/plugins', label: t('ledger.nav_plugins') }] : []),
+    ...(supportsPlugin
+      ? [
+          {
+            to: '/ledger/plugins',
+            label: t('ledger.nav_plugins'),
+            also: ['/ledger/plugin-store'],
+          },
+          ...pluginPages.map((page) => ({
+            to: `/ledger${page.route}`,
+            label: page.label,
+            title: page.pluginTitle,
+            sub: true,
+          })),
+        ]
+      : []),
     { to: '/ledger/system', label: t('ledger.nav_system') },
   ];
+
+  const isAlsoActive = (item: NavItem) =>
+    item.also?.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)) ?? false;
 
   return (
     <div className={styles.shell}>
@@ -72,7 +112,12 @@ export function LedgerLayout() {
               key={item.to}
               to={item.to}
               end={item.end}
-              className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}
+              title={item.title}
+              className={({ isActive }) =>
+                `${styles.link} ${item.sub ? styles.sub : ''} ${
+                  isActive || isAlsoActive(item) ? styles.active : ''
+                }`
+              }
             >
               {item.label}
             </NavLink>
@@ -80,8 +125,23 @@ export function LedgerLayout() {
         </nav>
         <div className={styles.foot}>
           <button type="button" className={styles.link} onClick={() => setTheme(NEXT_THEME[theme])}>
-            {t(`ledger.theme_${theme === 'white' ? 'light' : theme}`)}
+            {t(`ledger.theme_${theme}`)}
           </button>
+          <select
+            className={`${styles.link} ${styles.select}`}
+            value={language}
+            aria-label={t('language.switch')}
+            onChange={(event) => {
+              if (isSupportedLanguage(event.target.value)) setLanguage(event.target.value);
+            }}
+          >
+            {LANGUAGE_ORDER.map((lang) => (
+              <option key={lang} value={lang}>
+                {t(LANGUAGE_LABEL_KEYS[lang])}
+              </option>
+            ))}
+          </select>
+          {/* `/` has no ledger mapping in classicRedirect, so this always opens the original. */}
           <NavLink to="/" className={styles.link}>
             {t('ledger.classic')}
           </NavLink>
@@ -94,10 +154,15 @@ export function LedgerLayout() {
       <main className={styles.main}>
         <Routes>
           <Route index element={<AccountsScreen />} />
-          <Route path="providers" element={<ProvidersWorkbenchPage />} />
+          <Route path="providers" element={<ProvidersRoute />} />
+          <Route path="models/*" element={<ModelsRoutes />} />
           <Route path="logs" element={<LogsPage />} />
           <Route path="config" element={<ConfigPage />} />
           {supportsPlugin && <Route path="plugins" element={<PluginsPage />} />}
+          {supportsPlugin && <Route path="plugin-store" element={<PluginStorePage />} />}
+          {supportsPlugin && (
+            <Route path="plugin-pages/:pluginId/:menuIndex" element={<PluginResourcePage />} />
+          )}
           <Route path="system" element={<SystemPage />} />
           <Route path="*" element={<Navigate to="/ledger" replace />} />
         </Routes>

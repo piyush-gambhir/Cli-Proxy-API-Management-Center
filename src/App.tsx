@@ -3,6 +3,7 @@ import { Outlet, RouterProvider, createHashRouter } from 'react-router-dom';
 import { NotificationContainer } from '@/components/common/NotificationContainer';
 import { ConfirmationModal } from '@/components/common/ConfirmationModal';
 import { LoginRevealVeil } from '@/components/common/LoginRevealVeil';
+import { ClassicRedirect } from '@/ledger/classicRedirect';
 import { ClassicEntry, LoginEntry } from '@/ledger/LandingRoutes';
 import { LedgerLayout } from '@/ledger/LedgerLayout';
 import { ProtectedRoute } from '@/router/ProtectedRoute';
@@ -54,7 +55,10 @@ const router = createHashRouter([
         path: '/*',
         element: (
           <ProtectedRoute>
-            <ClassicEntry />
+            {/* Links from upstream pages inside the ledger shell to classic paths stay there. */}
+            <ClassicRedirect>
+              <ClassicEntry />
+            </ClassicRedirect>
           </ProtectedRoute>
         ),
       },
