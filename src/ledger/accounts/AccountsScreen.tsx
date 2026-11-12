@@ -55,7 +55,6 @@ import { AccountSheet } from './AccountSheet';
 import { AddAccountSheet, type AddAccountSheetHandle } from './AddAccountSheet';
 import { OAUTH_PROVIDERS } from '@/features/oauth/providers';
 import { accountCooldown, accountHealth } from './accountHealth';
-import { MoreMenu } from './MoreMenu';
 import { reauthenticationProvider } from './reauthentication';
 import styles from './AccountsScreen.module.scss';
 
@@ -470,24 +469,24 @@ export function AccountsScreen() {
             <IconRefreshCw size={14} className={batchLoading ? styles.spinning : undefined} />
             {t('ledger.refresh_quota')}
           </button>
-          <MoreMenu
-            label={t('ledger.more_actions')}
-            disabled={disableControls}
-            items={[
-              {
-                label: t('ledger.refresh_signins'),
-                hint: t('ledger.refresh_signins_hint'),
-                busy: refreshingAllCredentials,
-                onSelect: handleRefreshAllCredentials,
-              },
-              {
-                label: t('ledger.sync_models'),
-                hint: t('ledger.sync_models_hint'),
-                busy: syncingModelCatalog,
-                onSelect: () => void syncModelCatalog(),
-              },
-            ]}
-          />
+          <button
+            type="button"
+            className={styles.secondaryAction}
+            onClick={handleRefreshAllCredentials}
+            disabled={disableControls || refreshingAllCredentials}
+            title={t('ledger.refresh_signins_hint')}
+          >
+            {t('ledger.refresh_signins')}
+          </button>
+          <button
+            type="button"
+            className={styles.secondaryAction}
+            onClick={() => void syncModelCatalog()}
+            disabled={disableControls || syncingModelCatalog}
+            title={t('ledger.sync_models_hint')}
+          >
+            {t('ledger.sync_models')}
+          </button>
           <button
             type="button"
             className={styles.primaryAction}

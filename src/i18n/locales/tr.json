@@ -2491,7 +2491,6 @@
     "cooldown_whole_account": "Tüm hesap",
     "clear_cooldown": "Temizle",
     "clear_cooldown_hint": "Proxy buraya hemen yeniden yönlendirir. Kotayı geri getirmez.",
-    "more_actions": "Diğer işlemler",
     "refresh_signins": "Oturumları yenile",
     "refresh_signins_hint": "Proxy üzerindeki tüm hesapların oturum belirteçlerini yeniler. Birkaç dakika sürer.",
     "sync_models": "Model kataloğunu eşitle",

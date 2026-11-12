@@ -2491,7 +2491,6 @@
     "cooldown_whole_account": "계정 전체",
     "clear_cooldown": "해제",
     "clear_cooldown_hint": "해제하면 프록시가 즉시 이 계정으로 다시 라우팅합니다. 할당량은 복구되지 않습니다.",
-    "more_actions": "추가 작업",
     "refresh_signins": "로그인 새로 고침",
     "refresh_signins_hint": "프록시에서 모든 계정의 로그인 토큰을 갱신합니다. 몇 분 걸립니다.",
     "sync_models": "모델 카탈로그 동기화",

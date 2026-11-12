@@ -2497,7 +2497,6 @@
     "cooldown_whole_account": "Toàn bộ tài khoản",
     "clear_cooldown": "Xóa",
     "clear_cooldown_hint": "Proxy sẽ định tuyến lại tới đây ngay. Không khôi phục hạn mức.",
-    "more_actions": "Thao tác khác",
     "refresh_signins": "Làm mới đăng nhập",
     "refresh_signins_hint": "Gia hạn token đăng nhập của mọi tài khoản trên proxy. Mất vài phút.",
     "sync_models": "Đồng bộ danh mục mô hình",

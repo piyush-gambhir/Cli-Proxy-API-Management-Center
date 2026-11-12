@@ -2518,7 +2518,6 @@
     "cooldown_whole_account": "整個帳號",
     "clear_cooldown": "清除",
     "clear_cooldown_hint": "清除後代理會立即重新路由到此帳號，不會恢復額度。",
-    "more_actions": "更多操作",
     "refresh_signins": "重新整理登入",
     "refresh_signins_hint": "在代理上續期所有帳號的登入權杖，需要幾分鐘。",
     "sync_models": "同步模型目錄",

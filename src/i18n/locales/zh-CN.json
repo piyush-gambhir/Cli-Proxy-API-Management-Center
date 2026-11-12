@@ -2490,7 +2490,6 @@
     "cooldown_whole_account": "整个账号",
     "clear_cooldown": "清除",
     "clear_cooldown_hint": "清除后代理会立即重新路由到此账号，不会恢复额度。",
-    "more_actions": "更多操作",
     "refresh_signins": "刷新登录",
     "refresh_signins_hint": "在代理上续期所有账号的登录令牌，需要几分钟。",
     "sync_models": "同步模型目录",
