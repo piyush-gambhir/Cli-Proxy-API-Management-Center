@@ -42,17 +42,19 @@ import { QUOTA_ADAPTERS, getQuotaSetter, type QuotaCardState } from '@/features/
 import type { QuotaProviderType } from '@/features/quota/providers/types';
 import { useQuotaActions } from '@/features/quota/hooks/useQuotaActions';
 import { useQuotaBatchLoader } from '@/features/quota/hooks/useQuotaBatchLoader';
+import { QuotaTimeline } from '@/features/quota/components/QuotaTimeline';
+import { getQuotaDisplayName } from '@/utils/quota/identity';
+import { schedulerQuotaState } from '@/ledger/scheduler';
 import { maskEmails } from '@/ledger/maskEmail';
 import { useLedgerUi } from '@/ledger/uiState';
 import { useQuotaAutoLoad } from '@/ledger/useQuotaAutoLoad';
 import { useSchedulerStatus } from '@/ledger/useSchedulerStatus';
-import { AccountTabs } from '@/ledger/routesModels';
+import { AccountTabs } from '@/ledger/sections';
 import { AccountRow } from './AccountRow';
 import { AccountSheet } from './AccountSheet';
 import { AddAccountSheet, type AddAccountSheetHandle } from './AddAccountSheet';
 import { OAUTH_PROVIDERS } from '@/features/oauth/providers';
 import { accountCooldown, accountHealth } from './accountHealth';
-import { MoreMenu } from './MoreMenu';
 import { reauthenticationProvider } from './reauthentication';
 import styles from './AccountsScreen.module.scss';
 
@@ -353,6 +355,34 @@ export function AccountsScreen() {
   const enabledCount = rows.length - filterCounts.paused;
   const attentionCount = filterCounts.attention;
 
+  /* ---------- usage windows chart (upstream's timeline) ---------- */
+
+  // A live read when this session has one, otherwise the proxy's snapshot in the same shape, so
+  // the chart never needs a provider call of its own.
+  const timelineQuota = useCallback(
+    (entry: QuotaFileEntry): QuotaCardState | undefined => {
+      const live = getQuota(entry);
+      if (live?.status === 'success') return live;
+      const snapshot = scheduler.status?.accounts[entry.file.name];
+      if (snapshot && (entry.type === 'claude' || entry.type === 'codex'))
+        return schedulerQuotaState(snapshot, t) as unknown as QuotaCardState;
+      return live;
+    },
+    [getQuota, scheduler.status, t]
+  );
+  const timelineNames = useMemo(() => {
+    const names = new Map<string, string>();
+    files.forEach((file) => {
+      const identity = file.email?.trim() || getQuotaDisplayName(file);
+      names.set(file.name, showEmails ? identity : maskEmails(identity));
+    });
+    return names;
+  }, [files, showEmails]);
+  const timelineName = useCallback(
+    (name: string) => timelineNames.get(name) ?? (showEmails ? name : maskEmails(name)),
+    [timelineNames, showEmails]
+  );
+
   /* ---------- handlers ---------- */
 
   // Re-reads the proxy's snapshot and the file list: no provider calls. A live provider read is
@@ -439,24 +469,24 @@ export function AccountsScreen() {
             <IconRefreshCw size={14} className={batchLoading ? styles.spinning : undefined} />
             {t('ledger.refresh_quota')}
           </button>
-          <MoreMenu
-            label={t('ledger.more_actions')}
-            disabled={disableControls}
-            items={[
-              {
-                label: t('ledger.refresh_signins'),
-                hint: t('ledger.refresh_signins_hint'),
-                busy: refreshingAllCredentials,
-                onSelect: handleRefreshAllCredentials,
-              },
-              {
-                label: t('ledger.sync_models'),
-                hint: t('ledger.sync_models_hint'),
-                busy: syncingModelCatalog,
-                onSelect: () => void syncModelCatalog(),
-              },
-            ]}
-          />
+          <button
+            type="button"
+            className={styles.secondaryAction}
+            onClick={handleRefreshAllCredentials}
+            disabled={disableControls || refreshingAllCredentials}
+            title={t('ledger.refresh_signins_hint')}
+          >
+            {t('ledger.refresh_signins')}
+          </button>
+          <button
+            type="button"
+            className={styles.secondaryAction}
+            onClick={() => void syncModelCatalog()}
+            disabled={disableControls || syncingModelCatalog}
+            title={t('ledger.sync_models_hint')}
+          >
+            {t('ledger.sync_models')}
+          </button>
           <button
             type="button"
             className={styles.primaryAction}
@@ -575,6 +605,15 @@ export function AccountsScreen() {
             );
           })}
         </div>
+      )}
+
+      {visibleEntries.length > 0 && (
+        <QuotaTimeline
+          entries={visibleEntries}
+          quotaFor={timelineQuota}
+          displayNameFor={timelineName}
+          resolvedTheme={resolvedTheme}
+        />
       )}
 
       <AuthFileModelsModal

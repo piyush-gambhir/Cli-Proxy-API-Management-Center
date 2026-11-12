@@ -95,35 +95,20 @@
   }
 }
 
-.tabs {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 20px;
-}
-
-.tab {
-  padding: 6px 12px;
-  border-radius: 8px;
-  color: var(--text-tertiary);
-  font-size: 13px;
-  text-decoration: none;
-  transition:
-    background-color var(--dur-hover) var(--ease-out-strong),
-    color var(--dur-hover) var(--ease-out-strong);
-}
-
-// Accounts and Routing: the tabs are the page title, the inactive one dimmed.
+// Section titles (sections.tsx): one title, or title-sized tabs with the inactive ones dimmed.
 .titleTabs {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 22px;
+  // Leaves room for page actions lifted into the title row (see .embedded).
+  padding-right: 240px;
 }
 
 .titleTab {
   color: var(--text-tertiary);
   font-size: 26px;
   font-weight: 650;
-  line-height: 1.15;
+  line-height: 34px;
   letter-spacing: -0.02em;
   text-decoration: none;
   transition: color var(--dur-hover) var(--ease-out-strong);
@@ -136,33 +121,84 @@
 }
 
 .titleTabActive {
+  margin: 0;
   color: var(--text-primary);
 }
 
-// The embedded routing board's own heading repeats the title tab above it.
-.routingHost [class*='RoutingPage-module__header'] {
-  display: none;
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.routingHost {
+// Same frame as Accounts: full width up to the same cap, title at the top, one gap below.
+.section {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 100%;
+  max-width: 1680px;
+  min-width: 0;
+  margin: 0 auto;
 }
 
-.tabActive {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  font-weight: 550;
+// Upstream screens embedded in a section: their own headings repeat the section title.
+.embedded {
+  min-width: 0;
+
+  h1,
+  // A header left empty without its heading would still take a gap.
+  header:has(> h1:only-child) {
+    display: none;
+  }
+
+  // System's hero logo and product name.
+  [class*='SystemPage-module__aboutHeader'] {
+    display: none;
+  }
+
+  // Page actions move up into the title row, so no row holds nothing but two buttons.
+  [class*='ProviderHeaderCard-module__actions'],
+  [class*='SecondaryScreenShell-module__topBar'] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  // Alias and excluded-model editors: no Back (the tabs navigate) and no centered title.
+  [class*='SecondaryScreenShell-module__backButton'],
+  [class*='SecondaryScreenShell-module__topBarTitle'] {
+    display: none;
+  }
+
+  // The providers workbench pads itself; the section already sets the page edge.
+  [class*='ProvidersWorkbenchPage-module__page'] {
+    padding: 0;
+  }
+
+  [class*='SecondaryScreenShell-module__content'] {
+    max-width: none;
+    margin: 0;
+    padding: 0 0 48px;
+  }
 }
 
+// The embedded routing board's own heading repeats the title tab above it.
 @media (hover: hover) and (pointer: fine) {
-  .titleTab:hover {
+  a.titleTab:hover {
     color: var(--text-secondary);
   }
 
-  .link:hover,
-  .tab:hover {
+  .link:hover {
     background: var(--bg-tertiary);
     color: var(--text-primary);
   }
@@ -219,8 +255,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .link,
-  .tab {
+  .link {
     transition: none;
   }
 }
