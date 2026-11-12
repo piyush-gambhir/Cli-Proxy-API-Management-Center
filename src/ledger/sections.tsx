@@ -5,11 +5,11 @@
  * different size and wording.
  *
  * Providers holds the provider-wide OAuth model alias and excluded model editors (classic reaches
- * them from Auth Files) at /ledger/models/*. Routing lives under Accounts (/ledger/routing): it
- * orders those same accounts.
+ * them from Auth Files) at /ledger/models/*. Routing lives under Accounts (/ledger/routing): our
+ * own per-provider view (routing/RoutingScreen.tsx) that orders those same accounts.
  */
 
-import { useRef, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import { ConfigPage } from '@/features/config/ConfigPage';
@@ -17,12 +17,10 @@ import { LogsPage } from '@/features/logs/LogsPage';
 import { PluginsPage } from '@/features/plugins/PluginsPage';
 import { PluginStorePage } from '@/features/plugins/PluginStorePage';
 import { ProvidersWorkbenchPage } from '@/features/providers/ProvidersWorkbenchPage';
-import { RoutingPage } from '@/features/routing/RoutingPage';
 import { AuthFilesOAuthExcludedEditPage } from '@/pages/AuthFilesOAuthExcludedEditPage';
 import { AuthFilesOAuthModelAliasEditPage } from '@/pages/AuthFilesOAuthModelAliasEditPage';
 import { SystemPage } from '@/pages/SystemPage';
-import { useLedgerUi } from './uiState';
-import { useMaskedSubtree } from './useMaskedSubtree';
+import { RoutingScreen } from './routing/RoutingScreen';
 import styles from './LedgerLayout.module.scss';
 
 type TitleTab = { to: string; label: string; end?: boolean };
@@ -45,16 +43,14 @@ export function TitleTabs({ label, tabs }: { label: string; tabs: TitleTab[] }) 
 function Section({
   title,
   tabs,
-  hostRef,
   children,
 }: {
   title: string;
   tabs?: TitleTab[];
-  hostRef?: React.Ref<HTMLDivElement>;
   children: ReactNode;
 }) {
   return (
-    <div className={styles.section} ref={hostRef}>
+    <div className={styles.section}>
       {tabs ? (
         <header>
           <h1 className={styles.srOnly}>{title}</h1>
@@ -84,13 +80,9 @@ export function AccountTabs() {
 
 export function RoutingRoute() {
   const { t } = useTranslation();
-  const hostRef = useRef<HTMLDivElement>(null);
-  // The routing board is upstream's and shows raw emails; follow the Accounts tab's eye toggle.
-  const showEmails = useLedgerUi((state) => state.showEmails);
-  useMaskedSubtree(hostRef, !showEmails);
   return (
-    <Section title={t('ledger.nav_routing')} tabs={useAccountTabs()} hostRef={hostRef}>
-      <RoutingPage />
+    <Section title={t('ledger.nav_routing')} tabs={useAccountTabs()}>
+      <RoutingScreen />
     </Section>
   );
 }
