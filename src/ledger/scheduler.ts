@@ -102,3 +102,38 @@ export function isMonthlyWindow(window: SchedulerWindow | undefined, observed: n
   const reset = isoMs(window?.reset_at);
   return reset !== null && observed !== null && reset - observed > 8 * DAY_MS;
 }
+
+const PERIOD_HOURS = { five_hour: 5, seven_day: 168, weekly: 168, fable: 168 } as const;
+const TIMELINE_IDS = {
+  five_hour: 'five-hour',
+  seven_day: 'seven-day',
+  weekly: 'weekly',
+  fable: 'fable',
+} as const;
+
+/**
+ * The snapshot in the shape upstream's quota timeline reads from a live Claude or Codex read
+ * (`windows` with percent used), so the chart draws without calling the provider. A Codex
+ * "weekly" slot proven monthly gets a 30-day period; hard-limited windows count as fully used.
+ */
+export function schedulerQuotaState(account: SchedulerAccount, t: TFunction, monthlyHint = false) {
+  const observed = schedulerObservedAt(account);
+  const windows = (Object.keys(PERIOD_HOURS) as Array<keyof typeof PERIOD_HOURS>).flatMap((key) => {
+    const window = account[key];
+    const resetAtMs = isoMs(window?.reset_at);
+    if (!window || !(window.known || window.hard_limited) || resetAtMs === null) return [];
+    const monthly =
+      (key === 'weekly' || key === 'seven_day') &&
+      (monthlyHint || isMonthlyWindow(window, observed));
+    return [
+      {
+        id: TIMELINE_IDS[key],
+        label: schedulerLimits({ provider: account.provider, [key]: window }, t, monthly)[0]?.label,
+        usedPercent: window.hard_limited ? 100 : window.used_percent,
+        resetAtMs,
+        periodHours: monthly ? 720 : PERIOD_HOURS[key],
+      },
+    ];
+  });
+  return { status: 'success' as const, windows };
+}

@@ -42,6 +42,9 @@ import { QUOTA_ADAPTERS, getQuotaSetter, type QuotaCardState } from '@/features/
 import type { QuotaProviderType } from '@/features/quota/providers/types';
 import { useQuotaActions } from '@/features/quota/hooks/useQuotaActions';
 import { useQuotaBatchLoader } from '@/features/quota/hooks/useQuotaBatchLoader';
+import { QuotaTimeline } from '@/features/quota/components/QuotaTimeline';
+import { getQuotaDisplayName } from '@/utils/quota/identity';
+import { schedulerQuotaState } from '@/ledger/scheduler';
 import { maskEmails } from '@/ledger/maskEmail';
 import { useLedgerUi } from '@/ledger/uiState';
 import { useQuotaAutoLoad } from '@/ledger/useQuotaAutoLoad';
@@ -353,6 +356,34 @@ export function AccountsScreen() {
   const enabledCount = rows.length - filterCounts.paused;
   const attentionCount = filterCounts.attention;
 
+  /* ---------- usage windows chart (upstream's timeline) ---------- */
+
+  // A live read when this session has one, otherwise the proxy's snapshot in the same shape, so
+  // the chart never needs a provider call of its own.
+  const timelineQuota = useCallback(
+    (entry: QuotaFileEntry): QuotaCardState | undefined => {
+      const live = getQuota(entry);
+      if (live?.status === 'success') return live;
+      const snapshot = scheduler.status?.accounts[entry.file.name];
+      if (snapshot && (entry.type === 'claude' || entry.type === 'codex'))
+        return schedulerQuotaState(snapshot, t) as unknown as QuotaCardState;
+      return live;
+    },
+    [getQuota, scheduler.status, t]
+  );
+  const timelineNames = useMemo(() => {
+    const names = new Map<string, string>();
+    files.forEach((file) => {
+      const identity = file.email?.trim() || getQuotaDisplayName(file);
+      names.set(file.name, showEmails ? identity : maskEmails(identity));
+    });
+    return names;
+  }, [files, showEmails]);
+  const timelineName = useCallback(
+    (name: string) => timelineNames.get(name) ?? (showEmails ? name : maskEmails(name)),
+    [timelineNames, showEmails]
+  );
+
   /* ---------- handlers ---------- */
 
   // Re-reads the proxy's snapshot and the file list: no provider calls. A live provider read is
@@ -575,6 +606,15 @@ export function AccountsScreen() {
             );
           })}
         </div>
+      )}
+
+      {visibleEntries.length > 0 && (
+        <QuotaTimeline
+          entries={visibleEntries}
+          quotaFor={timelineQuota}
+          displayNameFor={timelineName}
+          resolvedTheme={resolvedTheme}
+        />
       )}
 
       <AuthFileModelsModal
