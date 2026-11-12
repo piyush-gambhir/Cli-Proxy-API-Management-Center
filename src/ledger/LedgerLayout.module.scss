@@ -100,13 +100,15 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px 22px;
+  // Leaves room for page actions lifted into the title row (see .embedded).
+  padding-right: 240px;
 }
 
 .titleTab {
   color: var(--text-tertiary);
   font-size: 26px;
   font-weight: 650;
-  line-height: 1.15;
+  line-height: 34px;
   letter-spacing: -0.02em;
   text-decoration: none;
   transition: color var(--dur-hover) var(--ease-out-strong);
@@ -134,6 +136,7 @@
 
 // Same frame as Accounts: full width up to the same cap, title at the top, one gap below.
 .section {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -158,22 +161,34 @@
     display: none;
   }
 
-  // Alias and excluded-model editors: no Back (the tabs navigate) and no centered title.
+  // Page actions move up into the title row, so no row holds nothing but two buttons.
+  [class*='ProviderHeaderCard-module__actions'],
   [class*='SecondaryScreenShell-module__topBar'] {
-    position: static;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 8px;
     padding: 0;
     border: 0;
     background: none;
   }
 
+  // Alias and excluded-model editors: no Back (the tabs navigate) and no centered title.
   [class*='SecondaryScreenShell-module__backButton'],
   [class*='SecondaryScreenShell-module__topBarTitle'] {
-    visibility: hidden;
+    display: none;
+  }
+
+  // The providers workbench pads itself; the section already sets the page edge.
+  [class*='ProvidersWorkbenchPage-module__page'] {
+    padding: 0;
   }
 
   [class*='SecondaryScreenShell-module__content'] {
     max-width: none;
     margin: 0;
+    padding: 0 0 48px;
   }
 }
 
