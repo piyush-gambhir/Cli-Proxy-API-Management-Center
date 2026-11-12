@@ -1,0 +1,185 @@
+// Scoped to this modal; upstream's .modal header/body/footer keep their structure.
+.modal {
+  :global(.modal-body) {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 4px 24px 20px;
+  }
+}
+
+.intro {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.note,
+.message {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+.message {
+  color: var(--danger-color);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.option {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  cursor: pointer;
+  transition: background-color var(--dur-hover, 160ms) ease-out;
+
+  input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  &[data-checked='true'] {
+    background: var(--bg-tertiary);
+  }
+
+  &[data-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  // Informational rows (Codex credits) are not choices.
+  &[data-static='true'] {
+    cursor: default;
+  }
+
+  &:has(input:focus-visible) {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .option:not([data-disabled='true'], [data-static='true']):hover {
+    background: var(--bg-tertiary);
+  }
+}
+
+.dot {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--track-color);
+  transition: box-shadow var(--dur-hover, 160ms) ease-out;
+
+  .option[data-checked='true'] & {
+    background: var(--primary-contrast);
+    // Ring drawn as an inset fill so the dot needs no border.
+    box-shadow: inset 0 0 0 5px var(--primary-color) !important;
+  }
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.top,
+.meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kind {
+  color: var(--text-primary);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.left {
+  margin-left: 8px;
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.expiry {
+  flex-shrink: 0;
+  color: var(--text-primary);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  overflow: hidden;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.date {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hint {
+  margin-top: 3px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.footer {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+}
+
+.summary {
+  flex: 1;
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 12.5px;
+}
+
+@media (max-width: 600px) {
+  .meta {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .footer {
+    flex-wrap: wrap;
+  }
+
+  .summary {
+    flex-basis: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .option,
+  .dot {
+    transition: none;
+  }
+}

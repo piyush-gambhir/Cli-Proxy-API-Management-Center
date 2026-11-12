@@ -65,8 +65,104 @@
   font-weight: 550;
 }
 
+// Plugin resource pages, listed under Plugins.
+.sub {
+  padding-left: 22px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// The language picker reads as one more footer link.
+.select {
+  appearance: none;
+  width: 100%;
+  outline-offset: -2px;
+  color-scheme: light;
+}
+
+:global(html[data-theme='dark']) .select {
+  color-scheme: dark;
+}
+
+// Beats theme.scss's field fill, which reads as a selected item here.
+:global(html[data-ui='ledger']) .foot .select {
+  background-color: transparent;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .link:hover {
+  :global(html[data-ui='ledger']) .foot .select:hover {
+    background-color: var(--bg-tertiary);
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  text-decoration: none;
+  transition:
+    background-color var(--dur-hover) var(--ease-out-strong),
+    color var(--dur-hover) var(--ease-out-strong);
+}
+
+// Accounts and Routing: the tabs are the page title, the inactive one dimmed.
+.titleTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 22px;
+}
+
+.titleTab {
+  color: var(--text-tertiary);
+  font-size: 26px;
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  transition: color var(--dur-hover) var(--ease-out-strong);
+
+  &:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+.titleTabActive {
+  color: var(--text-primary);
+}
+
+// The embedded routing board's own heading repeats the title tab above it.
+.routingHost [class*='RoutingPage-module__header'] {
+  display: none;
+}
+
+.routingHost {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tabActive {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-weight: 550;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .titleTab:hover {
+    color: var(--text-secondary);
+  }
+
+  .link:hover,
+  .tab:hover {
     background: var(--bg-tertiary);
     color: var(--text-primary);
   }
@@ -74,7 +170,7 @@
 
 .main {
   min-width: 0;
-  padding: 36px 48px 72px;
+  padding: 36px 48px;
 }
 
 @media (max-width: 900px) {
@@ -112,10 +208,19 @@
   .main {
     padding: 16px 16px 56px;
   }
+
+  .select {
+    width: auto;
+  }
+
+  .sub {
+    padding-left: 10px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .link {
+  .link,
+  .tab {
     transition: none;
   }
 }

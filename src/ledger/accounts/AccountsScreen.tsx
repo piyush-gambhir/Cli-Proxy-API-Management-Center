@@ -15,14 +15,16 @@ import {
 } from '@/components/ui/icons';
 import { useHeaderRefresh } from '@/hooks/useHeaderRefresh';
 import { useInterval } from '@/hooks/useInterval';
+import { useNow } from '@/hooks/useNow';
 import { useAuthStore, useNotificationStore, useQuotaStore, useThemeStore } from '@/stores';
 import type { AuthFileItem, ResolvedTheme } from '@/types';
 import { copyToClipboard } from '@/utils/clipboard';
 import { getQuotaCacheKey } from '@/utils/quota/identity';
 import { isDisabledAuthFile } from '@/utils/quota/validators';
 import { invalidateAuthFileDerivedCaches } from '@/features/authFiles/cacheInvalidation';
-import { AuthFileDetailsSheet } from '@/features/authFiles/components/AuthFileDetailsSheet';
 import { AuthFileModelsModal } from '@/features/authFiles/components/AuthFileModelsModal';
+import { AuthFileRefreshResults } from '@/features/authFiles/components/AuthFileRefreshResults';
+import { useModelCatalogSync } from '@/features/authFiles/hooks/useModelCatalogSync';
 import {
   getTypeLabel,
   isRuntimeOnlyAuthFile,
@@ -43,16 +45,22 @@ import { useQuotaBatchLoader } from '@/features/quota/hooks/useQuotaBatchLoader'
 import { maskEmails } from '@/ledger/maskEmail';
 import { useLedgerUi } from '@/ledger/uiState';
 import { useQuotaAutoLoad } from '@/ledger/useQuotaAutoLoad';
+import { useSchedulerStatus } from '@/ledger/useSchedulerStatus';
+import { AccountTabs } from '@/ledger/routesModels';
 import { AccountRow } from './AccountRow';
+import { AccountSheet } from './AccountSheet';
 import { AddAccountSheet, type AddAccountSheetHandle } from './AddAccountSheet';
 import { OAUTH_PROVIDERS } from '@/features/oauth/providers';
-import { accountHealth } from './accountHealth';
+import { accountCooldown, accountHealth } from './accountHealth';
+import { MoreMenu } from './MoreMenu';
 import { reauthenticationProvider } from './reauthentication';
-import { CapacityTiles } from './CapacityTiles';
 import styles from './AccountsScreen.module.scss';
 
 /** Search earns its space only once the list is long. */
 const SEARCH_MIN_ACCOUNTS = 9;
+
+type AccountFilter = 'all' | 'attention' | 'cooling' | 'paused';
+const FILTERS: AccountFilter[] = ['all', 'attention', 'cooling', 'paused'];
 
 const providerKeyOf = (file: AuthFileItem) =>
   normalizeProviderKey(String(file.type ?? file.provider ?? ''));
@@ -79,6 +87,8 @@ export function AccountsScreen() {
   const toggleEmails = useLedgerUi((state) => state.toggleEmails);
 
   const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState<AccountFilter>('all');
+  const now = useNow();
   const [addOpen, setAddOpen] = useState(false);
   const accountSignIn = useRef<AddAccountSheetHandle>(null);
   const disableControls = connectionStatus !== 'connected';
@@ -116,7 +126,15 @@ export function AccountsScreen() {
     handleDelete,
     handleDownload,
     handleStatusToggle,
+    handleCooldownReset,
+    cooldownResetting,
+    handleRefreshAllCredentials,
+    refreshingAllCredentials,
+    refreshResults,
+    closeRefreshResults,
   } = useAuthFilesData({ onFilesMutated: invalidateDerivedCaches });
+
+  const { syncingModelCatalog, syncModelCatalog } = useModelCatalogSync(invalidateModels);
 
   // Only the excluded-model list is used here: the models dialog marks excluded models.
   const { excluded, loadExcluded } = useAuthFilesOauth({ viewMode: 'list', files });
@@ -223,10 +241,50 @@ export function AccountsScreen() {
     return counts;
   }, [rows]);
 
+  /* The status filters, and the header's attention count, read the same per-row flags. */
+  const flagsOf = useCallback(
+    (row: (typeof rows)[number]) => {
+      const paused = isDisabledAuthFile(row.file);
+      const quota = row.entry ? getQuota(row.entry) : undefined;
+      return {
+        paused,
+        // A sign-in problem needs attention even when the provider has no quota lookup.
+        attention:
+          !paused &&
+          (Boolean(accountHealth(row.file, quota).authentication) || quota?.status === 'error'),
+        cooling: accountCooldown(row.file, now) !== null,
+      };
+    },
+    [getQuota, now]
+  );
+  const filterCounts = useMemo(() => {
+    const counts: Record<AccountFilter, number> = {
+      all: rows.length,
+      attention: 0,
+      cooling: 0,
+      paused: 0,
+    };
+    rows.forEach((row) => {
+      const flags = flagsOf(row);
+      if (flags.attention) counts.attention += 1;
+      if (flags.cooling) counts.cooling += 1;
+      if (flags.paused) counts.paused += 1;
+    });
+    return counts;
+  }, [rows, flagsOf]);
+  // A filter that no longer matches anything falls back to everything, and stays there: a later
+  // match must not silently reapply a filter the screen no longer shows as selected.
+  const activeFilter = filterCounts[filter] > 0 ? filter : 'all';
+  useEffect(() => {
+    if (filter !== 'all' && filterCounts[filter] === 0) setFilter('all');
+  }, [filter, filterCounts]);
+  const shownFilters = FILTERS.filter((key) => key === 'all' || filterCounts[key] > 0);
+
   const wildcard = useMemo(() => buildWildcardSearch(search.trim()), [search]);
   const visibleRows = useMemo(
     () =>
       rows
+        .filter((row) => activeFilter === 'all' || flagsOf(row)[activeFilter])
         .filter((row) => matchesAuthFileSearch(row.file, search.trim(), wildcard))
         .sort(
           (a, b) =>
@@ -235,7 +293,7 @@ export function AccountsScreen() {
             Number(isDisabledAuthFile(a.file)) - Number(isDisabledAuthFile(b.file)) ||
             (a.file.email ?? a.file.name).localeCompare(b.file.email ?? b.file.name)
         ),
-    [rows, search, wildcard]
+    [rows, search, wildcard, activeFilter, flagsOf]
   );
 
   const quotaEntries = useCallback(
@@ -248,17 +306,24 @@ export function AccountsScreen() {
         ),
     []
   );
-  // Paused accounts still load and show their quota; capacity counts only what is in rotation.
+  // Paused accounts still load and show their quota.
   const visibleEntries = useMemo(() => quotaEntries(visibleRows), [quotaEntries, visibleRows]);
-  const capacityEntries = useMemo(
-    () => quotaEntries(visibleRows, true),
-    [quotaEntries, visibleRows]
-  );
   const allEntries = useMemo(() => quotaEntries(rows), [quotaEntries, rows]);
 
+  // The proxy's poller already reads Claude and Codex usage on a rate-limited schedule. Paint those
+  // rows from its snapshot and never call Anthropic or OpenAI on load; only providers the poller
+  // does not cover (xAI and others) load directly, once per visit.
+  const scheduler = useSchedulerStatus(!disableControls);
+  const autoLoadEntries = useMemo(
+    () =>
+      visibleEntries.filter(
+        (entry) => !(scheduler.supported && (entry.type === 'claude' || entry.type === 'codex'))
+      ),
+    [visibleEntries, scheduler.supported]
+  );
   useQuotaAutoLoad(
-    visibleEntries,
-    disableControls || loading || batchLoading || Boolean(error),
+    autoLoadEntries,
+    disableControls || loading || batchLoading || Boolean(error) || !scheduler.loaded,
     loadQuota,
     getQuota
   );
@@ -285,24 +350,17 @@ export function AccountsScreen() {
     });
   }, [files, allEntries]);
 
-  const { enabledCount, attentionCount } = useMemo(
-    () => ({
-      enabledCount: rows.filter((row) => !isDisabledAuthFile(row.file)).length,
-      // A sign-in problem needs attention even when the provider has no quota lookup.
-      attentionCount: rows.filter((row) => {
-        if (isDisabledAuthFile(row.file)) return false;
-        const quota = row.entry ? getQuota(row.entry) : undefined;
-        return Boolean(accountHealth(row.file, quota).authentication) || quota?.status === 'error';
-      }).length,
-    }),
-    [getQuota, rows]
-  );
+  const enabledCount = rows.length - filterCounts.paused;
+  const attentionCount = filterCounts.attention;
 
   /* ---------- handlers ---------- */
 
+  // Re-reads the proxy's snapshot and the file list: no provider calls. A live provider read is
+  // per account (the row's refresh button), so one click can never fan out into rate limits.
   const refreshQuotaAll = useCallback(() => {
-    void loadQuota(visibleEntries);
-  }, [loadQuota, visibleEntries]);
+    void scheduler.reload();
+    void loadFiles({ background: true });
+  }, [scheduler, loadFiles]);
 
   const reloadFiles = useCallback(() => {
     void loadFiles({ background: true });
@@ -347,7 +405,8 @@ export function AccountsScreen() {
 
       <header className={styles.header}>
         <div className={styles.copy}>
-          <h1 className={styles.title}>{t('ledger.accounts_title')}</h1>
+          <h1 className={styles.srOnly}>{t('ledger.accounts_title')}</h1>
+          <AccountTabs />
           <p className={styles.meta}>
             {t('ledger.meta_accounts', { count: rows.length })}
             {enabledCount < rows.length &&
@@ -380,6 +439,24 @@ export function AccountsScreen() {
             <IconRefreshCw size={14} className={batchLoading ? styles.spinning : undefined} />
             {t('ledger.refresh_quota')}
           </button>
+          <MoreMenu
+            label={t('ledger.more_actions')}
+            disabled={disableControls}
+            items={[
+              {
+                label: t('ledger.refresh_signins'),
+                hint: t('ledger.refresh_signins_hint'),
+                busy: refreshingAllCredentials,
+                onSelect: handleRefreshAllCredentials,
+              },
+              {
+                label: t('ledger.sync_models'),
+                hint: t('ledger.sync_models_hint'),
+                busy: syncingModelCatalog,
+                onSelect: () => void syncModelCatalog(),
+              },
+            ]}
+          />
           <button
             type="button"
             className={styles.primaryAction}
@@ -392,31 +469,49 @@ export function AccountsScreen() {
         </div>
       </header>
 
-      {rows.length >= SEARCH_MIN_ACCOUNTS && (
-        <div className={styles.search}>
-          <IconSearch size={15} className={styles.searchIcon} aria-hidden="true" />
-          <input
-            className={styles.searchInput}
-            type="search"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder={t('ledger.search_placeholder')}
-            aria-label={t('ledger.search_placeholder')}
-          />
-          {search && (
-            <button
-              type="button"
-              className={styles.clearSearch}
-              aria-label={t('ledger.clear_search')}
-              onClick={() => setSearch('')}
-            >
-              <IconX size={14} aria-hidden="true" />
-            </button>
+      {(rows.length >= SEARCH_MIN_ACCOUNTS || shownFilters.length > 1) && (
+        <div className={styles.toolbar}>
+          {shownFilters.length > 1 && (
+            <div className={styles.filters} role="group" aria-label={t('ledger.filter_label')}>
+              {shownFilters.map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  className={`${styles.filter} ${activeFilter === key ? styles.filterActive : ''}`}
+                  aria-pressed={activeFilter === key}
+                  onClick={() => setFilter(key)}
+                >
+                  {t(`ledger.filter_${key}`)}
+                  <span className={styles.filterCount}>{filterCounts[key]}</span>
+                </button>
+              ))}
+            </div>
+          )}
+          {rows.length >= SEARCH_MIN_ACCOUNTS && (
+            <div className={styles.search}>
+              <IconSearch size={15} className={styles.searchIcon} aria-hidden="true" />
+              <input
+                className={styles.searchInput}
+                type="search"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder={t('ledger.search_placeholder')}
+                aria-label={t('ledger.search_placeholder')}
+              />
+              {search && (
+                <button
+                  type="button"
+                  className={styles.clearSearch}
+                  aria-label={t('ledger.clear_search')}
+                  onClick={() => setSearch('')}
+                >
+                  <IconX size={14} aria-hidden="true" />
+                </button>
+              )}
+            </div>
           )}
         </div>
       )}
-
-      <CapacityTiles entries={capacityEntries} quotaFor={getQuota} resolvedTheme={resolvedTheme} />
 
       {error && (
         <p className={styles.error} role="alert">
@@ -426,7 +521,9 @@ export function AccountsScreen() {
 
       {visibleRows.length === 0 && !loading ? (
         <p className={styles.empty}>
-          {search.trim() ? t('ledger.search_empty') : t('ledger.empty_title')}
+          {search.trim() || activeFilter !== 'all'
+            ? t('ledger.search_empty')
+            : t('ledger.empty_title')}
         </p>
       ) : (
         <div className={styles.list}>
@@ -445,6 +542,7 @@ export function AccountsScreen() {
                   file={row.file}
                   entry={row.entry}
                   quota={row.entry ? getQuota(row.entry) : undefined}
+                  scheduled={scheduler.status?.accounts[row.file.name]}
                   resolvedTheme={resolvedTheme}
                   showEmails={showEmails}
                   disableControls={disableControls}
@@ -466,6 +564,10 @@ export function AccountsScreen() {
                       : undefined
                   }
                   onOpenSettings={() => openPrefixProxyEditor(row.file)}
+                  onClearCooldown={() => handleCooldownReset(row.file)}
+                  clearingCooldown={
+                    cooldownResetting[String(row.file.authIndex ?? '').trim()] === true
+                  }
                   onDownload={() => handleDownload(row.file.name)}
                   onDelete={() => handleDelete(row.file.name)}
                 />
@@ -487,7 +589,21 @@ export function AccountsScreen() {
         onCopyText={copyTextWithNotification}
       />
 
-      <AuthFileDetailsSheet
+      <AuthFileRefreshResults
+        results={
+          refreshResults &&
+          (showEmails
+            ? refreshResults
+            : refreshResults.map((result) => ({
+                ...result,
+                id: maskEmails(result.id),
+                error: result.error && maskEmails(result.error),
+              })))
+        }
+        onClose={closeRefreshResults}
+      />
+
+      <AccountSheet
         disableControls={disableControls}
         editor={prefixProxyEditor}
         updatedText={prefixProxyUpdatedText}
