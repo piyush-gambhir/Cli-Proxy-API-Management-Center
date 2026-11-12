@@ -39,7 +39,7 @@ import { hasClaudeUsageData } from '@/features/quota/providers/claude/data';
 import { accountFacts, accountLimits } from '@/ledger/limits';
 import { maskEmails } from '@/ledger/maskEmail';
 import { claudeResets, codexResets } from '@/ledger/resets';
-import { formatDate } from '@/ledger/time';
+import { formatDate, formatResetAt } from '@/ledger/time';
 import {
   isMonthlyWindow,
   schedulerLimits,
@@ -49,7 +49,8 @@ import {
 import { ResetChooser } from './ResetChooser';
 import { CodexResetConfirm } from './CodexResetConfirm';
 import { useCodexReset } from './useCodexReset';
-import { accountHealth, accountRetryAt } from './accountHealth';
+import { accountCooldown, accountHealth } from './accountHealth';
+import { cooldownReasonKey } from '@/features/authFiles/cooldowns';
 import styles from './AccountRow.module.scss';
 
 export type AccountRowProps = {
@@ -74,6 +75,9 @@ export type AccountRowProps = {
   onDownload: () => void;
   onDelete: () => void;
   onReauthenticate?: () => void;
+  /** Clears the proxy's routing cooldown (upstream confirms first). */
+  onClearCooldown?: () => void;
+  clearingCooldown?: boolean;
 };
 
 const toneOf = (remaining: number | null) =>
@@ -125,6 +129,8 @@ export function AccountRow(props: AccountRowProps) {
     onDownload,
     onDelete,
     onReauthenticate,
+    onClearCooldown,
+    clearingCooldown = false,
   } = props;
   const { t, i18n } = useTranslation();
   const now = useNow();
@@ -188,7 +194,18 @@ export function AccountRow(props: AccountRowProps) {
   }, [planKey, liveFacts.plan]);
   const facts = { ...liveFacts, plan: liveFacts.plan ?? readStored(planKey) };
   const health = accountHealth(file, quota);
-  const retryAt = accountRetryAt(file, now);
+  const cooldown = accountCooldown(file, now);
+  const cooldownHint = cooldown
+    ? [
+        ...cooldown.active.map(
+          (timer) =>
+            `${timer.modelKey ?? t('ledger.cooldown_whole_account')} · ${t(
+              cooldownReasonKey(timer.reason)
+            )} · ${formatResetAt(timer.until, now, i18n.language)}`
+        ),
+        t('ledger.clear_cooldown_hint'),
+      ].join('\n')
+    : undefined;
 
   // Reading grants is a second call to Anthropic's rate-limited usage endpoint. Read once per
   // visit, and again only after an explicit row refresh: the hook re-reads whenever its
@@ -368,7 +385,10 @@ export function AccountRow(props: AccountRowProps) {
             </span>
             {limit.resetAtMs !== null && limit.resetAtMs > now && (
               <span className={styles.reset}>
-                {formatRelativeInstant(limit.resetAtMs, now, i18n.language)}
+                <span>{formatRelativeInstant(limit.resetAtMs, now, i18n.language)}</span>
+                <span className={styles.resetAt}>
+                  {formatResetAt(limit.resetAtMs, now, i18n.language)}
+                </span>
               </span>
             )}
           </div>
@@ -403,11 +423,28 @@ export function AccountRow(props: AccountRowProps) {
             {error}
           </p>
         )}
-        {retryAt !== null && (
-          <p className={styles.error}>
-            {t('ledger.account_retry', {
-              when: formatRelativeInstant(retryAt, now, i18n.language),
-            })}
+        {cooldown && (
+          // The proxy has taken the account (or some models) out of rotation for a while.
+          <p className={cooldown.accountUntil !== null ? styles.error : styles.stale}>
+            {cooldown.accountUntil !== null
+              ? t('ledger.cooldown_account', {
+                  when: formatRelativeInstant(cooldown.accountUntil, now, i18n.language),
+                })
+              : t('ledger.cooldown_models', {
+                  count: cooldown.modelCount,
+                  when: formatRelativeInstant(cooldown.modelsUntil ?? now, now, i18n.language),
+                })}
+            {onClearCooldown && (
+              <button
+                type="button"
+                className={styles.inlineButton}
+                onClick={onClearCooldown}
+                disabled={disableControls || clearingCooldown}
+                data-tip={cooldownHint}
+              >
+                {t('ledger.clear_cooldown')}
+              </button>
+            )}
           </p>
         )}
         {(entry?.type === 'claude' || entry?.type === 'codex') &&

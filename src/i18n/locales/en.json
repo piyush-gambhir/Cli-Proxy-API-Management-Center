@@ -2478,6 +2478,23 @@
   "ledger": {
     "nav_label": "Navigation",
     "nav_accounts": "Accounts",
+    "nav_routing": "Routing",
+    "filter_label": "Filter accounts",
+    "filter_all": "All",
+    "filter_attention": "Needs attention",
+    "filter_cooling": "Cooling down",
+    "filter_paused": "Paused",
+    "cooldown_account": "Out of rotation after errors, back {{when}}",
+    "cooldown_models_one": "{{count}} model cooling down, back {{when}}",
+    "cooldown_models": "{{count}} models cooling down, first back {{when}}",
+    "cooldown_whole_account": "Whole account",
+    "clear_cooldown": "Clear",
+    "clear_cooldown_hint": "Clearing lets the proxy route here again now. It does not restore quota.",
+    "more_actions": "More actions",
+    "refresh_signins": "Refresh sign-ins",
+    "refresh_signins_hint": "Renew every account's sign-in token on the proxy. Takes a few minutes.",
+    "sync_models": "Sync model catalog",
+    "sync_models_hint": "Fetch the latest model list for every provider.",
     "nav_providers": "Providers",
     "nav_logs": "Logs",
     "nav_config": "Config",
@@ -2587,7 +2604,6 @@
     "auth_expired": "Session expired. Reauthenticate this account.",
     "auth_required": "Authentication failed. Update this account’s credentials.",
     "quota_rate_limited": "Quota check rate limited (429). Try again later.",
-    "account_retry": "Account cooldown ends {{when}}.",
     "quota_stale": "Showing last known quota."
   }
 }

@@ -23,7 +23,7 @@ import { AccountsScreen } from './accounts/AccountsScreen';
 import { setInLedger } from './classicRedirectState';
 import { setLanding } from './landingState';
 import { usePluginPageEntries } from './navPluginPages';
-import { ModelsRoutes, ProvidersRoute } from './routesModels';
+import { ModelsRoutes, ProvidersRoute, RoutingRoute } from './routesModels';
 import { useMaskedNotifications } from './useMaskedNotifications';
 import styles from './LedgerLayout.module.scss';
 import './theme.scss';
@@ -77,7 +77,7 @@ export function LedgerLayout() {
   }, [fetchConfig]);
 
   const nav: NavItem[] = [
-    { to: '/ledger', label: t('ledger.nav_accounts'), end: true },
+    { to: '/ledger', label: t('ledger.nav_accounts'), end: true, also: ['/ledger/routing'] },
     { to: '/ledger/providers', label: t('ledger.nav_providers'), also: ['/ledger/models'] },
     { to: '/ledger/logs', label: t('ledger.nav_logs') },
     { to: '/ledger/config', label: t('ledger.nav_config') },
@@ -154,6 +154,7 @@ export function LedgerLayout() {
       <main className={styles.main}>
         <Routes>
           <Route index element={<AccountsScreen />} />
+          <Route path="routing" element={<RoutingRoute />} />
           <Route path="providers" element={<ProvidersRoute />} />
           <Route path="models/*" element={<ModelsRoutes />} />
           <Route path="logs" element={<LogsPage />} />

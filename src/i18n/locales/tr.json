@@ -2478,6 +2478,23 @@
   "ledger": {
     "nav_label": "Gezinme",
     "nav_accounts": "Hesaplar",
+    "nav_routing": "Yönlendirme",
+    "filter_label": "Hesapları filtrele",
+    "filter_all": "Tümü",
+    "filter_attention": "İlgilenilmeli",
+    "filter_cooling": "Soğumada",
+    "filter_paused": "Duraklatıldı",
+    "cooldown_account": "Hatalar nedeniyle rotasyon dışı, {{when}} dönüyor",
+    "cooldown_models_one": "{{count}} model soğumada, {{when}} dönüyor",
+    "cooldown_models": "{{count}} model soğumada, ilki {{when}} dönüyor",
+    "cooldown_whole_account": "Tüm hesap",
+    "clear_cooldown": "Temizle",
+    "clear_cooldown_hint": "Proxy buraya hemen yeniden yönlendirir. Kotayı geri getirmez.",
+    "more_actions": "Diğer işlemler",
+    "refresh_signins": "Oturumları yenile",
+    "refresh_signins_hint": "Proxy üzerindeki tüm hesapların oturum belirteçlerini yeniler. Birkaç dakika sürer.",
+    "sync_models": "Model kataloğunu eşitle",
+    "sync_models_hint": "Tüm sağlayıcılar için en güncel model listesini getirir.",
     "nav_providers": "Sağlayıcılar",
     "nav_logs": "Günlükler",
     "nav_config": "Yapılandırma",
@@ -2587,7 +2604,6 @@
     "auth_expired": "Oturumun süresi doldu. Bu hesabın kimliğini yeniden doğrulayın.",
     "auth_required": "Kimlik doğrulama başarısız. Bu hesabın kimlik bilgilerini güncelleyin.",
     "quota_rate_limited": "Kota sorgusu hız sınırına takıldı (429). Daha sonra tekrar deneyin.",
-    "account_retry": "Hesap bekleme süresi {{when}} sona eriyor.",
     "quota_stale": "Bilinen son kota gösteriliyor."
   }
 }

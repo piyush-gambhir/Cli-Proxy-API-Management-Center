@@ -2505,6 +2505,23 @@
   "ledger": {
     "nav_label": "導覽",
     "nav_accounts": "帳號",
+    "nav_routing": "路由",
+    "filter_label": "篩選帳號",
+    "filter_all": "全部",
+    "filter_attention": "需要處理",
+    "filter_cooling": "冷卻中",
+    "filter_paused": "已暫停",
+    "cooldown_account": "因錯誤暫停輪換，{{when}}恢復",
+    "cooldown_models_one": "{{count}} 個模型冷卻中，{{when}}恢復",
+    "cooldown_models": "{{count}} 個模型冷卻中，最早{{when}}恢復",
+    "cooldown_whole_account": "整個帳號",
+    "clear_cooldown": "清除",
+    "clear_cooldown_hint": "清除後代理會立即重新路由到此帳號，不會恢復額度。",
+    "more_actions": "更多操作",
+    "refresh_signins": "重新整理登入",
+    "refresh_signins_hint": "在代理上續期所有帳號的登入權杖，需要幾分鐘。",
+    "sync_models": "同步模型目錄",
+    "sync_models_hint": "為所有供應商取得最新模型清單。",
     "nav_providers": "供應商",
     "nav_logs": "日誌",
     "nav_config": "設定",
@@ -2614,7 +2631,6 @@
     "auth_expired": "工作階段已過期。請重新驗證此帳號。",
     "auth_required": "驗證失敗。請更新此帳號的憑證。",
     "quota_rate_limited": "配額查詢受到限流（429）。請稍後重試。",
-    "account_retry": "帳號冷卻期{{when}}結束。",
     "quota_stale": "顯示上次取得的配額。"
   }
 }

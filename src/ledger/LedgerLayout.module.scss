@@ -112,6 +112,44 @@
     color var(--dur-hover) var(--ease-out-strong);
 }
 
+// Accounts and Routing: the tabs are the page title, the inactive one dimmed.
+.titleTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 22px;
+}
+
+.titleTab {
+  color: var(--text-tertiary);
+  font-size: 26px;
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  transition: color var(--dur-hover) var(--ease-out-strong);
+
+  &:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+.titleTabActive {
+  color: var(--text-primary);
+}
+
+// The embedded routing board's own heading repeats the title tab above it.
+.routingHost [class*='RoutingPage-module__header'] {
+  display: none;
+}
+
+.routingHost {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .tabActive {
   background: var(--bg-tertiary);
   color: var(--text-primary);
@@ -119,6 +157,10 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .titleTab:hover {
+    color: var(--text-secondary);
+  }
+
   .link:hover,
   .tab:hover {
     background: var(--bg-tertiary);

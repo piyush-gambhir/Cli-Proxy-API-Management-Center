@@ -2478,6 +2478,23 @@
   "ledger": {
     "nav_label": "탐색",
     "nav_accounts": "계정",
+    "nav_routing": "라우팅",
+    "filter_label": "계정 필터",
+    "filter_all": "전체",
+    "filter_attention": "확인 필요",
+    "filter_cooling": "쿨다운 중",
+    "filter_paused": "일시 중지됨",
+    "cooldown_account": "오류로 순환에서 제외됨, {{when}} 복귀",
+    "cooldown_models_one": "모델 {{count}}개 쿨다운 중, {{when}} 복귀",
+    "cooldown_models": "모델 {{count}}개 쿨다운 중, 가장 빠른 복귀 {{when}}",
+    "cooldown_whole_account": "계정 전체",
+    "clear_cooldown": "해제",
+    "clear_cooldown_hint": "해제하면 프록시가 즉시 이 계정으로 다시 라우팅합니다. 할당량은 복구되지 않습니다.",
+    "more_actions": "추가 작업",
+    "refresh_signins": "로그인 새로 고침",
+    "refresh_signins_hint": "프록시에서 모든 계정의 로그인 토큰을 갱신합니다. 몇 분 걸립니다.",
+    "sync_models": "모델 카탈로그 동기화",
+    "sync_models_hint": "모든 제공자의 최신 모델 목록을 가져옵니다.",
     "nav_providers": "제공자",
     "nav_logs": "로그",
     "nav_config": "설정",
@@ -2587,7 +2604,6 @@
     "auth_expired": "세션이 만료되었습니다. 이 계정을 다시 인증하세요.",
     "auth_required": "인증에 실패했습니다. 계정의 인증 정보를 갱신하세요.",
     "quota_rate_limited": "할당량 조회 요청이 제한되었습니다(429). 나중에 다시 시도하세요.",
-    "account_retry": "계정 대기 시간이 {{when}} 종료됩니다.",
     "quota_stale": "마지막으로 확인된 할당량을 표시합니다."
   }
 }

@@ -16,7 +16,7 @@ const CLASSIC_TO_LEDGER: Array<[string, string]> = [
   ['/dashboard', '/ledger'],
   ['/ai-providers', '/ledger/providers'],
   ['/quota', '/ledger'],
-  ['/routing', '/ledger'],
+  ['/routing', '/ledger/routing'],
   ['/plugin-store', '/ledger/plugin-store'],
   ['/plugin-pages', '/ledger/plugin-pages'],
   ['/plugins', '/ledger/plugins'],

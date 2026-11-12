@@ -25,17 +25,17 @@
 .copy {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   min-width: 0;
 }
 
-.title {
-  margin: 0;
-  color: var(--text-primary);
-  font-size: 26px;
-  font-weight: 650;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .meta {
@@ -119,9 +119,61 @@
 
 /* ---------- search ---------- */
 
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-tertiary);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-hover) var(--ease-out-strong),
+    color var(--dur-hover) var(--ease-out-strong);
+}
+
+.filterActive {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-weight: 550;
+}
+
+.filterCount {
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .filter:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+}
+
 .search {
   position: relative;
   display: flex;
+  flex: 1 1 240px;
   align-items: center;
   max-width: 340px;
   color: var(--text-tertiary);

@@ -3,7 +3,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import i18n from '@/i18n';
 import type { AuthFileItem } from '@/types';
-import { accountHealth, accountRetryAt } from '@/ledger/accounts/accountHealth';
+import { accountCooldown, accountHealth } from '@/ledger/accounts/accountHealth';
 import { AccountRow, type AccountRowProps } from '@/ledger/accounts/AccountRow';
 
 const claude: AuthFileItem = {
@@ -68,7 +68,7 @@ describe('account authentication and quota health', () => {
   });
 });
 
-describe('account retry time', () => {
+describe('account cooldown', () => {
   const now = 1_000_000;
   test('uses server remaining time anchored to receipt, independent of server clock skew', () => {
     const file = {
@@ -86,40 +86,49 @@ describe('account retry time', () => {
         ],
       },
     };
-    expect(accountRetryAt(file, now)).toBe(now + 50_000);
-    expect(accountRetryAt(file, now + 60_000)).toBeNull();
+    expect(accountCooldown(file, now)?.accountUntil).toBe(now + 50_000);
+    expect(accountCooldown(file, now + 60_000)).toBeNull();
   });
 
-  test('does not invent a retry time or reuse a model-specific or authentication cooldown', () => {
-    expect(accountRetryAt(claude, now)).toBeNull();
-    expect(
-      accountRetryAt(
-        {
-          ...claude,
-          cooldownSnapshot: {
-            receivedAtMs: now,
-            records: [
-              {
-                scope: 'model',
-                modelKey: 'claude-opus',
-                reason: 'quota',
-                httpStatus: 429,
-                retryAt: '2030-01-01T00:00:00Z',
-                remainingSeconds: 60,
-              },
-              {
-                scope: 'credential',
-                reason: 'unauthorized',
-                httpStatus: 401,
-                retryAt: '2030-01-01T00:00:00Z',
-                remainingSeconds: 60,
-              },
-            ],
-          },
+  test('counts model cooldowns apart from the account and skips sign-in cooldowns', () => {
+    expect(accountCooldown(claude, now)).toBeNull();
+    const cooldown = accountCooldown(
+      {
+        ...claude,
+        cooldownSnapshot: {
+          receivedAtMs: now,
+          records: [
+            {
+              scope: 'model',
+              modelKey: 'claude-opus',
+              reason: 'quota',
+              httpStatus: 429,
+              retryAt: '2030-01-01T00:00:00Z',
+              remainingSeconds: 60,
+            },
+            {
+              scope: 'model',
+              modelKey: 'claude-opus',
+              reason: 'transient_error',
+              retryAt: '2030-01-01T00:00:00Z',
+              remainingSeconds: 30,
+            },
+            {
+              scope: 'credential',
+              reason: 'unauthorized',
+              httpStatus: 401,
+              retryAt: '2030-01-01T00:00:00Z',
+              remainingSeconds: 600,
+            },
+          ],
         },
-        now
-      )
-    ).toBeNull();
+      },
+      now
+    );
+    expect(cooldown?.accountUntil).toBeNull();
+    expect(cooldown?.modelCount).toBe(1);
+    expect(cooldown?.modelsUntil).toBe(now + 30_000);
+    expect(cooldown?.active).toHaveLength(2);
   });
 });
 

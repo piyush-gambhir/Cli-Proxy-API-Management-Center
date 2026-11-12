@@ -2477,6 +2477,23 @@
   "ledger": {
     "nav_label": "导航",
     "nav_accounts": "账号",
+    "nav_routing": "路由",
+    "filter_label": "筛选账号",
+    "filter_all": "全部",
+    "filter_attention": "需要处理",
+    "filter_cooling": "冷却中",
+    "filter_paused": "已暂停",
+    "cooldown_account": "因错误暂停轮换，{{when}}恢复",
+    "cooldown_models_one": "{{count}} 个模型冷却中，{{when}}恢复",
+    "cooldown_models": "{{count}} 个模型冷却中，最早{{when}}恢复",
+    "cooldown_whole_account": "整个账号",
+    "clear_cooldown": "清除",
+    "clear_cooldown_hint": "清除后代理会立即重新路由到此账号，不会恢复额度。",
+    "more_actions": "更多操作",
+    "refresh_signins": "刷新登录",
+    "refresh_signins_hint": "在代理上续期所有账号的登录令牌，需要几分钟。",
+    "sync_models": "同步模型目录",
+    "sync_models_hint": "为所有提供商获取最新模型列表。",
     "nav_providers": "提供商",
     "nav_logs": "日志",
     "nav_config": "配置",
@@ -2586,7 +2603,6 @@
     "auth_expired": "会话已过期。请重新认证此账号。",
     "auth_required": "认证失败。请更新此账号的凭据。",
     "quota_rate_limited": "配额查询受到限流（429）。请稍后重试。",
-    "account_retry": "账号冷却期{{when}}结束。",
     "quota_stale": "显示上次获取的配额。"
   }
 }

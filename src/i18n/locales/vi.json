@@ -2484,6 +2484,23 @@
   "ledger": {
     "nav_label": "Điều hướng",
     "nav_accounts": "Tài khoản",
+    "nav_routing": "Định tuyến",
+    "filter_label": "Lọc tài khoản",
+    "filter_all": "Tất cả",
+    "filter_attention": "Cần xử lý",
+    "filter_cooling": "Đang tạm nghỉ",
+    "filter_paused": "Đã tạm dừng",
+    "cooldown_account": "Tạm rời luân phiên do lỗi, quay lại {{when}}",
+    "cooldown_models_one": "{{count}} mô hình đang tạm nghỉ, quay lại {{when}}",
+    "cooldown_models": "{{count}} mô hình đang tạm nghỉ, sớm nhất quay lại {{when}}",
+    "cooldown_whole_account": "Toàn bộ tài khoản",
+    "clear_cooldown": "Xóa",
+    "clear_cooldown_hint": "Proxy sẽ định tuyến lại tới đây ngay. Không khôi phục hạn mức.",
+    "more_actions": "Thao tác khác",
+    "refresh_signins": "Làm mới đăng nhập",
+    "refresh_signins_hint": "Gia hạn token đăng nhập của mọi tài khoản trên proxy. Mất vài phút.",
+    "sync_models": "Đồng bộ danh mục mô hình",
+    "sync_models_hint": "Tải danh sách mô hình mới nhất cho mọi nhà cung cấp.",
     "nav_providers": "Nhà cung cấp",
     "nav_logs": "Nhật ký",
     "nav_config": "Cấu hình",
@@ -2593,7 +2610,6 @@
     "auth_expired": "Phiên đã hết hạn. Hãy xác thực lại tài khoản này.",
     "auth_required": "Xác thực thất bại. Hãy cập nhật thông tin xác thực của tài khoản.",
     "quota_rate_limited": "Truy vấn hạn mức bị giới hạn tần suất (429). Hãy thử lại sau.",
-    "account_retry": "Thời gian chờ của tài khoản kết thúc {{when}}.",
     "quota_stale": "Đang hiển thị hạn mức gần nhất."
   }
 }
