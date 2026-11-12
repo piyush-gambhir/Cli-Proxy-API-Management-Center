@@ -46,7 +46,7 @@ import { maskEmails } from '@/ledger/maskEmail';
 import { useLedgerUi } from '@/ledger/uiState';
 import { useQuotaAutoLoad } from '@/ledger/useQuotaAutoLoad';
 import { useSchedulerStatus } from '@/ledger/useSchedulerStatus';
-import { AccountTabs } from '@/ledger/routesModels';
+import { AccountTabs } from '@/ledger/sections';
 import { AccountRow } from './AccountRow';
 import { AccountSheet } from './AccountSheet';
 import { AddAccountSheet, type AddAccountSheetHandle } from './AddAccountSheet';

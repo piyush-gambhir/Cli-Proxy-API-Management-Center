@@ -2479,6 +2479,7 @@
     "nav_label": "Navigation",
     "nav_accounts": "Accounts",
     "nav_routing": "Routing",
+    "nav_plugin_store": "Plugin store",
     "filter_label": "Filter accounts",
     "filter_all": "All",
     "filter_attention": "Needs attention",

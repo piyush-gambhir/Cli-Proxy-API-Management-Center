@@ -9,12 +9,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
-import { ConfigPage } from '@/features/config/ConfigPage';
-import { LogsPage } from '@/features/logs/LogsPage';
 import { PluginResourcePage } from '@/features/plugins/PluginResourcePage';
-import { PluginsPage } from '@/features/plugins/PluginsPage';
-import { PluginStorePage } from '@/features/plugins/PluginStorePage';
-import { SystemPage } from '@/pages/SystemPage';
 import { useAuthStore, useConfigStore, useLanguageStore, useThemeStore } from '@/stores';
 import type { Theme } from '@/types';
 import { LANGUAGE_LABEL_KEYS, LANGUAGE_ORDER } from '@/utils/constants';
@@ -23,7 +18,16 @@ import { AccountsScreen } from './accounts/AccountsScreen';
 import { setInLedger } from './classicRedirectState';
 import { setLanding } from './landingState';
 import { usePluginPageEntries } from './navPluginPages';
-import { ModelsRoutes, ProvidersRoute, RoutingRoute } from './routesModels';
+import {
+  ConfigRoute,
+  LogsRoute,
+  ModelsRoutes,
+  PluginStoreRoute,
+  PluginsRoute,
+  ProvidersRoute,
+  RoutingRoute,
+  SystemRoute,
+} from './sections';
 import { useMaskedNotifications } from './useMaskedNotifications';
 import styles from './LedgerLayout.module.scss';
 import './theme.scss';
@@ -157,14 +161,14 @@ export function LedgerLayout() {
           <Route path="routing" element={<RoutingRoute />} />
           <Route path="providers" element={<ProvidersRoute />} />
           <Route path="models/*" element={<ModelsRoutes />} />
-          <Route path="logs" element={<LogsPage />} />
-          <Route path="config" element={<ConfigPage />} />
-          {supportsPlugin && <Route path="plugins" element={<PluginsPage />} />}
-          {supportsPlugin && <Route path="plugin-store" element={<PluginStorePage />} />}
+          <Route path="logs" element={<LogsRoute />} />
+          <Route path="config" element={<ConfigRoute />} />
+          {supportsPlugin && <Route path="plugins" element={<PluginsRoute />} />}
+          {supportsPlugin && <Route path="plugin-store" element={<PluginStoreRoute />} />}
           {supportsPlugin && (
             <Route path="plugin-pages/:pluginId/:menuIndex" element={<PluginResourcePage />} />
           )}
-          <Route path="system" element={<SystemPage />} />
+          <Route path="system" element={<SystemRoute />} />
           <Route path="*" element={<Navigate to="/ledger" replace />} />
         </Routes>
       </main>
