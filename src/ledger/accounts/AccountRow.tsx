@@ -102,13 +102,25 @@ const readStored = (key: string) => {
     return null;
   }
 };
-const writeStored = (key: string, plan: string) => {
+const writeStored = (key: string, value: string) => {
   try {
-    localStorage.setItem(key, plan);
+    localStorage.setItem(key, value);
   } catch {
-    // Storage blocked: the plan just stays hidden until the next live read.
+    // Storage blocked: the flag is re-learned from the next snapshot.
   }
 };
+
+/** Plan labels seen this session, by credential file name (kept in memory only). */
+const sessionPlans = new Map<string, string>();
+
+// Earlier builds cached plan labels in localStorage; remove what they left behind.
+try {
+  Object.keys(localStorage)
+    .filter((key) => key.startsWith('ledger.plan.'))
+    .forEach((key) => localStorage.removeItem(key));
+} catch {
+  // Storage unavailable (tests, blocked site data): nothing to clean.
+}
 
 export function AccountRow(props: AccountRowProps) {
   const {
@@ -186,13 +198,22 @@ export function AccountRow(props: AccountRowProps) {
   const liveFacts = entry
     ? accountFacts(entry.type, readable, t)
     : { plan: null, manualResets: null };
-  // The plan comes from profile/subscription reads that no longer run on load, so the last one
-  // seen is remembered on this device (plan label only, under a hashed key).
-  const planKey = `ledger.plan.${hashName(file.name)}`;
-  useEffect(() => {
-    if (liveFacts.plan) writeStored(planKey, liveFacts.plan);
-  }, [planKey, liveFacts.plan]);
-  const facts = { ...liveFacts, plan: liveFacts.plan ?? readStored(planKey) };
+  // The plan comes from profile/subscription reads that no longer run on load. A live read wins,
+  // then the last one seen this session, then the proxy snapshot's plan. Never persisted: it is
+  // billing data and stays out of browser storage.
+  if (liveFacts.plan) sessionPlans.set(file.name, liveFacts.plan);
+  const snapshotPlan =
+    entry && scheduled?.plan
+      ? accountFacts(
+          entry.type,
+          { status: 'success', planType: scheduled.plan } as QuotaCardState,
+          t
+        ).plan
+      : null;
+  const facts = {
+    ...liveFacts,
+    plan: liveFacts.plan ?? sessionPlans.get(file.name) ?? snapshotPlan,
+  };
   const health = accountHealth(file, quota);
   const cooldown = accountCooldown(file, now);
   const cooldownHint = cooldown
