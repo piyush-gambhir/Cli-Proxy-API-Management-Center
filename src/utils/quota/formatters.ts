@@ -1,6 +1,6 @@
-/**
- * Formatting functions for quota display.
- */
+
+
+
 
 import type { TFunction } from 'i18next';
 import type { CodexUsageWindow } from '@/types';

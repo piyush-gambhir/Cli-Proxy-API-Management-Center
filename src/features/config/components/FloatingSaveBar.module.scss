@@ -1,6 +1,6 @@
 @use '../../../styles/mixins' as *;
 
-/* 悬浮保存栏：底部居中的玻璃工具栏（--content-center-x 对齐内容列中心） */
+
 
 .container {
   position: fixed;
@@ -28,7 +28,7 @@
   box-shadow: var(--shadow-lg);
 }
 
-/* 状态文案：mono 遥测 */
+
 .status {
   font-family: $font-mono;
   font-size: 12px;
@@ -63,7 +63,7 @@
   flex-shrink: 0;
 }
 
-/* 保存：墨色药丸主按钮 */
+
 .savePill {
   display: inline-flex;
   align-items: center;
@@ -105,7 +105,7 @@
   }
 }
 
-/* 放弃更改：安静的文字链接 */
+
 .ghostAction {
   display: inline-flex;
   align-items: center;

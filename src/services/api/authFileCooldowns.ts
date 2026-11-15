@@ -55,7 +55,7 @@ export function normalizeAuthFileCooldowns(
   const snapshot = { observedAt, receivedAtMs };
   if (!Array.isArray(value)) return { ...snapshot, records: null };
   const records = value.map(normalizeRecord);
-  // A malformed/future scope must not silently turn a restriction into "no timers".
+
   if (records.some((record) => record === null)) return { ...snapshot, records: null };
   return { ...snapshot, records: records as AuthFileCooldown[] };
 }

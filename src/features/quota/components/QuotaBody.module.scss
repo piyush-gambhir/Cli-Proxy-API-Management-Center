@@ -1,16 +1,16 @@
 @use '../../../styles/mixins' as *;
 
-/* ============================================================
- * 额度卡片 body 的全页外衣（类型化契约见 features/quota/types.ts）。
- *
- * 两段构成：
- * 1. 额度行 / 水位条 / Antigravity 分组 —— mono 遥测风，与紧凑外衣同族；
- * 2. 套餐徽章区（.codexPlan* 起至文件末尾）—— 定稿资产：premium = 金卡，
- *    flagship = 和田玉金镶玉（2026-11-01 起替代液态铂金）；含暗色 / HDR /
- *    减动效冻结帧 / 移动端降级。**改配方等于重设计已验收的徽章**，须先确认。
- * ============================================================ */
 
-/* ---------- 额度行 ---------- */
+
+
+
+
+
+
+
+
+
+
 
 .quotaRow {
   display: flex;
@@ -35,7 +35,7 @@
   @include text-ellipsis;
 }
 
-/* The extra-usage state describes this label, not the credential. */
+
 .claudeExtraUsageTitle {
   display: inline-flex;
   align-items: baseline;
@@ -43,7 +43,7 @@
   gap: 4px 8px;
   min-width: 0;
 
-  // Override the mobile label width so the state can stay alongside it.
+
   .quotaModel {
     width: auto;
   }
@@ -62,7 +62,7 @@
   white-space: nowrap;
 }
 
-/* 遥测：mono + 等宽数字，刷新时数字不跳位 */
+
 .quotaMeta {
   display: inline-flex;
   align-items: baseline;
@@ -74,7 +74,7 @@
   letter-spacing: 0.01em;
 }
 
-/* 百分比穿墨色而非填充色 —— 文字不承担状态编码，颜色留给水位条 */
+
 .quotaPercent {
   font-weight: 650;
   color: var(--text-primary);
@@ -84,9 +84,9 @@
   color: var(--text-quaternary);
 }
 
-/* Countdown beside the absolute reset time. The separator is a pseudo-element
-   so the two spans stay independently styleable (the relative half turns
-   warning-coloured when this is the row that recovers first). */
+
+
+
 .quotaResetRelative {
   color: var(--text-tertiary);
 
@@ -119,9 +119,9 @@
   padding: 6px 4px;
 }
 
-/* ---------- 水位条（QuotaMeter）----------
- * 轨道退居背景（8% 墨色），填充按剩余量三档着色；
- * percent === null 时宽度为 0 —— 未知不着色。 */
+
+
+
 
 .quotaBar {
   height: 6px;
@@ -133,10 +133,10 @@
 .quotaBarFill {
   height: 100%;
   border-radius: $radius-full;
-  /* 刷新时平滑重定向到新水位（可中断） */
+
   transition: width 360ms var(--ease-out-strong, ease);
-  /* 数据到达是本页的高潮时刻：水位逐行铺开（每行 40ms 级差）。
-   * 走 scaleX 而非 width，避免与上面的 width 过渡互相抢夺同一属性。 */
+
+
   transform-origin: left center;
   animation: quota-meter-fill 480ms var(--ease-out-strong, ease-out) both;
   animation-delay: calc(var(--meter-index, 0) * 40ms);
@@ -160,7 +160,7 @@
   background: var(--viz-failure);
 }
 
-/* ---------- Antigravity 分组 ---------- */
+
 
 .antigravityQuotaGroup {
   display: flex;
@@ -218,9 +218,9 @@
   }
 }
 
-/* ============================================================
- * 以下至文件末尾：套餐徽章定稿区块（逐字节搬迁，禁止改动）
- * ============================================================ */
+
+
+
 
 .codexPlan {
   display: flex;
@@ -479,20 +479,20 @@
   }
 }
 
-/* 旗舰档 —— 和田玉 · 金镶玉（2026-11-01 起替代液态铂金）。
- * 与金卡（premiumPlanValue）的档差：金卡是一整枚金，旗舰是「金只做镶边，主体是玉」。
- *
- * 玉之所以像玉，靠的是这些细节（背景自上而下 + ::after 纹理）：
- *   1. 抛光点：左上一粒很小的亮点 —— 玉面是抛过光的；
- *   2. 油脂光泽：上方一块宽而软的反光 —— 羊脂玉的光是蜡质的「润」，不是镜面的「亮」；
- *   3. 次表面透光：光像从玉肉里透出来，极缓游移（14s 往返）；
- *   4. 底部聚光：光穿过玉肉在底缘聚出一汪亮色，是「透」的关键；
- *   5. 棉：两处白色絮点；
- *   6. 糖色：右下一抹极淡的赭色籽料皮，天然料的记号；
- *   7. 玉肉：青白羊脂底 —— 一丝青灰是和田白玉与象牙、珍珠的分界，纯奶白会读成塑料；
- *   8. 纹理（::after）：分形噪声的玉肉斑驳 + 一根发丝细的石纹，正片叠底压进玉面。
- * 金边：2px 斜面金（上亮下暗），金与玉之间一道细「口」线（inset），像镶嵌的包边。
- * 两主题玉体同为浅色 —— 暗卡上羊脂玉本身就是柔光源，只压暗一档免得刺眼。 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @property --jade-light-x {
   syntax: '<percentage>';
   inherits: false;
@@ -532,7 +532,7 @@
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.03em;
-  /* 2px 金边，内边距各收 1px，外径与金卡等高 */
+
   padding: 1px 8px;
   border-radius: 999px;
   white-space: nowrap;
@@ -575,7 +575,7 @@
   text-shadow: var(--jade-ink-shadow);
   text-transform: capitalize;
 
-  /* 温润光晕：静止的暖白柔光，与金卡同一套 blur 构造但不呼吸 */
+
   &::before {
     content: '';
     position: absolute;
@@ -594,8 +594,8 @@
     z-index: -1;
   }
 
-  /* 玉肉纹理：分形噪声斑驳（青灰）+ 一根发丝石纹，正片叠底压在玉面上、文字之下。
-   * 内联 SVG，不引外部资源（单文件构建）。 */
+
+
   &::after {
     content: '';
     position: absolute;
@@ -609,7 +609,7 @@
     z-index: -1;
   }
 
-  /* P3 屏：金边多一档彩度（暖金有色域外的彩度可扩，玉体是低彩度，无需扩） */
+
   @media (dynamic-range: high) {
     --jade-gold: linear-gradient(
       180deg,
@@ -631,7 +631,7 @@
   }
 }
 
-/* 暗色：玉体压暗一档、光晕收敛；金边压暗避免在深底上刺眼。 */
+
 :global([data-theme='dark']) .elitePlanValue {
   --jade-ink: #2e3a26;
   --jade-ink-shadow: 0 1px 0 rgba(252, 252, 240, 0.45);
@@ -662,7 +662,7 @@
   }
 }
 
-/* 减动效：玉光停在居中的一帧 —— 静态也是完成品。 */
+
 @media (prefers-reduced-motion: reduce) {
   .elitePlanValue,
   :global([data-theme='dark']) .elitePlanValue {
@@ -671,7 +671,7 @@
   }
 }
 
-/* 高对比：去掉光泽、絮与纹理，只留实色玉体 + 实色金边。 */
+
 @media (prefers-contrast: more) {
   .elitePlanValue {
     background:
@@ -722,8 +722,8 @@
       0 0 10px rgba(255, 196, 44, 0.18);
   }
 
-  // 玉徽章移动端：与金卡同一刀 —— 砍模糊光晕层；
-  // 玉光游移只是一个渐变中心的重绘，~70×20px 成本可忽略，保留。
+
+
   .elitePlanValue {
     overflow: hidden;
 

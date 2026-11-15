@@ -56,7 +56,7 @@ function computeUnifiedDiff(original: string, modified: string): DiffResult {
     const hasDel = chunk.fromA < chunk.toA;
     const hasAdd = chunk.fromB < chunk.toB;
 
-    // Collect deleted lines from old doc
+
     const delLines: { num: number; text: string }[] = [];
     if (hasDel) {
       const startLine = oldDoc.lineAt(chunk.fromA).number;
@@ -66,7 +66,7 @@ function computeUnifiedDiff(original: string, modified: string): DiffResult {
       }
     }
 
-    // Collect added lines from new doc
+
     const addLines: { num: number; text: string }[] = [];
     if (hasAdd) {
       const startLine = newDoc.lineAt(chunk.fromB).number;
@@ -79,7 +79,7 @@ function computeUnifiedDiff(original: string, modified: string): DiffResult {
     totalDeletions += delLines.length;
     totalAdditions += addLines.length;
 
-    // Compute context boundaries
+
     let ctxBeforeEndOld: number;
     let ctxAfterStartOld: number;
     let ctxBeforeEndNew: number;
@@ -115,7 +115,7 @@ function computeUnifiedDiff(original: string, modified: string): DiffResult {
       }
     }
 
-    // Context before
+
     const ctxBeforeCount = Math.min(
       DIFF_CONTEXT_LINES,
       Math.max(0, ctxBeforeEndOld),
@@ -135,17 +135,17 @@ function computeUnifiedDiff(original: string, modified: string): DiffResult {
       }
     }
 
-    // Deletions
+
     for (const del of delLines) {
       lines.push({ type: 'deletion', oldNum: del.num, newNum: null, text: del.text });
     }
 
-    // Additions
+
     for (const add of addLines) {
       lines.push({ type: 'addition', oldNum: null, newNum: add.num, text: add.text });
     }
 
-    // Context after
+
     const ctxAfterCountOld = Math.max(
       0,
       Math.min(DIFF_CONTEXT_LINES, oldDoc.lines - ctxAfterStartOld + 1)
@@ -169,7 +169,7 @@ function computeUnifiedDiff(original: string, modified: string): DiffResult {
       }
     }
 
-    // Compute hunk header values
+
     const firstOld = lines.find((l) => l.oldNum !== null)?.oldNum ?? 1;
     const firstNew = lines.find((l) => l.newNum !== null)?.newNum ?? 1;
     const oldCount = lines.filter((l) => l.type !== 'addition').length;

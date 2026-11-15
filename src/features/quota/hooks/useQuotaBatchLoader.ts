@@ -1,12 +1,12 @@
-/**
- * 混合提供商批量额度加载（原 useQuotaLoader 的跨分区泛化）。
- *
- * 保留的三道守卫与旧实现逐一对应：
- * - loadingRef：并发批量加载去重；
- * - requestIdRef：被超越的响应直接丢弃；
- * - cacheGeneration：断线重连后过期请求不得写入新会话缓存。
- * 提交按 provider 分组进行 —— 快的提供商先落地，不等慢的。
- */
+
+
+
+
+
+
+
+
+
 
 import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

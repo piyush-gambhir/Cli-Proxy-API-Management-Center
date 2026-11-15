@@ -29,7 +29,7 @@ interface ApiKeyEntriesEditorProps {
   statuses: ConnectivityStatus[];
   isTestingAny: boolean;
   onUpdate: (idx: number, patch: Partial<ApiKeyEntryInput>) => void;
-  /** Appends a new blank entry and returns its index. */
+
   onAdd: () => number;
   onRemove: (idx: number) => void;
   onTest: (idx: number) => void;
@@ -92,7 +92,7 @@ export function ApiKeyEntriesEditor({
     onRemove(removeIdx);
   };
 
-  // Newest entries first, matching the append-on-add order.
+
   const reversed = entries.map((entry, idx) => ({ entry, idx })).reverse();
   const visible = showAll ? reversed : reversed.slice(0, COLLAPSED_LIMIT);
 

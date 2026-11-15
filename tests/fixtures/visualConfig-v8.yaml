@@ -1,4 +1,4 @@
-# v8 visual editor fixture; all keys are fictitious.
+
 config-version: 8
 server:
   host: localhost

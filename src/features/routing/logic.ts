@@ -1,11 +1,11 @@
-/**
- * Routing board arithmetic, free of React so it can be reasoned about and tested on its own.
- *
- * The operator arranges tiers; priorities are derived here, changing as few stored numbers as
- * the new order allows. Previews mirror CPA's scheduler (highest available priority first, the
- * strategy spreads load inside that tier) but cannot see runtime state CPA does not expose, such
- * as API-key cooldowns, session pinning or WebSocket preference.
- */
+
+
+
+
+
+
+
+
 
 import { isModelExcluded } from '@/components/excludedModels/excludedModelRules';
 import type {
@@ -26,13 +26,13 @@ import type {
   RoutingTier,
 } from '@/types/routing';
 
-/** Gap between newly numbered tiers, leaving room for later insertions. */
+
 export const TIER_STEP = 10;
 export const ROUTING_WEIGHT_MAX = 1_000_000;
 
-/* ---------------------------------------------------------------------------------------------
- * Arranging
- * ------------------------------------------------------------------------------------------- */
+
+
+
 
 export function tiersFromMembers(members: readonly RoutingMember[]): RoutingTier[] {
   const byPriority = new Map<number, RoutingMember[]>();
@@ -79,10 +79,10 @@ const withoutEmptyTiers = (tiers: readonly RoutingTier[]): RoutingTier[] =>
 export const tierIndexOf = (tiers: readonly RoutingTier[], key: string): number =>
   tiers.findIndex((tier) => tier.memberKeys.includes(key));
 
-/**
- * Moves a member into a tier or a gap. A gap on either side of the member's own single-member
- * tier would recreate that tier, so it is no move at all.
- */
+
+
+
+
 export function moveMember(
   tiers: readonly RoutingTier[],
   key: string,
@@ -107,10 +107,10 @@ export function moveMember(
   return withoutEmptyTiers(moved);
 }
 
-/**
- * Keyboard and menu moves. Stepping up joins the tier above; a member already at the top leaves
- * its peers for a tier of its own above them, the only way further up. Down mirrors it.
- */
+
+
+
+
 export function stepMember(
   tiers: readonly RoutingTier[],
   key: string,
@@ -128,7 +128,7 @@ export function stepMember(
     : moveMember(tiers, key, { kind: 'gap', index: tiers.length });
 }
 
-/** Can this step change anything? A lone member at either end has nowhere further to go. */
+
 export function canStepMember(
   tiers: readonly RoutingTier[],
   key: string,
@@ -148,7 +148,7 @@ export class RoutingPriorityError extends Error {
   }
 }
 
-/** The most common stored priority of a tier; ties go to the higher number. */
+
 function tierCandidate(memberPriorities: readonly number[]): number {
   const counts = new Map<number, number>();
   for (const priority of memberPriorities) counts.set(priority, (counts.get(priority) ?? 0) + 1);
@@ -163,11 +163,11 @@ function tierCandidate(memberPriorities: readonly number[]): number {
   return best;
 }
 
-/**
- * Derives a strictly decreasing priority per tier. Tiers whose stored number still fits the new
- * order keep it (chosen to keep as many members unchanged as possible); the rest are numbered
- * into the gaps. A tier with a locked member always keeps that member's priority.
- */
+
+
+
+
+
 export function assignPriorities(
   tiers: readonly RoutingTier[],
   members: readonly RoutingMember[]
@@ -184,7 +184,7 @@ export function assignPriorities(
     return { value, score };
   });
 
-  // Heaviest strictly decreasing subsequence: the tiers that keep their number.
+
   const n = tiers.length;
   const best = candidates.map((candidate) => candidate.score);
   const previous = new Array<number>(n).fill(-1);
@@ -242,7 +242,7 @@ export function assignPriorities(
     return locked.length ? [{ index, value: locked[0] }] : [];
   });
   if (!fits || anchors.some((anchor) => values[anchor.index] !== anchor.value)) {
-    // Renumber only editable tiers around fixed runtime-credential anchors.
+
     for (let segment = 0; segment <= anchors.length; segment += 1) {
       const upper = anchors[segment - 1];
       const lower = anchors[segment];
@@ -268,9 +268,9 @@ export function assignPriorities(
   return result;
 }
 
-/* ---------------------------------------------------------------------------------------------
- * Planning and writing
- * ------------------------------------------------------------------------------------------- */
+
+
+
 
 const SETTING_FIELDS: readonly (keyof RoutingSettings)[] = [
   'strategy',
@@ -325,11 +325,11 @@ export function buildRoutingPlan(board: RoutingBoard, draft: RoutingDraft): Rout
   return { changes, priorities, weights, settings };
 }
 
-/* ---------------------------------------------------------------------------------------------
- * Models and preview
- * ------------------------------------------------------------------------------------------- */
 
-/** Model ids, or null while unknown. Credential catalogs already contain final callable ids. */
+
+
+
+
 export function memberModels(member: RoutingMember, catalog: RoutingModelCatalog): string[] | null {
   const source = member.modelSource;
   let models: string[] | null;
@@ -343,10 +343,10 @@ export function memberModels(member: RoutingMember, catalog: RoutingModelCatalog
     : models;
 }
 
-/**
- * Whether a request for `model` may land on this member. A prefixed member also answers the
- * prefixed name; with `force-model-prefix`, it answers only that.
- */
+
+
+
+
 export function memberServesModel(
   member: RoutingMember,
   models: readonly string[],
@@ -355,7 +355,7 @@ export function memberServesModel(
 ): boolean {
   const requested = model.trim().toLowerCase();
   const known = (id: string) => models.some((entry) => entry.toLowerCase() === id);
-  // The credential endpoint returns registry ids with prefix policy already applied.
+
   if (member.modelSource.type === 'credential') return known(requested);
   const prefix = member.prefix.toLowerCase();
   if (prefix) {
@@ -394,7 +394,7 @@ const baseModelKey = (value: string): string =>
     .toLowerCase()
     .replace(/\(.*\)$/, '');
 
-/** Seconds until the member serves again, counting only cooldowns that block this request. */
+
 export function activeCooldownSeconds(
   member: RoutingMember,
   model: string | null,
@@ -433,10 +433,10 @@ const memberUnits = (
   return member.weights.reduce((sum, _, index) => sum + Math.max(0, weights[index] ?? 1), 0);
 };
 
-/**
- * Where a request goes under the draft: the first tier with a member able to serve takes it,
- * tiers above it are skipped (no such model, or cooling down), tiers below wait.
- */
+
+
+
+
 export function resolveRoute(
   board: RoutingBoard,
   draft: RoutingDraft,
@@ -495,7 +495,7 @@ export function resolveRoute(
   return { tiers, hasActive };
 }
 
-/** Channels whose built-in model lists the board needs. */
+
 export function neededChannels(board: RoutingBoard): string[] {
   const channels = new Set<string>();
   for (const member of board.members) {
@@ -504,7 +504,7 @@ export function neededChannels(board: RoutingBoard): string[] {
   return [...channels].sort();
 }
 
-/** Credentials whose live model lists the board needs (disabled ones never serve). */
+
 export function neededCredentialModels(board: RoutingBoard): string[] {
   return board.members.flatMap((member) =>
     member.modelSource.type === 'credential' && !member.disabled ? [member.modelSource.name] : []

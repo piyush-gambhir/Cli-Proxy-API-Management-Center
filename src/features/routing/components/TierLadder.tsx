@@ -129,7 +129,7 @@ export function TierLadder({
         {dragKey && valid ? (
           <span className={styles.gapDrop}>{t('routing.drop_new_tier')}</span>
         ) : between ? (
-          // The rail already draws the fall-through; the sentence is for assistive tech only.
+
           <span className={styles.srOnly}>{t('routing.connector')}</span>
         ) : null}
       </li>

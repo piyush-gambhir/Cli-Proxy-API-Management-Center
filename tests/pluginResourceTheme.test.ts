@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 
 const readSource = (path: string) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
-// Source contracts only: these do not verify iframe painting in a browser.
+
 describe('plugin resource theme backgrounds', () => {
   const page = readSource('src/features/plugins/PluginResourcePage.module.scss');
   const layout = readSource('src/styles/layout.scss');

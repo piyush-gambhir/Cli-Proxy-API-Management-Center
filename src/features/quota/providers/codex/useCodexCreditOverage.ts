@@ -21,10 +21,10 @@ export interface CodexCreditOverageFeedback {
   message: string;
 }
 
-/**
- * Card-owned controller for the account-level credit overage setting. Nothing is sent
- * until the operator saves a selected value; the store holds the confirmed account state.
- */
+
+
+
+
 export function useCodexCreditOverage(
   file: AuthFileItem,
   quota: CodexQuotaState | undefined,
@@ -41,7 +41,7 @@ export function useCodexCreditOverage(
 
   const key = quota?.status === 'success' ? codexCreditOverageKey(file) : null;
   const visible = key !== null && normalizeAuthIndex(file['auth_index'] ?? file.authIndex) !== null;
-  // While the dialog is open it keeps following the account it was opened for.
+
   const activeKey = open && context ? context.key : key;
   const accountId = open && context ? context.accountId : resolveCodexChatgptAccountId(file);
   const snapshot = useQuotaStore((state) =>
@@ -70,7 +70,7 @@ export function useCodexCreditOverage(
       store.codexCreditOverageOperations[next.accountId]
     );
     setContext(next);
-    // Only a confirmed value may initialize the form. Unsubmitted choices are discarded.
+
     setSelection(current?.status === 'known' ? current.value : null);
     setFeedback(null);
     setOpen(true);
@@ -99,7 +99,7 @@ export function useCodexCreditOverage(
   const save = async () => {
     if (inFlight.current || !context || !open || selection === null) return;
     const value = selection;
-    // A list refresh may have replaced this credential while the dialog was open.
+
     if (!isCodexCreditOverageContextCurrent(file, context)) {
       setFeedback({ tone: 'warning', message: t('codex_quota.credit_overage_stale') });
       return;
@@ -122,7 +122,7 @@ export function useCodexCreditOverage(
           'success'
         );
       } else if (outcome.kind === 'unconfirmed') {
-        // A same-value retry cannot settle an earlier request still in flight.
+
         setFeedback(null);
       } else if (outcome.kind === 'failed') {
         if (outcome.error.code === 'unconfirmed' || outcome.error.code === 'opposite_pending') {
@@ -136,7 +136,7 @@ export function useCodexCreditOverage(
       } else if (outcome.kind === 'busy') {
         setFeedback({ tone: 'warning', message: t('codex_quota.credit_overage_busy') });
       } else {
-        // The connection changed underneath; the old session's answer is discarded.
+
         setOpen(false);
       }
     } finally {

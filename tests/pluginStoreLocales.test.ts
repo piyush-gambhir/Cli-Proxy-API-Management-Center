@@ -63,7 +63,7 @@ describe('plugin store entry normalization', () => {
       ],
     });
     const [entry] = (await pluginStoreApi.list()).plugins;
-    // 后端已把键归一化成 BCP-47，空块由这里丢弃。
+
     expect(entry.locales).toEqual({ 'zh-CN': { description: '中文描述。' } });
   });
 
@@ -108,7 +108,7 @@ describe('store entry display metadata', () => {
   });
 
   test('simplified Chinese walks zh-CN, zh-Hans then bare zh', () => {
-    // zh-CN 块只缺 author，逐字段回退到根值，不跨块借用 zh-Hans 的 author。
+
     expect(getStoreEntryDisplay(entry, 'zh-CN')).toEqual({
       name: 'Example',
       description: '中文描述。',
@@ -170,8 +170,8 @@ describe('store entry display metadata', () => {
   });
 });
 
-// Source contract only: there is no browser DOM harness, so this pins that every
-// store surface reads the localized display fields instead of the root ones.
+
+
 describe('plugin store locale wiring', () => {
   test('cards, search and the install gate resolve metadata through one selector', () => {
     const page = readSource('src/features/plugins/PluginStorePage.tsx');

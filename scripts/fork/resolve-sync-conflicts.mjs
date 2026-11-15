@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-// Resolves the merge conflicts an upstream sync can hit in files where this fork's changes are
-// mechanical (see FORK.md, "How a sync resolves conflicts"). Run it inside a conflicted
-// `git merge upstream/main`. It stages what it resolves and exits 1, resolving nothing, when
-// any conflicted file is outside its set or the fork changed such a file in an unexpected way.
+
+
+
+
 
 import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 
 const git = (...args) => execFileSync('git', args, { encoding: 'utf8' });
-// Stage blob of a conflicted file: 1 = merge base, 2 = ours (fork), 3 = theirs (upstream).
+
 const stage = (n, path) => {
   try {
     return git('show', `:${n}:${path}`);
@@ -26,7 +26,7 @@ const TOOLCHAIN = new Set([
   'AGENTS.md',
 ]);
 
-/* ---------- versions ---------- */
+
 
 const parts = (spec) => (String(spec).match(/\d+(?:\.\d+)*/)?.[0] ?? '0').split('.').map(Number);
 const compare = (a, b) => {
@@ -37,10 +37,10 @@ const compare = (a, b) => {
   }
   return 0;
 };
-/** The higher of two version specs; upstream's wins a tie. */
+
 const higher = (ours, theirs) => (compare(ours, theirs) > 0 ? ours : theirs);
 
-/* ---------- package.json ---------- */
+
 
 const DEP_SECTIONS = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'];
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -56,11 +56,11 @@ function mergePackageJson(baseText, oursText, theirsText) {
     const merged = { ...t };
     for (const [name, spec] of Object.entries(o)) {
       if (name in t) merged[name] = higher(spec, t[name]);
-      else if (!(name in b) || spec !== b[name]) merged[name] = spec; // fork added or changed it
-      // else: upstream removed it and the fork left it alone, so it goes
+      else if (!(name in b) || spec !== b[name]) merged[name] = spec;
+
     }
     for (const name of Object.keys(b)) {
-      if (!(name in o) && name in t && t[name] === b[name]) delete merged[name]; // fork removed it
+      if (!(name in o) && name in t && t[name] === b[name]) delete merged[name];
     }
     if (Object.keys(merged).length) out[section] = merged;
     else delete out[section];
@@ -73,12 +73,12 @@ function mergePackageJson(baseText, oursText, theirsText) {
   if (!Object.keys(out.overrides).length) delete out.overrides;
   if (ours.engines) out.engines = ours.engines;
 
-  // Scripts the fork changed stay; everything else follows upstream.
+
   for (const [name, command] of Object.entries(ours.scripts ?? {})) {
     if ((base.scripts ?? {})[name] !== command) (out.scripts ??= {})[name] = command;
   }
 
-  // Any other top-level field the fork changed and upstream did not.
+
   const handled = new Set([...DEP_SECTIONS, 'packageManager', 'overrides', 'engines', 'scripts']);
   for (const key of Object.keys(ours)) {
     if (handled.has(key)) continue;
@@ -90,7 +90,7 @@ function mergePackageJson(baseText, oursText, theirsText) {
   return `${JSON.stringify(out, null, 2)}\n`;
 }
 
-/* ---------- locale files: upstream's file plus the fork's ledger block ---------- */
+
 
 function mergeLocale(path, baseText, oursText, theirsText) {
   const ours = JSON.parse(oursText);
@@ -108,7 +108,7 @@ function mergeLocale(path, baseText, oursText, theirsText) {
   return text;
 }
 
-/* ---------- CI, release and toolchain docs: upstream's file, higher versions ---------- */
+
 
 const VERSION_PATTERNS = [
   /(node-version:\s*'?)([0-9][0-9.]*)('?)/g,
@@ -118,7 +118,7 @@ const VERSION_PATTERNS = [
   /(CI uses Node\.js )([0-9][0-9.]*[0-9])()/g,
 ];
 const ACTION = /(uses:\s*)([\w.-]+\/[\w./-]+)@(v[0-9][0-9.]*|[0-9a-f]{40} # v[0-9][0-9.]*)/g;
-/** Version of an action ref: `v3` or a pinned `<sha> # v3.0.4`. */
+
 const actionVersion = (ref) => ref.match(/v([0-9][0-9.]*)\s*$/)?.[1] ?? '0';
 const higherAction = (ours, theirs) =>
   compare(actionVersion(ours), actionVersion(theirs)) > 0 ? ours : theirs;
@@ -147,7 +147,7 @@ function mergeToolchain(path, baseText, oursText, theirsText) {
   return text;
 }
 
-/* ---------- main ---------- */
+
 
 const conflicted = git('diff', '--name-only', '--diff-filter=U').split('\n').filter(Boolean);
 if (!conflicted.length) {
@@ -166,7 +166,7 @@ const resolved = new Map();
 try {
   for (const path of conflicted) {
     const [base, ours, theirs] = [stage(1, path), stage(2, path), stage(3, path)];
-    if (path === 'bun.lock') continue; // regenerated below
+    if (path === 'bun.lock') continue;
     if (ours === null || theirs === null) throw new Error(`${path}: deleted on one side`);
     if (path === 'package.json') resolved.set(path, mergePackageJson(base, ours, theirs));
     else if (LOCALE.test(path)) resolved.set(path, mergeLocale(path, base, ours, theirs));
@@ -183,7 +183,7 @@ for (const [path, text] of resolved) {
   console.log(`resolved ${path}`);
 }
 if (conflicted.includes('bun.lock') || conflicted.includes('package.json')) {
-  // Start from upstream's lockfile and re-resolve it against the merged package.json.
+
   if (conflicted.includes('bun.lock')) git('checkout', '--theirs', '--', 'bun.lock');
   execFileSync('bun', ['install'], { stdio: 'inherit' });
   git('add', '--', 'bun.lock');

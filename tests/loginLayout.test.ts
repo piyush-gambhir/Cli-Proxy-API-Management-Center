@@ -3,7 +3,7 @@ import { resolveDropdownStyle } from '@/components/ui/selectPosition';
 
 const css = await Bun.file('src/pages/LoginPage.module.scss').text();
 
-/** 取出某个顶层规则块（不含嵌套块）的声明文本 */
+
 const ruleBody = (selector: string) => {
   const start = css.indexOf(`\n${selector} {`);
   if (start < 0) throw new Error(`rule ${selector} not found`);

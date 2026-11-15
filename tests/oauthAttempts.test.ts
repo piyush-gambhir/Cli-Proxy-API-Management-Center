@@ -174,7 +174,7 @@ describe('OAuth attempt lifecycle', () => {
     expect(login.signal.aborted).toBe(true);
     expect(cancellation.signal.aborted).toBe(false);
 
-    // A connection switch or a later login also makes an outstanding DELETE inert.
+
     attempts.invalidateAll();
     const next = attempts.begin('devin');
     expect(cancellation.isCurrent()).toBe(false);
@@ -241,7 +241,7 @@ describe('OAuth attempt lifecycle', () => {
     expect(attempt.isPolling()).toBe(false);
     expect(tasks.size).toBe(0);
 
-    // An accepted callback resumes polling on the attempt that still owns the login.
+
     poll();
     expect(attempt.isPolling()).toBe(true);
     tick();

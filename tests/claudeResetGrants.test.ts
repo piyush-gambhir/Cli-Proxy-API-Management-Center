@@ -730,7 +730,7 @@ test('account reads map upstream 429 to a sanitized typed rate-limit failure', a
       message: 'Anthropic reset-grant read failed (rate_limited)',
     });
   }
-  expect(calls).toBe(2); // Neither read retries.
+  expect(calls).toBe(2);
 });
 
 describe('explicit reset kinds and model refill usage', () => {

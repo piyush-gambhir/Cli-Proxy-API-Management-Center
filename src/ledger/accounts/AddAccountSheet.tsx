@@ -1,11 +1,11 @@
-/**
- * Add account: one plain list of every way in (OAuth providers, Vertex import, SIWC binding,
- * credential file upload). Runs upstream's flow hooks and dialogs, so sign-in behaviour arrives
- * through the upstream sync; only the picker is ours.
- *
- * Mounted for the screen's lifetime, not just while open: closing the sheet must not abort a
- * sign-in that is still polling.
- */
+
+
+
+
+
+
+
+
 
 import {
   useEffect,
@@ -55,7 +55,7 @@ export type AddAccountSheetProps = {
   disableControls: boolean;
   onClose: () => void;
   onUpload: () => void;
-  /** A sign-in or import created a credential. */
+
   onAdded: () => void;
 };
 
@@ -63,7 +63,7 @@ type SheetItemProps = {
   icon: ReactNode;
   label: string;
   caption: string;
-  /** The caption is a live flow status rather than the sign-in method. */
+
   emphasis?: boolean;
   disabled: boolean;
   onOpen: () => void;
@@ -152,7 +152,7 @@ export function AddAccountSheet(props: AddAccountSheetProps) {
     focusedRef.current = card.id;
     setDialog({ kind: 'oauth', id: card.id });
     setDialogOpen(true);
-    // An attempt in progress, failed or just finished is reopened as is; otherwise start one.
+
     if (!flows.states[card.id]?.status) void flows.startAuth(card.id);
   };
   const openVertex = () => {
@@ -191,7 +191,7 @@ export function AddAccountSheet(props: AddAccountSheetProps) {
         size="md"
         title={t('ledger.add_account')}
         ariaLabel={t('ledger.add_account')}
-        // Escape also reaches the sheet while a flow dialog sits on top; let the dialog close alone.
+
         confirmClose={() => !document.querySelector('.modal-overlay')}
       >
         <ul className={styles.list}>

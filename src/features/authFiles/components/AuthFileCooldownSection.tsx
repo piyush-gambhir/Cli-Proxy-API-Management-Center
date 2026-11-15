@@ -8,7 +8,7 @@ import { formatDateTimeValue } from '@/utils/format';
 import { cooldownReasonKey, summarizeCooldowns } from '@/features/authFiles/cooldowns';
 import styles from './AuthFileCooldownSection.module.scss';
 
-// One timer for visible cooldown cards, never one interval/request per credential.
+
 const clock = createSharedClock({ intervalMs: 1000 });
 
 export type AuthFileCooldownSectionProps = {
@@ -25,7 +25,7 @@ export function AuthFileCooldownSection({
   onReset,
 }: AuthFileCooldownSectionProps) {
   const { t } = useTranslation();
-  if (!snapshot) return null; // Old backend: no claim about cooldown support or health.
+  if (!snapshot) return null;
   if (snapshot.records === null) {
     return <p className={styles.unknown}>{t('auth_files.cooldown_unknown')}</p>;
   }

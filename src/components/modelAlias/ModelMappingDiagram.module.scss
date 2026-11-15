@@ -27,13 +27,13 @@
   user-select: none;
 
   @media (max-width: 768px) {
-    // Give mobile extra horizontal room to reduce line overlap; users can swipe to scroll.
+
     min-width: max(100%, 960px);
     padding: 12px 0;
   }
 }
 
-// SVG layer for connection lines (behind columns so links are visible)
+
 .connections {
   position: absolute;
   left: 0;
@@ -118,7 +118,7 @@
   }
 }
 
-// Mindmap-style provider branch (root node)
+
 .providerItem {
   border-left: 3px solid transparent;
   padding-left: 8px;

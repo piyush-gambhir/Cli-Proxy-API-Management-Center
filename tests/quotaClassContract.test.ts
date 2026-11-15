@@ -1,16 +1,16 @@
-/**
- * Guard for the QuotaClassMap ↔ SCSS contract.
- *
- * `bindQuotaClasses` throws at *module initialization*, and both hosts bind at
- * import time — so a contract key missing from either stylesheet does not
- * degrade one row, it white-screens the whole application. This converts that
- * into a failing test.
- *
- * The check is textual rather than a module import on purpose: under `bun test`
- * a `.module.scss` import resolves to the raw stylesheet source (a string), not
- * to the class-name object Vite produces for the browser build. Asserting on
- * keys of that object would silently pass for every key.
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import { describe, expect, test } from 'bun:test';
 import { QUOTA_CLASS_KEYS, bindQuotaClasses } from '@/features/quota/types';

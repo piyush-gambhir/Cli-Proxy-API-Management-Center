@@ -1,6 +1,6 @@
-/**
- * Generic API call helper (proxied via management API).
- */
+
+
+
 
 import type { AxiosRequestConfig } from 'axios';
 import { apiClient } from './client';
@@ -98,6 +98,6 @@ const createApiCallApi = (client: Pick<typeof apiClient, 'post'>) => ({
 
 export const apiCallApi = createApiCallApi(apiClient);
 
-/** Pin a mutation to its initiating connection, including response event ownership. */
+
 export const captureApiCallApi = (isCurrent?: () => boolean) =>
   createApiCallApi(apiClient.captureConnection(isCurrent));

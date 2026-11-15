@@ -60,7 +60,7 @@ describe('Devin OAuth login UI', () => {
     expect(idle).toContain('five minutes');
     expect(idle).not.toContain('auth_login.devin_');
 
-    // 服务端会话还挂着（网络失败停了轮询）：必须先取消，回调输入锁定
+
     const stalled = renderDialog({
       status: 'error',
       error: 'network',

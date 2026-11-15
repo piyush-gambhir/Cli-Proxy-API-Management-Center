@@ -67,7 +67,7 @@ describe('plugin OAuth entry normalization', () => {
   });
 
   test('decodes backend-escaped entry metadata before building cards', async () => {
-    // GET /plugins uses Go html.EscapeString for entry names and logo URLs.
+
     mockGet(
       listResponse([
         {
@@ -93,7 +93,7 @@ describe('plugin OAuth entry normalization', () => {
     expect(cards[0].title).toBe('Z.ai <International> & "Team" \'云端\'');
     expect(cards[0].icon).toBe('https://example.test/logo.svg?a=1&b=2&sig=x%2By%3D');
     expect(new URL(cards[0].icon).searchParams.get('b')).toBe('2');
-    // Decoding restores text, not trusted HTML; React still escapes it at render time.
+
     const markup = renderToStaticMarkup(createElement('span', null, cards[0].title));
     expect(markup).toContain('&lt;International&gt;');
     expect(markup).not.toContain('<International>');
@@ -242,7 +242,7 @@ describe('plugin OAuth tiles per declared entry', () => {
       ],
       apiBase
     );
-    // 每个磁贴只带自己那一条：id 就是登录路由的 provider 参数
+
     expect(cards.map((card) => [card.id, card.title])).toEqual([
       ['zcode-zai', 'omc-zcode-oauth'],
       ['zcode-bigmodel', 'BigModel'],

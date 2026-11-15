@@ -1,10 +1,10 @@
-/**
- * Quota constants for API URLs, headers, and theme colors.
- */
+
+
+
 
 import type { TypeColorSet } from '@/types';
 
-// Theme colors for type badges — keep in sync with authFiles/constants.ts
+
 export const TYPE_COLORS: Record<string, TypeColorSet> = {
   qwen: {
     light: { bg: '#ede5fd', text: '#5530c7' },
@@ -64,7 +64,7 @@ export const TYPE_COLORS: Record<string, TypeColorSet> = {
   },
 };
 
-// Antigravity API configuration
+
 export const ANTIGRAVITY_QUOTA_URLS = [
   'https://daily-cloudcode-pa.googleapis.com/v1internal:retrieveUserQuotaSummary',
   'https://daily-cloudcode-pa.sandbox.googleapis.com/v1internal:retrieveUserQuotaSummary',
@@ -74,8 +74,8 @@ export const ANTIGRAVITY_QUOTA_URLS = [
 export const ANTIGRAVITY_CODE_ASSIST_URL =
   'https://daily-cloudcode-pa.googleapis.com/v1internal:loadCodeAssist';
 
-// Keep aligned with the backend Antigravity Hub UA (internal/misc/antigravity_version.go):
-// Cloud Code rejects newer models for clients below 2.23.0.
+
+
 export const ANTIGRAVITY_HUB_VERSION = '2.23.0';
 export const ANTIGRAVITY_HUB_PLATFORM = 'darwin/arm64';
 
@@ -97,7 +97,7 @@ export const ANTIGRAVITY_REQUEST_HEADERS = {
   'User-Agent': ANTIGRAVITY_USER_AGENT,
 };
 
-// Claude API configuration
+
 export const CLAUDE_PROFILE_URL = 'https://api.anthropic.com/api/oauth/profile';
 
 export const CLAUDE_USAGE_URL = 'https://api.anthropic.com/api/oauth/usage';
@@ -123,17 +123,17 @@ export const CLAUDE_USAGE_WINDOW_KEYS = [
   { key: 'iguana_necktie', id: 'seven-day-fable', labelKey: 'claude_quota.seven_day_fable' },
 ] as const;
 
-// Codex API configuration
+
 export const CODEX_USAGE_URL = 'https://chatgpt.com/backend-api/wham/usage';
 export const CODEX_SUBSCRIPTION_URL = 'https://chatgpt.com/backend-api/subscriptions';
 export const CODEX_RATE_LIMIT_RESET_CREDITS_URL =
   'https://chatgpt.com/backend-api/wham/rate-limit-reset-credits';
 export const CODEX_RATE_LIMIT_RESET_CREDITS_CONSUME_URL =
   'https://chatgpt.com/backend-api/wham/rate-limit-reset-credits/consume';
-/** Account-user setting write endpoint reported in issue #551; never probed for reads. */
+
 export const CODEX_ACCOUNT_USER_SETTING_URL =
   'https://chatgpt.com/backend-api/settings/account_user_setting';
-/** Lets apps authorized to use the ChatGPT plan spend credits after the plan limit. */
+
 export const CODEX_CREDIT_OVERAGE_FEATURE = 'can_consume_personal_credits_chatpass';
 
 export const CODEX_REQUEST_HEADERS = {
@@ -142,7 +142,7 @@ export const CODEX_REQUEST_HEADERS = {
   'User-Agent': 'codex-tui/0.149.1 (Mac OS 26.5.2; arm64) iTerm.app/3.6.11 (codex-tui; 0.149.1)',
 };
 
-// Kimi API configuration
+
 export const KIMI_USAGE_URL = 'https://api.kimi.com/coding/v1/usages';
 export const KIMI_AI_USAGE_URL = 'https://api.kimi.ai/coding/v1/usages';
 
@@ -150,7 +150,7 @@ export const KIMI_REQUEST_HEADERS = {
   Authorization: 'Bearer $TOKEN$',
 };
 
-// xAI/Grok API configuration
+
 export const XAI_BILLING_WEEKLY_URL = 'https://cli-chat-proxy.grok.com/v1/billing?format=credits';
 export const XAI_BILLING_MONTHLY_URL = 'https://cli-chat-proxy.grok.com/v1/billing';
 export const XAI_USER_URL = 'https://cli-chat-proxy.grok.com/v1/user?include=subscription';
@@ -158,7 +158,7 @@ export const XAI_SETTINGS_URL = 'https://cli-chat-proxy.grok.com/v1/settings';
 export const XAI_API_ME_URL = 'https://api.x.ai/v1/me';
 export const XAI_API_CHAT_URL = 'https://api.x.ai/v1/chat/completions';
 export const XAI_PAID_HEALTH_MODEL = 'grok-4.5';
-// Keep aligned with the backend fallback; Grok rejects versions older than 1.0.13.
+
 export const XAI_GROK_CLIENT_VERSION = '1.0.70';
 export const XAI_GROK_USER_AGENT = `grok-pager/${XAI_GROK_CLIENT_VERSION} grok-shell/${XAI_GROK_CLIENT_VERSION} (macos; aarch64)`;
 

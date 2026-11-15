@@ -113,7 +113,7 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
     const [settingsAlias, setSettingsAlias] = useState<string | null>(null);
     const [settingsSourceId, setSettingsSourceId] = useState<string | null>(null);
 
-    // Parse data: each source model (provider+name) and each alias is distinct by id; 1 source -> many aliases.
+
     const { aliasNodes, providerNodes } = useMemo(() => {
       const sourceMap = new Map<
         string,
@@ -121,7 +121,7 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
       >();
       const aliasSet = new Set<string>();
 
-      // 1. Existing mappings: group by (provider, name), each source has a set of aliases
+
       Object.entries(modelAlias).forEach(([provider, mappings]) => {
         (mappings ?? []).forEach((m) => {
           const name = (m?.name || '').trim();
@@ -137,21 +137,21 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
         });
       });
 
-      // 2. Unmapped models from allProviderModels (no mapping yet)
+
       Object.entries(allProviderModels).forEach(([provider, models]) => {
         (models ?? []).forEach((m) => {
           const name = (m.id || '').trim();
           if (!name) return;
           const pk = `${provider.toLowerCase()}::${name.toLowerCase()}`;
           if (sourceMap.has(pk)) {
-            // Already in sourceMap from mappings; keep provider from mapping for correct grouping.
+
             return;
           }
           sourceMap.set(pk, { provider, name, aliases: new Map() });
         });
       });
 
-      // 3. Source nodes: distinct by id = provider::name
+
       const sources: SourceNode[] = Array.from(sourceMap.entries())
         .map(([id, v]) => ({
           id,
@@ -164,10 +164,10 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
           return a.name.localeCompare(b.name);
         });
 
-      // 4. Extra aliases (no mapping yet)
+
       extraAliases.forEach((alias) => aliasSet.add(alias));
 
-      // 5. Alias nodes: distinct by id = alias; sources = SourceNodes that have this alias in their aliases
+
       const aliasNodesList: AliasNode[] = Array.from(aliasSet)
         .map((alias) => ({
           id: alias,
@@ -179,7 +179,7 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
           return a.alias.localeCompare(b.alias);
         });
 
-      // 6. Group sources by provider
+
       const providerMap = new Map<string, SourceNode[]>();
       sources.forEach((s) => {
         if (!providerMap.has(s.provider)) providerMap.set(s.provider, []);
@@ -192,7 +192,7 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
       return { aliasNodes: aliasNodesList, providerNodes: providerNodesList };
     }, [modelAlias, allProviderModels, extraAliases]);
 
-    // Track element positions
+
     const providerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
     const sourceRefs = useRef<Map<string, HTMLDivElement>>(new Map());
     const aliasRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -206,7 +206,7 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
       });
     };
 
-    // Calculate lines: provider→source, source→alias (when expanded); midpoint + linkData for source→alias
+
     const updateLines = useCallback(() => {
       if (!containerRef.current) return;
       const containerRect = containerRef.current.getBoundingClientRect();
@@ -244,7 +244,7 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
         const py = providerRect.top + providerRect.height / 2 - containerRect.top;
         const color = getProviderColor(provider);
 
-        // Provider → Source (branch link, no dot)
+
         sources.forEach((source) => {
           const sourceEl = sourceRefs.current.get(source.id);
           if (!sourceEl) return;
@@ -257,7 +257,7 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
             color,
           });
         });
-        // Source → Alias: one line per alias
+
         sources.forEach((source) => {
           if (!source.aliases || source.aliases.length === 0) return;
 
@@ -269,7 +269,7 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
             const sourceRect = sourceEl.getBoundingClientRect();
             const aliasRect = aliasEl.getBoundingClientRect();
 
-            // Calculate coordinates relative to the container
+
             const x1 = sourceRect.right - containerRect.left;
             const y1 = sourceRect.top + sourceRect.height / 2 - containerRect.top;
             const x2 = aliasRect.left - containerRect.left;
@@ -308,7 +308,7 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
     );
 
     useLayoutEffect(() => {
-      // updateLines is called after layout is calculated, ensuring elements are in place.
+
       const raf = requestAnimationFrame(updateLines);
       window.addEventListener('resize', updateLines);
       return () => {
@@ -329,8 +329,8 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
       return () => observer.disconnect();
     }, [updateLines]);
 
-    // Drag and Drop handlers
-    // 1. Source -> Alias
+
+
     const handleDragStart = (e: DragEvent, source: SourceNode) => {
       setTapSourceId(null);
       setTapAlias(null);
@@ -341,7 +341,7 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
 
     const handleDragOver = (e: DragEvent, alias: string) => {
       if (!draggedSource || draggedSource.aliases.some((entry) => entry.alias === alias)) return;
-      e.preventDefault(); // Allow drop
+      e.preventDefault();
       e.dataTransfer.dropEffect = 'link';
       setDropTargetAlias(alias);
     };
@@ -363,7 +363,7 @@ export const ModelMappingDiagram = forwardRef<ModelMappingDiagramRef, ModelMappi
       setDropTargetAlias(null);
     };
 
-    // 2. Alias -> Source
+
     const handleDragStartAlias = (e: DragEvent, alias: string) => {
       setTapSourceId(null);
       setTapAlias(null);

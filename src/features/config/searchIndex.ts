@@ -1,39 +1,39 @@
-// Search index for the visual config editor's global "jump to field" search.
-//
-// IMPORTANT: this index is maintained by hand and is NOT what drives field
-// rendering — it only powers search. When you add, remove, or move a field in
-// components/sections/*.tsx (or fields/sharedFields.tsx), update the matching
-// entry here, wrap the field's JSX in <FieldAnchor fieldId="..."> with the same
-// `fieldId`, and map it in constants.ts FIELD_VALUE_KEYS.
-// tests/configFieldParity.test.ts enforces the three-way parity — a missing or
-// extra entry anywhere fails CI.
+
+
+
+
+
+
+
+
+
 
 export type VisualSectionId =
   'connectivity' | 'network' | 'logging' | 'streaming' | 'advanced' | 'payload';
 
 export interface ConfigFieldSearchEntry {
-  /** Stable anchor id; matches FieldAnchor's `fieldId` and the rendered DOM id. */
+
   fieldId: string;
   sectionId: VisualSectionId;
-  /** i18n key resolved with t() at search time so matching follows the active language. */
+
   labelKey: string;
-  /** Optional secondary i18n key shown next to the label to disambiguate duplicates
-   *  (e.g. Claude vs Codex "User-Agent"). Also searchable. */
+
+
   qualifierKey?: string;
-  /** Optional hint i18n key — searchable but not shown in results. */
+
   hintKey?: string;
-  /** Backend YAML key aliases, e.g. ['proxy-url']. Static strings (language-agnostic). */
+
   yamlKeys?: string[];
-  /** Extra synonyms to match against (language-agnostic, lowercase). */
+
   keywords?: string[];
 }
 
-/** DOM id for a field anchor — kept in one place so the index and the anchors agree. */
+
 export const configFieldDomId = (fieldId: string) => `cfg-field-${fieldId}`;
 
 type Translate = (key: string) => string;
 
-// Compact helper: every label/hint key lives under config_management.visual.
+
 const L = (key: string) => `config_management.visual.${key}`;
 
 export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
@@ -221,7 +221,7 @@ export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
     keywords: ['stun', 'turn', 'urls', 'username', 'credential'],
   },
 
-  // ── connectivity ──────────────────────────────────────────────────────────
+
   {
     fieldId: 'githubToken',
     sectionId: 'connectivity',
@@ -372,7 +372,7 @@ export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
     labelKey: L('sections.remote.panel_repo'),
     yamlKeys: ['management', 'panel-github-repository'],
   },
-  // ── network ───────────────────────────────────────────────────────────────
+
   {
     fieldId: 'proxyUrl',
     sectionId: 'network',
@@ -470,7 +470,7 @@ export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
     yamlKeys: ['oauth', 'providers', 'aistudio', 'ws-auth'],
     keywords: ['websocket'],
   },
-  // ── logging ───────────────────────────────────────────────────────────────
+
   {
     fieldId: 'debug',
     sectionId: 'logging',
@@ -518,7 +518,7 @@ export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
     hintKey: L('sections.system.usage_statistics_enabled_desc'),
     yamlKeys: ['observability', 'usage', 'usage-statistics-enabled'],
   },
-  // ── streaming ─────────────────────────────────────────────────────────────
+
   {
     fieldId: 'streamingKeepaliveSeconds',
     sectionId: 'streaming',
@@ -540,7 +540,7 @@ export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
     hintKey: L('sections.streaming.nonstream_keepalive_hint'),
     yamlKeys: ['requests', 'nonstream-keepalive-interval'],
   },
-  // ── advanced ──────────────────────────────────────────────────────────────
+
   {
     fieldId: 'quotaAntigravityCredits',
     sectionId: 'advanced',
@@ -598,7 +598,7 @@ export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
     hintKey: L('sections.system.antigravity_signature_strict_desc'),
     yamlKeys: ['oauth', 'providers', 'antigravity', 'signature-bypass-strict'],
   },
-  // Claude header defaults — qualifierKey disambiguates the shared "User-Agent" label.
+
   {
     fieldId: 'claudeHeaderUserAgent',
     sectionId: 'advanced',
@@ -656,7 +656,7 @@ export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
     yamlKeys: ['upstream', 'claude', 'header-defaults', 'stabilize-device-profile'],
     keywords: ['claude'],
   },
-  // Codex header defaults.
+
   {
     fieldId: 'codexHeaderUserAgent',
     sectionId: 'advanced',
@@ -673,7 +673,7 @@ export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
     yamlKeys: ['oauth', 'providers', 'codex', 'header-defaults', 'beta-features'],
     keywords: ['codex'],
   },
-  // ── payload (coarse: one entry per rule group) ──────────────────────────────
+
   {
     fieldId: 'payloadDefaultRules',
     yamlKeys: ['requests', 'payload', 'default'],
@@ -725,10 +725,10 @@ export function findConfigFieldById(
   return CONFIG_FIELD_SEARCH_INDEX.find((entry) => entry.fieldId === fieldId);
 }
 
-/**
- * Lowercase substring search over label + qualifier + hint + YAML keys + keywords.
- * Returns the best ~8 matches, label/qualifier hits ranked above alias-only hits.
- */
+
+
+
+
 export function searchConfigFields(query: string, t: Translate): ConfigFieldSearchEntry[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];

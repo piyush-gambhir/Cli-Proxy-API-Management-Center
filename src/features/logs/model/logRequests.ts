@@ -1,4 +1,4 @@
-/** Feature-local ownership guards: invalidated responses must not mutate logs or UI state. */
+
 export function createLogRequestGuard() {
   let generation = 0;
 
@@ -9,7 +9,7 @@ export function createLogRequestGuard() {
   };
 }
 
-/** Serialize reads, coalesce full reloads, and let clear supersede an outstanding read. */
+
 export function createLogRequestQueue() {
   const guard = createLogRequestGuard();
   let active: { id: number; clearing: boolean } | null = null;

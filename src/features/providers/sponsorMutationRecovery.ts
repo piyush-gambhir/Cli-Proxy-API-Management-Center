@@ -22,7 +22,7 @@ export async function runSponsorMutationWithRecovery<T>(
     try {
       await refresh();
     } catch {
-      // Preserve the original mutation error; refresh is best-effort recovery.
+
     }
     throw new SponsorPartialMutationError(error);
   }

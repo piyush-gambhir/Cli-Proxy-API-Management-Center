@@ -32,7 +32,7 @@ afterAll(() => {
 });
 afterEach(() => {
   spies.splice(0).forEach((spy) => spy.mockRestore());
-  // Zustand replaces its state object; mockRestore alone can leave the mocked action in new states.
+
   useConfigStore.setState({ fetchConfig: originalFetchConfig });
   apiClient.setConfig({ apiBase: '', managementKey: '' });
   useAuthStore.setState({ isAuthenticated: false, connectionStatus: 'disconnected' });

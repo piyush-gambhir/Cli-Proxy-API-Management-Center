@@ -10,7 +10,7 @@ const clock: TimerClock = {
   cancel: (timer) => clearTimeout(timer as ReturnType<typeof setTimeout>),
 };
 
-/** Count only readable time; hover, focus and hidden-tab pauses can overlap. */
+
 export function createNotificationTimer(
   duration: number,
   onExpire: () => void,

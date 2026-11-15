@@ -14,7 +14,7 @@ import { generateResetGrantRequestId } from './resetGrantRequestId';
 export type ResetGrantFailureStage =
   'organization' | 'status' | 'eligibility' | 'request_id' | 'operation';
 
-/** Only locally generated codes are displayed; never expose raw upstream errors. */
+
 export class ResetGrantPreflightError extends Error {
   constructor(
     readonly stage: ResetGrantFailureStage,
@@ -63,10 +63,10 @@ const defaultDependencies = {
   requestId: generateResetGrantRequestId,
 };
 
-/** Tab-memory journal: survives dialog/card unmounts, never crosses connections.
- * No automatic retry. Expired ambiguous operations stay blocked until session end.
- * This is not a cross-tab or durable backend spending ledger.
- */
+
+
+
+
 export function createResetGrantOperations(deps = defaultDependencies) {
   let revision = deps.revision();
   const operations = new Map<string, Operation>();
@@ -137,14 +137,14 @@ export function createResetGrantOperations(deps = defaultDependencies) {
           operation = { grantId, grant, organization, requestId, createdAt: now };
           operations.set(key, operation);
         }
-        // Re-check immediately before dispatch; never send against a replacement connection.
+
         assertSession();
         if (wasRetry && deps.now() - operation.createdAt >= RETRY_WINDOW_MS) {
           throw new ResetGrantPreflightError('operation', 'expired');
         }
         const code = await deps.claim(authIndex, organization, grantId, operation.requestId);
         assertSession();
-        // A refusal on a retry cannot prove that the earlier ambiguous POST did not spend.
+
         if (!wasRetry || code === 'reset' || code === 'already_used') operation.code = code;
         if (code === 'reset' || code === 'already_used') {
           try {

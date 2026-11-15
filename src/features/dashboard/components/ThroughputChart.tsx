@@ -6,13 +6,13 @@ import { TRAFFIC_BUCKET_MINUTES, type TrafficWindow } from '../types';
 import { axisMax } from '../utils';
 import styles from './ThroughputChart.module.scss';
 
-/** 纵轴刻度条数（含 0），即 TICK_COUNT - 1 个间隔 */
+
 const TICK_COUNT = 5;
 
-/**
- * 桶时间标签。后端返回的是服务器本地时间字符串（"15:04-15:14"），
- * 优先使用它，而不是用浏览器时钟反推，避免时区不一致。
- */
+
+
+
+
 function bucketRangeLabel(time: string | undefined, index: number, count: number): string {
   if (time) return time;
   const minutesAgo = (count - index) * TRAFFIC_BUCKET_MINUTES;
@@ -75,7 +75,7 @@ export function ThroughputChart({ traffic }: ThroughputChartProps) {
 
   return (
     <figure className={styles.chart}>
-      {/* 两条序列 → 图例常驻，并直接带上数值（浅色主题下绿色对比度偏低，数值即为补偿） */}
+      {                                                                                                                          }
       <figcaption className={styles.legend}>
         <span className={styles.legendItem}>
           <span className={`${styles.legendSwatch} ${styles.swatchSuccess}`} aria-hidden="true" />
@@ -124,7 +124,7 @@ export function ThroughputChart({ traffic }: ThroughputChartProps) {
               const successHeight = (bucket.success / scaleMax) * 100;
               const failureHeight = (bucket.failed / scaleMax) * 100;
               const hasBoth = bucket.success > 0 && bucket.failed > 0;
-              /* 级差按桶数归一化：不管窗口多长，整波入场都收在 360ms 内 */
+
               const barDelayMs =
                 buckets.length > 1 ? Math.round((index / (buckets.length - 1)) * 360) : 0;
 
@@ -135,7 +135,7 @@ export function ThroughputChart({ traffic }: ThroughputChartProps) {
                   onMouseEnter={() => setActiveIndex(index)}
                   onClick={() => setActiveIndex((current) => (current === index ? null : index))}
                 >
-                  {/* 峰值直标放在 scaleY 容器之外，避免入场时被一起挤压 */}
+                  {                                                                             }
                   {index === peakIndex && peakTotal > 0 && (
                     <span
                       className={styles.peakLabel}

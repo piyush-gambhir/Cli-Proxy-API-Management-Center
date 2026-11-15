@@ -12,33 +12,33 @@ const easeOutQuart = (progress: number) => 1 - (1 - progress) ** 4;
 const easeInCubic = (progress: number) => progress ** 3;
 const SHOWN = 'translateY(0)';
 const HIDDEN = 'translateY(56px)';
-/** Bar width when the policy panel stacks under the board. */
+
 const STACKED_MAX_WIDTH = 560;
 
-/** Marks the policy column the bar aligns with. */
+
 export const POLICY_COLUMN_ATTR = 'data-routing-policy-column';
 
 export interface RoutingSaveBarProps {
-  /** Visible while the draft differs from the board (same condition as the leave guard). */
+
   visible: boolean;
   count: number;
   saving: boolean;
   saveDisabled: boolean;
   onSave: () => void;
   onDiscard: () => void;
-  /** The board/policy grid; the bar lines up with its policy column. */
+
   layoutRef: RefObject<HTMLElement | null>;
 }
 
-/**
- * Floating save bar, styled after the config page's: a glass toolbar portalled to the body
- * that rises in on the first change and drops out once the draft is clean.
- *
- * Unlike the config bar it is not centred on the page: it takes the exact left edge and width
- * of the policy column, so it never covers the ladder being arranged. When the policy panel
- * stacks under the board it centres over the layout instead. (Sticky positioning cannot be
- * used: the page-transition layer is not the scroll container.)
- */
+
+
+
+
+
+
+
+
+
 export function RoutingSaveBar({
   visible,
   count,
@@ -50,7 +50,7 @@ export function RoutingSaveBar({
 }: RoutingSaveBarProps) {
   const { t } = useTranslation();
   const [mounted, setMounted] = useState(visible);
-  // Keep the last real count through the exit so the bar does not flash "0".
+
   const [shownCount, setShownCount] = useState(count);
   const dockRef = useRef<HTMLDivElement | null>(null);
   const barRef = useRef<HTMLDivElement | null>(null);
@@ -67,8 +67,8 @@ export function RoutingSaveBar({
 
   useActionBarHeightVar(dockRef, '--routing-action-bar-height', mounted);
 
-  // Follow the policy column through window resizes and sidebar collapse. Styles are written
-  // directly so tracking never re-renders the page.
+
+
   useLayoutEffect(() => {
     const dock = dockRef.current;
     const layout = layoutRef.current;

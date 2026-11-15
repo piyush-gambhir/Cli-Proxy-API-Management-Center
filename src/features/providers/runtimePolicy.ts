@@ -25,7 +25,7 @@ export function readRuntimePolicy(
   config?: ProviderKeyConfig | GeminiKeyConfig | OpenAIProviderConfig
 ): RuntimePolicyDraft {
   const source = config?.source;
-  // A key inherits missing/null fields from its group. OpenAI policies live on the group itself.
+
   const keys = source?.group.keys;
   const raw = source
     ? source.keyIndex === undefined
@@ -63,7 +63,7 @@ export function validateRuntimePolicy(
   return null;
 }
 
-/** Call validateRuntimePolicy before saving. Invalid drafts throw rather than silently lose rules. */
+
 export function buildRuntimePolicy(
   draft: RuntimePolicyDraft,
   supportsErrors = true

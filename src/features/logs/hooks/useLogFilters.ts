@@ -116,7 +116,7 @@ export function useLogFilters(options: UseLogFiltersOptions): UseLogFiltersRetur
   };
 }
 
-// Earlier UI versions persisted the formatter's surrounding path quotes.
+
 export function normalizeLogPathFilters(paths: string[]): string[] {
   return [
     ...new Set(
@@ -125,7 +125,7 @@ export function normalizeLogPathFilters(paths: string[]): string[] {
   ];
 }
 
-// Selected paths remain removable even after they leave the current log window.
+
 export function buildLogPathOptions(parsedLines: ParsedLogLine[], selectedPaths: string[]) {
   const counts = new Map<string, number>();
   parsedLines.forEach((line) => {

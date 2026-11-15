@@ -105,7 +105,7 @@ interface SidebarNavGroup {
 const flattenNavItems = (items: SidebarNavItem[]): SidebarNavLinkItem[] =>
   items.flatMap((item) => (item.kind === 'drawer' ? item.children : [item]));
 
-/** 点击菜单外或按下 Escape 时关闭弹出菜单 */
+
 function useMenuDismiss(
   open: boolean,
   menuRef: RefObject<HTMLDivElement | null>,
@@ -149,7 +149,7 @@ function PluginSidebarIcon({ src }: { src: string }) {
   );
 }
 
-// Header action icons - smaller size for header buttons
+
 const headerIconProps: SVGProps<SVGSVGElement> = {
   width: 16,
   height: 16,
@@ -359,7 +359,7 @@ export function MainLayout() {
   const isPluginResourcePage = location.pathname.startsWith('/plugin-pages');
   const showSidebarLabels = !sidebarCollapsed || sidebarOpen;
 
-  // Keep floating header height available to sticky mobile elements and overlays.
+
   useLayoutEffect(() => {
     const updateHeaderHeight = () => {
       const height = headerRef.current?.offsetHeight;
@@ -416,7 +416,7 @@ export function MainLayout() {
     return () => window.removeEventListener('resize', updateRailTooltipPosition);
   }, [railTooltip]);
 
-  // Keep the content center available to bottom overlays that align with the main area.
+
   useLayoutEffect(() => {
     const updateContentCenter = () => {
       const el = contentRef.current;
@@ -484,7 +484,7 @@ export function MainLayout() {
 
   useEffect(() => {
     fetchConfig().catch(() => {
-      // Ignore the initial failure; the login flow shows the user-facing prompt.
+
     });
   }, [fetchConfig]);
 

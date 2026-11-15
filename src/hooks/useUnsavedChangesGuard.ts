@@ -28,8 +28,8 @@ export function useUnsavedChangesGuard(options: UseUnsavedChangesGuardOptions) {
   const location = useLocation();
 
   const allowNextNavigation = useCallback(() => {
-    // Allow one programmatic navigation after successful save.
-    // A short window is used to avoid stale flags lingering when no navigation happens.
+
+
     allowNextNavigationUntilRef.current = Date.now() + 2_000;
     allowNextNavigationKeyRef.current = '';
   }, []);

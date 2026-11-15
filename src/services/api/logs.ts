@@ -1,6 +1,6 @@
-/**
- * 日志相关 API
- */
+
+
+
 
 import type { ApiError } from '@/types';
 import { apiClient } from './client';
@@ -59,7 +59,7 @@ const normalizeLogsResponse = (data: unknown): LogsResponse => {
   return {
     lines,
     latestAfter: latestTimestamp > 0 ? latestTimestamp : undefined,
-    // An explicit empty cursor clears the previous cursor after a reset.
+
     nextCursor: typeof data['next-cursor'] === 'string' ? data['next-cursor'] : undefined,
     cursorReset: booleanValue(data['cursor-reset']),
   };
@@ -88,7 +88,7 @@ const normalizeErrorLogsResponse = (data: unknown): ErrorLogsResponse => {
   };
 };
 
-/** Decode download bodies without interpreting successful log contents as API errors. */
+
 export const responseDataToText = async (data: unknown): Promise<string> => {
   if (data instanceof Blob) return data.text();
   if (data instanceof ArrayBuffer || ArrayBuffer.isView(data)) {
@@ -111,9 +111,9 @@ const downloadLog = async (path: string, options: LogsRequestOptions) => {
       timeout: LOGS_TIMEOUT_MS,
     });
   } catch (error: unknown) {
-    // The client already emitted unauthorized on 401 and normalized the Axios error.
-    // It retains the body in data/details, NOT response.data. Preserve its identity,
-    // status, transport code and body while enriching the human-readable error.
+
+
+
     if (error instanceof Error) {
       const apiError = error as ApiError;
       const body = apiError.data instanceof Blob ? apiError.data : apiError.details;
@@ -124,7 +124,7 @@ const downloadLog = async (path: string, options: LogsRequestOptions) => {
           apiError.message = parsed.message;
           if (parsed.apiCode !== undefined) apiError.apiCode = parsed.apiCode;
         } catch {
-          // Unreadable/non-JSON bodies must not mask the original transport failure.
+
         }
       }
     }

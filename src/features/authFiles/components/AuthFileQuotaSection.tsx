@@ -17,7 +17,7 @@ import { QUOTA_ADAPTERS, type QuotaCardState } from '@/features/quota/providers'
 import { hasClaudeUsageData } from '@/features/quota/providers/claude/data';
 import styles from './AuthFileQuota.module.scss';
 
-/** Bind the auth-file host's compact styles to the quota rendering contract. */
+
 const compactQuotaClasses = bindQuotaClasses(styles, 'AuthFileQuota.module.scss');
 
 const assertNever = (value: never): never => {
@@ -163,8 +163,8 @@ export function AuthFileQuotaSection(props: AuthFileQuotaSectionProps) {
   const quotaStatus = quota?.status ?? 'idle';
   const canRefreshQuota = !disableControls && !file.disabled && !resettingQuota;
   const canUseResetQuota = canRefreshQuota && quotaStatus !== 'loading';
-  // Idle state already renders a clickable "click to refresh" prompt; only offer the
-  // explicit refresh button once quota has been requested so it can be refreshed again.
+
+
   const showRefreshQuotaAction = quotaStatus !== 'idle';
   const showResetQuotaAction = quota !== undefined && Boolean(adapter.canResetQuota?.(quota));
   const resetQuotaAction =

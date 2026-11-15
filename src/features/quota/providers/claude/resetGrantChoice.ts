@@ -9,7 +9,7 @@ export function resetGrantKind(grant?: AnthropicResetGrant) {
   return grant?.resetType ?? 'unknown';
 }
 
-/** Never substitute the recommendation or another grant for an explicit choice. */
+
 export function canChooseResetGrant(
   status: AnthropicResetGrantStatus | null,
   pendingGrantId: string | undefined,
@@ -17,7 +17,7 @@ export function canChooseResetGrant(
   now: number
 ): grantId is string {
   if (typeof grantId !== 'string' || !grantId) return false;
-  // An uncertain claim must retry its original identity even if discovery no longer lists it.
+
   if (pendingGrantId) return pendingGrantId === grantId;
   if (!status || anthropicResetGrantBlocker(status, grantId)) return false;
   const grant = status.grants.find((candidate) => candidate.id === grantId)!;

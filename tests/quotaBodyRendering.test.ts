@@ -1,11 +1,11 @@
-/**
- * Provider bodies rendered end-to-end.
- *
- * Bodies receive their class map as a prop and import no stylesheet, so unlike
- * QuotaCard they can be rendered directly here — which is the only place the
- * "absolute plus countdown" pairing is checked as actual markup rather than as
- * a formatter's return value.
- */
+
+
+
+
+
+
+
+
 
 import { beforeAll, describe, expect, test } from 'bun:test';
 import { createElement } from 'react';
@@ -24,13 +24,13 @@ const classes = bindQuotaClasses(
   'test-host'
 );
 
-/**
- * useNow() freezes to module-load time under renderToStaticMarkup (it reads
- * getServerSnapshot), so instants are placed relative to the real clock.
- */
+
+
+
+
 const now = Date.now();
 
-// The i18n fallback is zh-CN; pin English so the countdown assertions read.
+
 beforeAll(async () => {
   await i18n.changeLanguage('en');
 });

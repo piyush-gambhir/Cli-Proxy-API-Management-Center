@@ -10,7 +10,7 @@ import type { LogBuffer } from './logBuffer';
 
 export type LogEntry = ParsedLogLine & { id: number };
 
-/** Cache only the current buffer. Repeated text remains separate records. */
+
 export function createLogParserCache() {
   let cache = new Map<number, LogEntry>();
   return (buffer: LogBuffer): LogEntry[] => {

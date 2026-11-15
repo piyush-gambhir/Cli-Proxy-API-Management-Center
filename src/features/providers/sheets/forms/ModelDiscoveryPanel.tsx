@@ -71,7 +71,7 @@ export function ModelDiscoveryPanel({
       catalog.filter((m) => selected.has(m.name)),
       catalog
     );
-    // Applied names now follow the parent again; keep choices for temporarily missing results.
+
     setChoices((prev) => {
       const next = new Map(prev);
       for (const { name } of catalog) next.delete(name);

@@ -1,11 +1,11 @@
-/**
- * Routing board API.
- *
- * Normalizes the stored v8 configuration and the credential list into routing members, and
- * serializes a routing plan back. There is no backend transaction across credentials and
- * configuration: credentials are written one by one first (each can be retried on its own), then
- * every config-side change goes out as a single `PATCH /config` built against a fresh document.
- */
+
+
+
+
+
+
+
+
 
 import { apiClient } from './client';
 import { authFilesApi } from './authFiles';
@@ -26,10 +26,10 @@ import { isRecord } from '@/utils/helpers';
 
 const MODEL_REQUEST_CONCURRENCY = 4;
 
-/** CPA disables a config API key by excluding every model. */
+
 const DISABLE_ALL_MODELS_RULE = '*';
 
-/** Built-in model channel CPA registers for a config API key without its own model list. */
+
 const KEY_FAMILY_CHANNELS: Record<RoutingKeyFamily, string> = {
   gemini: 'gemini',
   interactions: 'gemini-interactions',
@@ -47,9 +47,9 @@ export class RoutingConflictError extends Error {
   }
 }
 
-/* ---------------------------------------------------------------------------------------------
- * Reading
- * ------------------------------------------------------------------------------------------- */
+
+
+
 
 const readInteger = (value: unknown): number | null => {
   if (typeof value === 'number' && Number.isInteger(value)) return value;
@@ -65,7 +65,7 @@ const readStringList = (value: unknown): string[] =>
 const readPath = (root: unknown, path: readonly string[]): unknown =>
   path.reduce<unknown>((value, key) => (isRecord(value) ? value[key] : undefined), root);
 
-/** Configured model entries are callable by their alias, or their name when no alias is set. */
+
 const readModelIds = (value: unknown): string[] => {
   if (!Array.isArray(value)) return [];
   const seen = new Set<string>();
@@ -99,7 +99,7 @@ export function normalizeRoutingStrategy(value: unknown): RoutingStrategy {
     return 'weighted-round-robin';
   }
   if (['fill-first', 'fillfirst', 'ff'].includes(text)) return 'fill-first';
-  // CPA runs an unrecognised strategy as round-robin.
+
   return 'round-robin';
 }
 
@@ -127,7 +127,7 @@ function keyMembers(raw: unknown, family: RoutingKeyFamily): RoutingMember[] {
     if (!isRecord(group) || !Array.isArray(group.keys)) return;
     group.keys.forEach((key, keyIndex) => {
       if (!isRecord(key)) return;
-      // Group fields are shared; a non-null key field overrides them (as CPA expands v8 groups).
+
       const effective: Record<string, unknown> = { ...group };
       for (const [field, value] of Object.entries(key)) {
         if (value !== null) effective[field] = value;
@@ -183,7 +183,7 @@ function compatMembers(raw: unknown): RoutingMember[] {
         weight: readInteger(key.weight),
         label: maskApiKey(readText(key['api-key'])) || `#${index + 1}`,
       })),
-      // A keyless provider still schedules once.
+
       keyCount: Math.max(1, keys.length),
       disabled: group.disabled === true,
       locked: false,
@@ -207,8 +207,8 @@ const stripJsonExtension = (name: string): string =>
 function credentialMember(file: AuthFileItem): RoutingMember | null {
   const name = readText(file.name);
   if (!name) return null;
-  // Identity fallback matches the credential page: email, then project, then the file name.
-  // Never show account fields: API-key credentials may expose the key through them.
+
+
   const base = stripJsonExtension(name);
   const primary = readText(file.email) || readText(file.projectId) || base;
   return {
@@ -231,7 +231,7 @@ function credentialMember(file: AuthFileItem): RoutingMember | null {
   };
 }
 
-/** Every schedulable member of the stored configuration and the credential list. */
+
 export function buildRoutingBoard(raw: unknown, files: readonly AuthFileItem[]): RoutingBoard {
   return {
     members: [
@@ -244,9 +244,9 @@ export function buildRoutingBoard(raw: unknown, files: readonly AuthFileItem[]):
   };
 }
 
-/* ---------------------------------------------------------------------------------------------
- * Writing
- * ------------------------------------------------------------------------------------------- */
+
+
+
 
 export interface CredentialWrite {
   key: string;
@@ -268,7 +268,7 @@ export function credentialWrites(board: RoutingBoard, plan: RoutingPlan): Creden
 
 const cloneJson = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 
-/** Response metadata the backend injects on read and ignores on write. */
+
 const stripAuthIndex = (value: Record<string, unknown>) => {
   delete value.auth_index;
   delete value['auth-index'];
@@ -279,12 +279,12 @@ const setWeight = (key: Record<string, unknown>, weight: number | null) => {
   else key.weight = weight;
 };
 
-/**
- * The single `PATCH /config` body for every config-side change, built against the latest
- * document. The backend replaces lists whole, so each touched family is sent complete; a
- * position whose key or provider name no longer matches is a conflict, not a guess.
- * Returns null when nothing config-side changed.
- */
+
+
+
+
+
+
 export function buildRoutingConfigPatch(
   latestRaw: unknown,
   board: RoutingBoard,
@@ -329,7 +329,7 @@ export function buildRoutingConfigPatch(
       if (!isRecord(key) || readText(key['api-key']) !== location.apiKey) {
         throw new RoutingConflictError();
       }
-      // A key-level priority overrides the group's shared one for this key only.
+
       if (priority !== undefined) key.priority = priority;
       if (weights) setWeight(key, weights[0] ?? null);
     } else if (location.kind === 'compat') {
@@ -361,16 +361,16 @@ export function buildRoutingConfigPatch(
   return Object.keys(patch).length ? patch : null;
 }
 
-/* ---------------------------------------------------------------------------------------------
- * Requests
- * ------------------------------------------------------------------------------------------- */
+
+
+
 
 export interface RoutingApplyResult {
-  /** Member keys (and 'settings') whose changes were written. */
+
   applied: string[];
-  /** The first write that failed: a member key, or 'config' for the configuration patch. */
+
   failed: { key: string; error: unknown } | null;
-  /** Writes skipped because an earlier one failed. */
+
   notAttempted: string[];
 }
 
@@ -404,16 +404,16 @@ async function forEachWithConcurrency<T>(
 }
 
 export const routingApi = {
-  /** The stored v8 configuration document, unnormalized. */
+
   getRawConfig: () => apiClient.get<unknown>('/config'),
 
-  /** The credentials the board shows next to the stored configuration. */
+
   async listCredentials(): Promise<AuthFileItem[]> {
     const response = await authFilesApi.list();
     return Array.isArray(response.files) ? response.files : [];
   },
 
-  /** Built-in model ids per channel; a channel that cannot be read reports null. */
+
   loadChannelModels: (
     channels: readonly string[],
     onResult: (channel: string, models: string[] | null) => void
@@ -424,7 +424,7 @@ export const routingApi = {
       onResult
     ),
 
-  /** Live registry model ids per credential; a credential that cannot be read reports null. */
+
   loadCredentialModels: (
     names: readonly string[],
     onResult: (name: string, models: string[] | null) => void

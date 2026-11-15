@@ -8,8 +8,8 @@ import type {
 import { assertConfigListsUnchanged } from '@/services/api/configPatch';
 import { readConfigBoolean } from './visualConfigBoolean';
 
-// Source: backend config_v8.go/config_types.go. Shared upstream behavior lives
-// under upstream.*/client.codex; only OAuth-only provider paths keep oauth.providers.*.
+
+
 export const ADDITION_FIELDS = [
   {
     key: 'routingSessionAffinitySubagents',
@@ -198,7 +198,7 @@ export function writeVisualAdditions(
     doc.setIn(path, kind === 'integer' ? Number(value) : value);
   }
 }
-/** Build from the loaded/draft AST, not the latest list's positional nodes. */
+
 export function writeICEServers(
   doc: Doc,
   sourceYaml: string,
@@ -237,21 +237,21 @@ export function writeICEServers(
   });
   parents(source, ICE_PATH);
   if (isSeq(seq)) {
-    // YAML attaches the first row's leading comment to the sequence itself.
+
     const first = seq.items[0];
     if (isMap(first)) first.commentBefore = seq.commentBefore;
     seq.items = rows;
     seq.commentBefore = rows[0]?.commentBefore;
     if (rows[0]) rows[0].commentBefore = undefined;
   } else source.setIn(ICE_PATH, source.createNode(rows));
-  // Empty list is explicit: it clears the backend list, including credentials.
+
   const draft = source.toString();
   if (guard) assertConfigListsUnchanged(serverYaml, draft, doc.toString(), [ICE_PATH]);
   parents(doc, ICE_PATH);
   doc.setIn(ICE_PATH, source.getIn(ICE_PATH, true));
 }
 
-/** Go time.ParseDuration grammar (not JS dates); bounds are signed int64 nanoseconds. */
+
 export function goDurationSeconds(input: string): number | undefined {
   if (/^[+-]?0$/.test(input)) return 0;
   if (!/^[+-]?(?:(?:\d+(?:\.\d*)?|\.\d+)(?:ns|us|µs|μs|ms|s|m|h))+$/.test(input)) return undefined;
@@ -327,8 +327,8 @@ export function validateVisualAdditions(
     'antigravityConnectionPoolIdleTimeout',
     'codexStreamBootstrapTimeout',
   ] as const) {
-    // The backend accepts these strings with runtime fallbacks. Existing values must not
-    // block unrelated edits, but newly edited durations still receive strict validation.
+
+
     if (dirtyFields && !dirtyFields.has(key)) continue;
     const value = values[key].trim();
     if (!value) continue;
@@ -341,10 +341,10 @@ export function validateVisualAdditions(
     if (duration === undefined) errors[key] = 'invalid_duration';
     else if (codex && duration < 0) errors[key] = 'invalid_duration';
     else if (key === 'videoResultAuthCacheTTL' && duration <= 0) errors[key] = 'positive_duration';
-    // Pool timeout <= 0 switches to short-lived connections; > 210s is clamped by the backend.
+
   }
   const timezone = values.claudeHeaderTimezone.trim();
-  // Go time.LoadLocation also accepts Local (the backend host's local timezone).
+
   if (timezone && timezone !== 'Local') {
     try {
       if (/^[+-]/.test(timezone)) throw new Error('Not an IANA timezone');
@@ -353,7 +353,7 @@ export function validateVisualAdditions(
       errors.claudeHeaderTimezone = 'invalid_timezone';
     }
   }
-  // uint16 decoding applies even to a disabled relay; operational constraints do not.
+
   for (const key of ['codexLiveMediaRelayUDPPortMin', 'codexLiveMediaRelayUDPPortMax'] as const) {
     const value = values[key].trim();
     if (value && (!/^\d+$/.test(value) || Number(value) > 65535))

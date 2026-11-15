@@ -11,7 +11,7 @@ import {
   ToggleSetting,
 } from '../fields/FieldPrimitives';
 
-/** OAuth/file-backed provider behavior, independent of API-key provider configuration. */
+
 export function SectionOAuthBehavior({
   values,
   validationErrors,

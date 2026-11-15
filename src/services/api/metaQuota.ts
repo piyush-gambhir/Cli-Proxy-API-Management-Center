@@ -39,13 +39,13 @@ const parseWindow = (
   };
 };
 
-/**
- * Parse only fields used by the quota UI. The upstream response may also carry
- * api_key and PII; retaining the source object (or spreading it) here is forbidden.
- * A valid object without subs_usage is a successful observation with unknown quota
- * (for example, before the account's first request), not a zero or a request error.
- * Invalid response bodies return null so transport/protocol errors stay distinct.
- */
+
+
+
+
+
+
+
 export function parseMetaQuotaPayload(payload: unknown): MetaQuotaData | null {
   if (typeof payload === 'string') {
     try {

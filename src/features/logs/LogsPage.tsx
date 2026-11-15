@@ -132,7 +132,7 @@ export function LogsPage() {
     try {
       const res = await logsApi.fetchErrorLogs();
       if (!requests.errors.isCurrent(request)) return;
-      // API 返回 { files: [...] }
+
       setErrorLogs(Array.isArray(res.files) ? res.files : []);
     } catch (err: unknown) {
       if (!requests.errors.isCurrent(request)) return;
@@ -232,7 +232,7 @@ export function LogsPage() {
       requests.viewer.invalidate();
     };
 
-    // Store subscriptions invalidate synchronously, before a response can beat effect cleanup.
+
     const unsubscribeAuth = useAuthStore.subscribe((next, previous) => {
       if (
         next.apiBase === previous.apiBase &&

@@ -1,7 +1,7 @@
-/**
- * Provider quota card: identity, loading/error state, quota body, and actions.
- * Claude observations remain visible while refreshing or after a failed read.
- */
+
+
+
+
 
 import { useState, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +28,7 @@ import { useCodexCreditOverage } from '../providers/codex/useCodexCreditOverage'
 import bodyStyles from './QuotaBody.module.scss';
 import styles from './QuotaCard.module.scss';
 
-/** Bind the quota-page styles to the shared rendering contract. */
+
 const quotaClasses = bindQuotaClasses(bodyStyles, 'QuotaBody.module.scss');
 
 export type QuotaCardProps = {
@@ -37,9 +37,9 @@ export type QuotaCardProps = {
   resolvedTheme: ResolvedTheme;
   canRefresh: boolean;
   resetting: boolean;
-  /** Initial cascade delay; null disables entrance motion for later mounts. */
+
   entranceDelayMs?: number | null;
-  /** Codex only: credentials in the panel sharing this account user's credit setting. */
+
   creditOverageSharedCount?: number;
   onRefresh: () => void;
   onReset: () => void;
@@ -64,7 +64,7 @@ export function QuotaCard(props: QuotaCardProps) {
     entry.type === 'claude' && hasClaudeUsageData(quota as ClaudeQuotaState | undefined);
   const displayName = getQuotaDisplayName(file);
 
-  // Capture the entrance delay only at mount, without a render-time ref read.
+
   const [mountEntranceDelayMs] = useState<number | null>(entranceDelayMs ?? null);
   const entranceStyle =
     mountEntranceDelayMs === null
@@ -93,7 +93,7 @@ export function QuotaCard(props: QuotaCardProps) {
     quota?.errorStatus,
     quota?.error || t('common.unknown_error')
   );
-  // Claude banked resets join the plan chip row; their expiry list follows it.
+
   const showClaudeReset = entry.type === 'claude' && status === 'success';
   const claudePlanItems = showClaudeReset ? (
     <span className={quotaClasses.codexPlanItem}>

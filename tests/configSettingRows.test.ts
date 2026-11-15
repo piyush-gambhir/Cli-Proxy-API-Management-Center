@@ -1,5 +1,5 @@
-// 设置行原语：开关 / 输入 / 下拉 / 区块编辑器共用一副骨架，
-// 两列网格的落单补整行逻辑，以及每种行的标签与描述关联。
+
+
 
 import { describe, expect, test } from 'bun:test';
 import { createElement, Fragment } from 'react';
@@ -17,7 +17,7 @@ const noop = () => {};
 const render = (element: ReturnType<typeof createElement>) => renderToStaticMarkup(element);
 const attr = (tag: string, name: string) => tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1];
 
-/** 回显 SettingList 注入的 wide，用来观察补整行结果。 */
+
 function Probe({ name, wide }: { name: string; wide?: boolean }) {
   return createElement('i', { 'data-name': name, 'data-wide': String(Boolean(wide)) });
 }
@@ -36,7 +36,7 @@ describe('two-column row spans', () => {
   });
 
   test('a row left alone before a full-width row spans instead of leaving a hole', () => {
-    // a b / c [wide] / d → c 与 d 都会落单
+
     expect(resolveRowSpans([false, false, false, true, false])).toEqual([
       false,
       false,
@@ -44,7 +44,7 @@ describe('two-column row spans', () => {
       true,
       true,
     ]);
-    // [wide] a b → 显式整行后重新从行首配对
+
     expect(resolveRowSpans([true, false, false])).toEqual([true, false, false]);
   });
 

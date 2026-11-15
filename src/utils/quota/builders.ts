@@ -1,6 +1,6 @@
-/**
- * Builder functions for constructing quota data structures.
- */
+
+
+
 
 import type {
   AntigravityQuotaBucket,
@@ -43,13 +43,13 @@ function getAntigravityWindowOrder(bucket: AntigravityQuotaBucket): number {
   return ANTIGRAVITY_BUCKET_WINDOW_ORDER.get(window) ?? Number.MAX_SAFE_INTEGER;
 }
 
-/**
- * Window length in hours for an Antigravity bucket.
- *
- * Antigravity states the period explicitly in `window`, so unlike Kimi this is
- * a lookup rather than a keyword guess. The accepted spellings mirror
- * ANTIGRAVITY_BUCKET_WINDOW_ORDER above.
- */
+
+
+
+
+
+
+
 function antigravityPeriodHours(window: string | undefined): number | null {
   switch ((window ?? '').trim().toLowerCase()) {
     case '5h':
@@ -183,7 +183,7 @@ function kimiResetHint(data: Record<string, unknown>): string | undefined {
 
 type KimiTimeUnit = 'second' | 'minute' | 'hour' | 'day' | 'week';
 
-/** Kimi currently sends protobuf-style values such as TIME_UNIT_MINUTE. */
+
 function normalizeKimiTimeUnit(rawTimeUnit: unknown): KimiTimeUnit | null {
   const unit =
     typeof rawTimeUnit === 'string'
@@ -246,13 +246,13 @@ function kimiLimitLabel(
   };
 }
 
-/**
- * Absolute reset instant for a Kimi row.
- *
- * Kimi sends either an absolute timestamp or a relative countdown; the display
- * hint collapses both to something like "3h 20m", which can't be positioned on
- * a timeline. This keeps the instant.
- */
+
+
+
+
+
+
+
 function kimiResetMs(data: Record<string, unknown>): number | null {
   const absolute = resolveResetMs([data.reset_at, data.resetAt, data.reset_time, data.resetTime]);
   if (absolute !== null) return absolute;
@@ -265,7 +265,7 @@ function kimiResetMs(data: Record<string, unknown>): number | null {
   return null;
 }
 
-/** Window length in hours from explicit duration metadata, then label/scope. */
+
 function kimiPeriodHours(
   label: string | undefined,
   duration: number | null = null,
@@ -277,7 +277,7 @@ function kimiPeriodHours(
     if (unit === 'hour') return duration;
     if (unit === 'day') return duration * 24;
     if (unit === 'week') return duration * 7 * 24;
-    // Match the card-label fallback: an absent or unknown unit is treated as minutes.
+
     return duration / 60;
   }
 
@@ -434,14 +434,14 @@ const emptyXaiBillingSummary = (): XaiBillingSummary => ({
   usedPercent: null,
 });
 
-/**
- * Reset instant and length of an xAI period.
- *
- * The length comes from the period's own start → end span rather than being
- * assumed, so a non-standard cycle still positions correctly. Null when the
- * payload states an end without a start; the caller supplies the default it
- * knows is right for the period type.
- */
+
+
+
+
+
+
+
+
 function xaiPeriodInstants(
   periodStart: string | undefined,
   periodEnd: string | undefined
@@ -572,11 +572,11 @@ export function mergeXaiBillingSummaries(
   if (!primary) return fallback;
   if (!fallback) return primary;
 
-  // Keep the active period atomic. The primary (weekly endpoint) and fallback
-  // (monthly endpoint) describe different clocks, so borrowing one endpoint's
-  // dates for the other's period type would turn a billing rollover into a
-  // quota reset. Keep usage with that same period too: monthly spending must
-  // not replace an unavailable weekly percentage.
+
+
+
+
+
   const periodSummary =
     primary.periodType !== 'unknown'
       ? primary

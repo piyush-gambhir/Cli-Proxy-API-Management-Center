@@ -30,7 +30,7 @@ const parseUnixSeconds = (value: unknown): number | null => {
     : null;
 };
 
-/** Normalize the live Connect-RPC response, never auth-file metadata or quota.signals. */
+
 export function readDevinQuotaResponse(
   payload: unknown,
   observedAtMs = Date.now()

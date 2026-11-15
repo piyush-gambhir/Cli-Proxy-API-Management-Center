@@ -8,7 +8,7 @@ describe('quota limit labels use one wording across providers', () => {
   for (const locale of LOCALES) {
     test(`${locale}: the same kind of limit has the same name on every provider`, async () => {
       const m = (await Bun.file(`src/i18n/locales/${locale}.json`).json()) as Messages;
-      // Codex and Antigravity labels are the reference wording.
+
       const fiveHour = m.codex_quota.primary_window;
       const weekly = m.codex_quota.secondary_window;
       const daily = m.antigravity_quota.daily_limit;

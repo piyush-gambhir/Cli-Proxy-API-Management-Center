@@ -50,7 +50,7 @@ export type AuthFileCardProps = {
   cooldownResetting: Record<string, boolean>;
   quotaFilterType: AuthFileQuotaFilter;
   statusBarCache: Map<string, AuthFileStatusBarData>;
-  /** One-time entrance delay; null/undefined disables entrance motion. */
+
   entranceDelayMs?: number | null;
   onShowModels: (file: AuthFileItem) => void;
   onDownload: (name: string) => void;
@@ -113,13 +113,13 @@ export function AuthFileCard(props: AuthFileCardProps) {
   const priorityValue = Number.isSafeInteger(file.priority) ? file.priority : undefined;
   const weightValue = Number.isSafeInteger(file.weight) ? file.weight : undefined;
   const noteValue = typeof file.note === 'string' ? file.note.trim() : '';
-  // Lead with account identity and use the file name as secondary text.
+
   const identity = deriveAuthFileIdentity(file);
   const siwcExpires = file.siwcExpiresAt
     ? formatDateTimeValue(file.siwcExpiresAt, i18n.language)
     : '';
 
-  // Capture the entrance delay once so subsequent updates do not interrupt it.
+
   const [mountEntranceDelayMs] = useState<number | null>(entranceDelayMs ?? null);
   const cardClasses = [
     styles.card,

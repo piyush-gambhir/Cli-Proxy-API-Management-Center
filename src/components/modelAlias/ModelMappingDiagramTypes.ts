@@ -6,14 +6,14 @@ export interface AuthFileModelItem {
 }
 
 export interface SourceNode {
-  id: string; // unique: provider::name
+  id: string;
   provider: string;
   name: string;
-  aliases: { alias: string; fork: boolean }[]; // all aliases this source maps to
+  aliases: { alias: string; fork: boolean }[];
 }
 
 export interface AliasNode {
-  id: string; // alias
+  id: string;
   alias: string;
   sources: SourceNode[];
 }

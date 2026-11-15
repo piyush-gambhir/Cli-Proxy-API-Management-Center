@@ -6,8 +6,8 @@ const page = readSource('src/features/logs/LogsPage.tsx');
 const styles = readSource('src/features/logs/LogsPage.module.scss');
 const layout = readSource('src/styles/layout.scss');
 
-// Structural guards complement the browser viewport/interaction checks. They do not
-// assert browser layout: the important contract is a single flexible scrolling viewer.
+
+
 describe('log workspace layout contract', () => {
   test('viewer uses remaining space instead of resolution-specific height budgets', () => {
     const panel = styles.match(/\.logPanel \{([^}]+)\}/)?.[1] ?? '';
@@ -71,7 +71,7 @@ describe('log workspace layout contract', () => {
   test('routine buffer eviction does not add a persistent warning banner', () => {
     expect(page).not.toContain("t('logs.buffer_evicted')");
     expect(page).not.toContain('logBuffer.evicted > 0');
-    // A lost reading position and a backend cursor reset remain actionable notices.
+
     expect(page).toContain("t('logs.history_evicted')");
     expect(page).toContain("t('logs.cursor_reset_notice')");
   });

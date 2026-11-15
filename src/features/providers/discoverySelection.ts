@@ -1,7 +1,7 @@
 import type { ModelInfo } from '@/utils/models';
 import type { ModelEntryInput } from './types';
 
-/** Discovery selection is per upstream name, not per alias row. */
+
 export function discoveryCatalog(models: ModelInfo[]): ModelInfo[] {
   const seen = new Set<string>();
   return models.flatMap((model) => {
@@ -12,7 +12,7 @@ export function discoveryCatalog(models: ModelInfo[]): ModelInfo[] {
   });
 }
 
-/** Explicit choices survive reloads and parent edits; untouched names follow the parent. */
+
 export function resolveDiscoverySelection(
   catalog: ModelInfo[],
   existingNames: Set<string>,
@@ -26,7 +26,7 @@ export function resolveDiscoverySelection(
   );
 }
 
-/** Only visible names are changed, preserving staged choices hidden by search or reload. */
+
 export function setDiscoveryChoices(
   choices: ReadonlyMap<string, boolean>,
   names: string[],
@@ -55,7 +55,7 @@ export function discoverySelectionDiff(
   return { added, removed };
 }
 
-/** Retain every alias and its metadata; discovery may remove only names in its catalog. */
+
 export function syncDiscoveredModels(
   current: ModelEntryInput[],
   picked: ModelInfo[],
@@ -70,7 +70,7 @@ export function syncDiscoveredModels(
   const retained = new Set(next.map(({ name }) => name.trim()));
   const additions = selected.filter(({ name }) => !retained.has(name));
   if (additions.length) {
-    // Replace only plain editor placeholders, never a row carrying metadata.
+
     for (let index = next.length - 1; index >= 0; index--) {
       const row = next[index];
       if (

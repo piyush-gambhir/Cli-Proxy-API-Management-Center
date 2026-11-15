@@ -1,7 +1,7 @@
-/**
- * xAI 额度数据层：免费档账单 + 付费档健康探测回退。
- * React-free / SCSS-free —— 由 tests/xaiPaidQuotaFallback.test.ts 直接消费。
- */
+
+
+
+
 
 import type { TFunction } from 'i18next';
 import type { AuthFileItem, XaiBillingSummary, XaiQuotaState } from '@/types';
@@ -230,7 +230,7 @@ const fetchXaiQuota = async (file: AuthFileItem, t: TFunction): Promise<XaiBilli
   try {
     return await requestXaiPaidHealth(authIndex);
   } catch {
-    // Preserve the original free billing error when neither account mode can be queried.
+
     throw billingError;
   }
 };

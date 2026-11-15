@@ -1,8 +1,8 @@
-/**
- * Codex card row for the account-level "use credits after the usage limit" setting.
- * Host-owned (passed through the body's afterPlan slot) so CodexQuotaBody stays pure;
- * the layout reuses the Claude extra-usage label + state pairing.
- */
+
+
+
+
+
 
 import { useTranslation } from 'react-i18next';
 import type { CodexCreditOverageEntry } from '@/types';
@@ -17,7 +17,7 @@ export interface CodexCreditOverageRowProps {
   entry: CodexCreditOverageEntry | undefined;
   classes: QuotaClassMap;
   disabled: boolean;
-  /** Credential name for the action's accessible name; cards repeat the visible label. */
+
   name: string;
   onManage: () => void;
 }

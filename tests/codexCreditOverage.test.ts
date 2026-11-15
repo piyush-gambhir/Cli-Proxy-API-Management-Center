@@ -1,7 +1,7 @@
-/**
- * Codex account-level "use credits after the usage limit" setting: request contract,
- * outcome classification, and the account-user state kept in the quota store.
- */
+
+
+
+
 
 import { afterEach, beforeEach, describe, expect, mock, spyOn, test } from 'bun:test';
 import * as apiCallModule from '@/services/api/apiCall';
@@ -62,7 +62,7 @@ const mockApiCall = () => {
   return request;
 };
 
-/** A pending upstream answer the test releases explicitly. */
+
 const deferredApiCall = () => {
   let release: (result: ApiCallResult) => void = () => {};
   const request = mockApiCall().mockImplementation(
@@ -180,11 +180,11 @@ describe('Codex credit overage outcome classification', () => {
   });
 
   test.each([
-    // The management API refused before forwarding, e.g. the token could not be resolved.
+
     [400, 'failed'],
-    // The upstream call failed in transit and may still have reached ChatGPT.
+
     [502, 'unconfirmed'],
-    // Network failure or client timeout.
+
     [undefined, 'unconfirmed'],
   ])('maps a thrown management error with status %p to %s', async (status, code) => {
     const error = Object.assign(new Error('boom'), status === undefined ? {} : { status });
@@ -203,7 +203,7 @@ describe('applyCodexCreditOverage', () => {
     });
     expect(request).toHaveBeenCalledTimes(1);
     expect(stored()).toMatchObject({ status: 'known', value: true });
-    // Another credential of the same account user reads the same entry.
+
     expect(codexCreditOverageKey(codexFile({ name: 'b.json', auth_index: 'idx-b' }))).toBe(KEY);
   });
 

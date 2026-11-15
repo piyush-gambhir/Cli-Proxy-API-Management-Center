@@ -3,9 +3,9 @@ import { useQuotaStore } from '@/stores/useQuotaStore';
 import { getQuotaCacheKey } from '@/utils/quota/identity';
 import type { QuotaFileEntry } from '../../logic';
 
-/** Devin's active management query runs once per visible credential per visit.
- * Other providers retain their existing click-to-load behavior. No polling.
- */
+
+
+
 export function useDevinQuotaAutoLoad(
   entries: QuotaFileEntry[],
   disabled: boolean,
@@ -27,7 +27,7 @@ export function useDevinQuotaAutoLoad(
       ]);
       if (attempted.current.has(key)) return false;
       attempted.current.add(key);
-      // An explicit refresh already started in this effect cycle counts too.
+
       return useQuotaStore.getState().devinQuota[getQuotaCacheKey(file)]?.status !== 'loading';
     });
     if (targets.length > 0) void loadQuota(targets);

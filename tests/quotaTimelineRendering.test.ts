@@ -40,9 +40,9 @@ describe('QuotaTimeline rendering', () => {
       })
     );
 
-    // The next weekly period starts on Sunday 08/02. The button remains the
-    // shortcut back to Today (aria-label/title), but its visible label now
-    // reflects the period selected with the previous/next arrows.
+
+
+
     expect(markup).toMatch(
       /<button type="button" aria-label="[^"]+" title="[^"]+">08\/02<\/button>/
     );

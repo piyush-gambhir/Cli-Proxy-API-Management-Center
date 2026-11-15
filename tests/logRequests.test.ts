@@ -58,7 +58,7 @@ describe('log request ownership', () => {
     const { queue, state, read } = createReader();
     const old = deferred<{ lines: string[]; cursor: string }>();
     const reading = read(old.promise);
-    queue.startRead(false); // A queued refresh before clear must also be discarded.
+    queue.startRead(false);
     const clearing = queue.startClear()!;
     state.lines = [];
     state.cursor = '';
@@ -99,7 +99,7 @@ describe('log request ownership', () => {
     const old = deferred<{ lines: string[]; cursor: string }>();
     const fresh = deferred<{ lines: string[]; cursor: string }>();
     const first = read(old.promise);
-    queue.invalidate(); // Session/config change or effect cleanup.
+    queue.invalidate();
     const second = read(fresh.promise);
     queue.startRead(false);
     old.reject(new Error('obsolete failure'));

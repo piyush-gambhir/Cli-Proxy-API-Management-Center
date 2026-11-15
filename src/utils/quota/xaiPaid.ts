@@ -1,6 +1,6 @@
-/**
- * Helpers for recognizing paid xAI OAuth credentials and representing API health.
- */
+
+
+
 
 import type { AuthFileItem, XaiBillingSummary } from '@/types';
 
@@ -87,8 +87,8 @@ export const isPaidXaiAuthFile = (file: AuthFileItem | Record<string, unknown>):
   const prefixes = readStrings(records, ['prefix']);
   const hasPaidPrefix = prefixes.some((prefix) => prefix.toLowerCase() === XAI_PAID_PREFIX);
 
-  // Route hints are user-configurable and do not prove account tier on their own. Combining both
-  // recognizes the documented paid pool setup without misclassifying free OAuth credentials.
+
+
   if (usesOfficialApi && hasPaidPrefix) return true;
 
   const tokens = readStrings(records, [

@@ -1,6 +1,6 @@
 @use '../../../styles/mixins' as *;
 
-/* 全局字段搜索 combobox：入场 160ms 淡入上浮，关闭瞬时 */
+
 
 .searchBox {
   position: relative;
@@ -77,7 +77,7 @@
   }
 }
 
-/* Keyboard/pointer "active" option — the aria-activedescendant target. */
+
 .searchResultItemActive {
   background: color-mix(in srgb, var(--text-primary) 6%, transparent);
 }

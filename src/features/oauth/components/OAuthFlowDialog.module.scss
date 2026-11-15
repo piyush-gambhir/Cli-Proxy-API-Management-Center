@@ -1,18 +1,18 @@
 @use '../../../styles/mixins' as *;
 @use '../sponsor' as *;
 
-/* ============================================================
- * 授权对话框：品牌头 → 步骤（打开授权页 / 设备码 / 回调）→ 底部实时状态条。
- * 主操作是墨色药丸；次操作描边药丸；遥测（链接、设备码、状态）一律 mono。
- * ============================================================ */
 
-/* ---------- 壳层：局部改写全局 modal 的头/体/脚与动效 ---------- */
+
+
+
+
+
 
 :global(.modal).dialog {
   border-radius: 18px;
   transform-origin: 50% 45%;
 
-  /* 全局 modal 是回弹放大 + 收缩到 0；这里换成 Premium 档：无回弹、退出更快 */
+
   &:global(.modal-entering) {
     animation: oauth-dialog-in 280ms var(--ease-out-strong, ease-out) both;
   }
@@ -61,7 +61,7 @@
   }
 }
 
-/* ---------- 品牌头 ---------- */
+
 
 .heading {
   display: flex;
@@ -114,7 +114,7 @@
   color: var(--text-tertiary);
 }
 
-/* ---------- 视图切换：容器先落定，内容随后 60ms 淡入（次级运动） ---------- */
+
 
 .view {
   animation: oauth-view-in 220ms var(--ease-out-strong, ease-out) 60ms backwards;
@@ -174,7 +174,7 @@
   overflow-wrap: anywhere;
 }
 
-/* ---------- 步骤：mono 序号 + 细竖轨 ---------- */
+
 
 .steps {
   counter-reset: oauth-step;
@@ -197,7 +197,7 @@
     padding-bottom: 0;
   }
 
-  /* 竖轨连到下一个序号 */
+
   &:not(:last-child)::before {
     content: '';
     position: absolute;
@@ -271,7 +271,7 @@
   overflow-wrap: anywhere;
 }
 
-/* ---------- 授权链接 ---------- */
+
 
 .urlField {
   display: flex;
@@ -327,7 +327,7 @@
   }
 }
 
-/* ---------- 设备码 ---------- */
+
 
 .codeRow {
   display: flex;
@@ -350,7 +350,7 @@
   user-select: all;
 }
 
-/* ---------- 回调 ---------- */
+
 
 .callbackRow {
   display: flex;
@@ -389,7 +389,7 @@
   color: var(--viz-success);
 }
 
-/* ---------- 按钮 ---------- */
+
 
 %pill {
   @include button-reset;
@@ -431,7 +431,7 @@
   }
 }
 
-/* 墨色药丸（深色主题自动反相） */
+
 .primary {
   @extend %pill;
   background: var(--text-primary);
@@ -484,7 +484,7 @@
   }
 }
 
-/* ---------- 底部状态条 ---------- */
+
 
 .statusBar {
   display: flex;
@@ -521,7 +521,7 @@
   border-radius: 50%;
   background: currentColor;
 
-  /* 轮询中的呼吸环：说明系统正在等，而不是卡住 */
+
   &::after {
     content: '';
     position: absolute;
@@ -560,7 +560,7 @@
   text-align: right;
 }
 
-/* ---------- 成功 ---------- */
+
 
 .result {
   display: flex;
@@ -633,13 +633,13 @@
   margin-top: 14px;
 }
 
-/* ---------- 赞助商对话框（Kimi）：延续卡片的品牌蓝 ---------- */
+
 
 :global(.modal).sponsorDialog {
   background:
     radial-gradient(90% 60% at 100% 0%, sponsor-tint(12%), transparent 60%), var(--bg-primary);
 
-  /* 与赞助卡一致：图标自带圆角方块，直接铺满，不再套一层描边容器 */
+
   .headingGlyph {
     border: 0;
     background: none;
@@ -674,7 +674,7 @@
   }
 }
 
-/* ---------- 窄屏 ---------- */
+
 
 @include mobile {
   :global(.modal).dialog {
@@ -699,7 +699,7 @@
     flex-direction: column;
   }
 
-  /* 纵向堆叠时 flex: 1 会沿主轴压扁输入框 */
+
   .callbackInput {
     flex: none;
   }

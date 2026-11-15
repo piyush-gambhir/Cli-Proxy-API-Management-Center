@@ -399,13 +399,13 @@ describe('Claude usage snapshot rendering and retention', () => {
   });
 
   test('offers read-only refresh for every non-idle auth-file quota, including Claude', () => {
-    // This host imports SCSS modules, so cover the action wiring here and
-    // verify its interaction with the production build in the browser.
+
+
     const source = readFileSync(
       new URL('../src/features/authFiles/components/AuthFileQuotaSection.tsx', import.meta.url),
       'utf8'
     );
-    // Idle quota is refreshed via the clickable idle prompt; avoid a duplicate button.
+
     expect(source).toContain("const showRefreshQuotaAction = quotaStatus !== 'idle';");
     expect(source).toContain('{showRefreshQuotaAction && (');
     expect(source).toContain('<div className={styles.quotaCardActions}>');
@@ -440,7 +440,7 @@ describe('Claude usage snapshot rendering and retention', () => {
 
   test('extra usage and balances share the window-row typography', () => {
     const markup = render({ ...quota, planType: 'plan_max' });
-    // State belongs with the label; the right-hand telemetry is numeric.
+
     expect(markup).toContain(
       '<div class="claudeExtraUsageTitle"><span class="quotaModel">Extra Usage</span><span class="claudeExtraUsageStatus">Enabled</span></div><div class="quotaMeta"><span class="quotaPercent">25% used</span>'
     );
@@ -497,7 +497,7 @@ describe('Claude usage snapshot rendering and retention', () => {
     expect(chip).toBeGreaterThan(plan);
     expect(after).toBeGreaterThan(chip);
     expect(extra).toBeGreaterThan(after);
-    // Without a plan type the host chips still get a plan row.
+
     const chipOnly = renderToStaticMarkup(
       createElement(
         I18nextProvider,

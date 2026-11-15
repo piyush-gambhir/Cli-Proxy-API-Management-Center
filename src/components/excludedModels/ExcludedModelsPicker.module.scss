@@ -5,9 +5,9 @@
   min-width: 0;
 }
 
-/* -------------------------------------------------------------------------- */
-/* Trigger —— 摘要 + 计量条，取代「把计数塞进 placeholder」                      */
-/* -------------------------------------------------------------------------- */
+
+
+
 
 .trigger {
   position: relative;
@@ -31,7 +31,7 @@
     background-color var(--dur-hover, 200ms) var(--ease-out-strong, ease-out),
     transform var(--dur-press, 160ms) var(--ease-out-strong, ease-out);
 
-  /* 整条 40px 宽元素上 0.97 太橡皮；0.99 足够被感知又不显廉价。 */
+
   &:active:not(:disabled) {
     transform: scale(0.99);
   }
@@ -80,7 +80,7 @@
   transform: rotate(180deg);
 }
 
-/* 底边发丝计量条：零成本地长期回答「我到底排除了多少」。 */
+
 .meter {
   position: absolute;
   right: 0;
@@ -97,15 +97,15 @@
   transition: width 360ms var(--ease-out-strong, ease);
 }
 
-/* -------------------------------------------------------------------------- */
-/* 内联展开：grid 0fr→1fr。搜索框会在展开状态下过滤列表，每次击键都改高度，       */
-/* grid 轨道自动重解，无需测量，也没有 ResizeObserver 要去跟击键搏斗。            */
-/* -------------------------------------------------------------------------- */
+
+
+
+
 
 .disclosure {
   display: grid;
   grid-template-rows: 0fr;
-  /* 退场更快 + 加速。themes.scss 无 --ease-in* token，这里用关键字而非发明全局 token。 */
+
   transition: grid-template-rows 120ms ease-in;
 }
 
@@ -115,7 +115,7 @@
 }
 
 .disclosureInner {
-  /* 必需：grid item 默认 min-height:auto，漏了它面板收不回去。 */
+
   min-height: 0;
   overflow: hidden;
 }
@@ -132,11 +132,11 @@
   animation: excluded-panel-in var(--dur-hover, 200ms) var(--ease-out-strong, ease-out) both;
 }
 
-/* 只写 from，让元素的静止样式定义终点（与 toolbar-popover-in 同一写法）。 */
+
 @keyframes excluded-panel-in {
   from {
     opacity: 0;
-    /* 0.98 而非 0.95——面板是宽内联块，600px 下 0.95 是 30px 的横向蠕动。 */
+
     transform: scale(0.98);
   }
 }
@@ -147,9 +147,9 @@
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* 搜索                                                                        */
-/* -------------------------------------------------------------------------- */
+
+
+
 
 .searchRow {
   position: relative;
@@ -186,9 +186,9 @@
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* 列表                                                                        */
-/* -------------------------------------------------------------------------- */
+
+
+
 
 .list {
   display: flex;
@@ -225,7 +225,7 @@
   color: var(--bg-primary);
 }
 
-/* 纯规则命中：压暗且不可切换，但仍可聚焦、仍会朗读原因。 */
+
 .rowLocked {
   cursor: default;
   opacity: 0.62;
@@ -294,9 +294,9 @@
   text-align: center;
 }
 
-/* -------------------------------------------------------------------------- */
-/* 吸底摘要                                                                    */
-/* -------------------------------------------------------------------------- */
+
+
+
 
 .footer {
   display: flex;
@@ -355,9 +355,9 @@
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* 无目录降级 / 规则编辑器                                                      */
-/* -------------------------------------------------------------------------- */
+
+
+
 
 .catalogNotice {
   display: flex;
@@ -429,7 +429,7 @@
   }
 }
 
-/* 零命中是 warning 不是 error：规则可以合法地指向目录不认识的模型。 */
+
 .ruleMatchNone {
   color: var(--warning-color, #{$warning-color});
 }
@@ -443,7 +443,7 @@
   font-size: 11px;
 }
 
-/* -------------------------------------------------------------------------- */
+
 
 @media (prefers-reduced-motion: reduce) {
   .disclosure,

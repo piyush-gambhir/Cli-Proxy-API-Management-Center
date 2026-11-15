@@ -1,9 +1,9 @@
-/**
- * Account settings: every field upstream's AuthFileDetailsSheet edits, driven by the same
- * useAuthFilesPrefixProxyEditor state and handlers (validation, dirty diff, save path), with our
- * presentation: the account as the title, grouped compact rows, and the raw file tucked into a
- * closed disclosure whose secrets stay masked until revealed.
- */
+
+
+
+
+
+
 
 import {
   useCallback,
@@ -57,7 +57,7 @@ import { useLedgerUi } from '@/ledger/uiState';
 import { formatRawText } from './accountSheetSecrets';
 import styles from './AccountSheet.module.scss';
 
-/** Fields the API layer adds to each listed file; the raw view shows only what the backend sent. */
+
 const DERIVED_INFO_KEYS = [
   'successCount',
   'failureCount',
@@ -101,16 +101,16 @@ export function AccountSheet(props: AccountSheetProps) {
   const showEmails = useLedgerUi((state) => state.showEmails);
   const saving = editor?.saving === true;
 
-  // Sheet restarts its close animation timer whenever onClose changes identity, and the screen
-  // passes a fresh function on every render, so a re-render mid-close (after "Discard changes")
-  // would cancel the close. A stable wrapper keeps Escape, the overlay and × reliable.
+
+
+
   const onCloseRef = useRef(onClose);
   useEffect(() => {
     onCloseRef.current = onClose;
   }, [onClose]);
   const closeSheet = useCallback(() => onCloseRef.current(), []);
 
-  // The file as the list knew it: identity, provider and quota plan for the header.
+
   const file = useMemo(() => parseFile(editor?.fileInfoText ?? ''), [editor?.fileInfoText]);
   const quotaType = file ? resolveQuotaProviderType({ ...file, disabled: false }) : null;
   const quota = useQuotaStore((state) =>
@@ -136,11 +136,11 @@ export function AccountSheet(props: AccountSheetProps) {
     (editor?.headersTouched && editor.headersError) || editor?.weightError || policyError
   );
 
-  // Upstream's dirty flag drops to false while a field is invalid (no patch can be built), which
-  // would let Escape discard those edits silently; an invalid form counts as unsaved here.
+
+
   const unsaved = dirty || blocked;
 
-  // Same guard as upstream: unsaved edits ask before Escape, the overlay, × or Close drop them.
+
   const confirmClose = useCallback((): boolean | Promise<boolean> => {
     if (!unsaved || saving) return true;
     return new Promise<boolean>((resolve) => {
@@ -241,7 +241,7 @@ export function AccountSheet(props: AccountSheetProps) {
       }
     >
       {editor && (
-        // Keyed so the raw view closes and secrets re-mask whenever another account opens.
+
         <AccountSheetBody
           key={editor.fileName}
           editor={editor}
@@ -273,7 +273,7 @@ export function AccountSheet(props: AccountSheetProps) {
 type BodyProps = {
   editor: PrefixProxyEditorState;
   updatedText: string;
-  /** Follows the screen's email toggle, so the raw view and file name mask like the rows do. */
+
   showEmails: boolean;
   disabled: boolean;
   policyDisabled: boolean;
@@ -435,8 +435,8 @@ function AccountSheetBody({
 
           <Section title={t('ledger.sheet_models')}>
             <Row label={t('ledger.field_excluded_models')} yamlKey="excluded_models" stacked>
-              {/* Upstream's field owns the model catalog fetch; its own label is kept for
-                  screen readers only, since this row already shows one. */}
+              {
+                                                                           }
               <div className={styles.upstreamField}>
                 <AuthFileExcludedModelsField
                   fileName={editor.fileName}
@@ -595,7 +595,7 @@ function Section({
   children,
 }: {
   title: string;
-  /** For a one-field section, the heading doubles as that field's label. */
+
   labelFor?: string;
   children: ReactNode;
 }) {
@@ -611,12 +611,12 @@ function Section({
 
 type RowProps = {
   label: string;
-  /** The auth-file key, shown as a tooltip so the YAML name stays discoverable. */
+
   yamlKey: string;
   htmlFor?: string;
   hint?: ReactNode;
   error?: string;
-  /** Wide editors sit under their label instead of beside it. */
+
   stacked?: boolean;
   children: ReactNode;
 };
@@ -629,7 +629,7 @@ function Row({ label, yamlKey, htmlFor, hint, error, stacked, children }: RowPro
           {label}
         </label>
       ) : (
-        // Visual only: the control inside names itself (aria-label or its own label).
+
         <span className={styles.label} title={yamlKey} aria-hidden="true">
           {label}
         </span>
@@ -679,7 +679,7 @@ function SwitchRow({ id, label, yamlKey, hint, checked, disabled, onChange }: Sw
   );
 }
 
-/** Inherit or Custom, as a two-segment radio group (arrow keys move between them natively). */
+
 function ModeSwitch({
   label,
   value,
@@ -723,7 +723,7 @@ type ListPolicyRowProps = {
   onChange: (field: PrefixProxyEditorField, value: PrefixProxyEditorFieldValue) => void;
 };
 
-/** Model aliases and error rules: inherit, or a custom list edited with upstream's editors. */
+
 function ListPolicyRow(props: ListPolicyRowProps) {
   const { field, label, yamlKey, hint, policy, disabled, error, onChange } = props;
   const { t } = useTranslation();

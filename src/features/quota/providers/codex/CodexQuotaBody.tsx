@@ -1,6 +1,6 @@
-/**
- * Codex 额度渲染体：套餐 chip 行（档位见 cardTier.ts）、宿主插槽、重置积分明细、用量窗口水位条。
- */
+
+
+
 
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,8 +34,8 @@ export function CodexQuotaBody({
   const { t, i18n } = useTranslation();
   const now = useNow();
   const locale = i18n.resolvedLanguage;
-  // Windows and reset credits compete for the same emphasis, but only during
-  // the final hour before the reset or expiry.
+
+
   const soonestRowId = useMemo(
     () => pickUrgentRowId(collectQuotaRowInstants('codex', quota), now),
     [quota, now]
@@ -67,9 +67,9 @@ export function CodexQuotaBody({
   const planLabel = getPlanLabel(planType);
   const planValueClass = planValueClassForTier(resolveCodexCardTier(planType), classes);
 
-  // Renewal was the one date on this card in a different shape (a full
-  // toLocaleString). Reformatted from the instant so it reads like the rest,
-  // falling back to the old rendering when the payload isn't parseable.
+
+
+
   const subscriptionMs = resolveResetMs([subscriptionActiveUntil]);
   const expiryDisplay = subscriptionActiveUntil
     ? buildResetDisplay(
@@ -139,8 +139,8 @@ export function CodexQuotaBody({
               now,
               locale
             );
-            // One expression for both the key and the highlight — two copies
-            // that drift would emphasize the wrong row.
+
+
             const rowId = resetCreditRowId(credit, index);
             const soon = rowId === soonestRowId;
             return (

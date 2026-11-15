@@ -1,13 +1,13 @@
-/**
- * 主题样式
- */
 
-// 浅色主题（默认）
+
+
+
+
 :root {
-  // 极简暖灰：浅色模式
-  --bg-secondary: #faf9f5; // 页面背景（纸感）
-  --bg-primary: #f0eee8; // 容器/卡片背景
-  --bg-tertiary: #e9e6df; // hover/次级背景
+
+  --bg-secondary: #faf9f5;
+  --bg-primary: #f0eee8;
+  --bg-tertiary: #e9e6df;
   --bg-hover: var(--bg-tertiary);
   --bg-quinary: #f6f4ee;
   --bg-error-light: rgba(198, 87, 70, 0.1);
@@ -20,19 +20,19 @@
   --text-quaternary: #c0bab3;
   --text-muted: var(--text-tertiary);
 
-  --border-color: #e3e1db; // 边框/分割线
+  --border-color: #e3e1db;
   --border-secondary: var(--border-color);
   --border-primary: #d5d2cb;
   --border-hover: #cecac4;
 
-  --primary-color: #8b8680; // 行动色（主色）
+  --primary-color: #8b8680;
   --primary-hover: #7f7a74;
   --primary-active: #726d67;
   --primary-contrast: #ffffff;
 
   --success-color: #10b981;
   --quota-medium-color: #e0aa14;
-  --warning-color: #c65746; // 错误/警告色
+  --warning-color: #c65746;
   --error-color: #c65746;
   --danger-color: var(--error-color);
   --info-color: var(--primary-color);
@@ -57,7 +57,7 @@
 
   --radius-md: 8px;
 
-  // Workbench tokens (Home parity)
+
   --primary-8: color-mix(in srgb, var(--primary-color) 8%, transparent);
   --primary-10: color-mix(in srgb, var(--primary-color) 10%, transparent);
   --primary-30: color-mix(in srgb, var(--primary-color) 30%, transparent);
@@ -72,7 +72,7 @@
   --muted-foreground: var(--text-secondary);
   --accent-bg: var(--bg-tertiary);
 
-  // Glass effect (blurred surfaces)
+
   --glass-blur: 12px;
   --glass-backdrop-filter: blur(var(--glass-blur));
   --glass-filter: blur(var(--glass-blur));
@@ -80,19 +80,19 @@
   --glass-bg-secondary: color-mix(in srgb, var(--bg-secondary) 82%, transparent);
   --glass-border: color-mix(in srgb, var(--border-color) 60%, transparent);
 
-  // 可视化配色：与语义色同源；深色模式下重新取步阶（见 [data-theme='dark']）。
-  // 规则：翡翠绿只表达「活的流量」。
+
+
   --viz-success: #10b981;
   --viz-failure: #c65746;
 
-  // 动效词汇表：内置 ease 太弱，交互反馈统一用强减速曲线。
-  // 按压 160ms / 悬停 200ms，UI 动效不超过 300ms。
+
+
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   --dur-press: 160ms;
   --dur-hover: 200ms;
 }
 
-// 纯白主题
+
 [data-theme='white'] {
   --bg-secondary: #ffffff;
   --bg-primary: #ffffff;
@@ -146,7 +146,7 @@
 
   --radius-md: 8px;
 
-  // Workbench tokens (Home parity)
+
   --primary-8: color-mix(in srgb, var(--primary-color) 8%, transparent);
   --primary-10: color-mix(in srgb, var(--primary-color) 10%, transparent);
   --primary-30: color-mix(in srgb, var(--primary-color) 30%, transparent);
@@ -162,12 +162,12 @@
   --accent-bg: var(--bg-tertiary);
 }
 
-// 深色主题（#191919）
+
 [data-theme='dark'] {
-  // 极简暖灰：深色模式（提升对比度与层级）
-  --bg-secondary: #151412; // 页面背景
-  --bg-primary: #1d1b18; // 容器/卡片背景
-  --bg-tertiary: #262320; // hover/次级背景
+
+  --bg-secondary: #151412;
+  --bg-primary: #1d1b18;
+  --bg-tertiary: #262320;
   --bg-hover: #2e2a26;
   --bg-quinary: #191714;
   --bg-error-light: rgba(198, 87, 70, 0.18);
@@ -217,7 +217,7 @@
 
   --radius-md: 8px;
 
-  // Workbench tokens (Home parity, deeper amber for dark)
+
   --primary-8: color-mix(in srgb, var(--primary-color) 8%, transparent);
   --primary-10: color-mix(in srgb, var(--primary-color) 10%, transparent);
   --primary-30: color-mix(in srgb, var(--primary-color) 30%, transparent);
@@ -234,8 +234,8 @@
 
   --glass-border: color-mix(in srgb, var(--border-color) 55%, transparent);
 
-  // 深色卡面上 #10b981 亮度超出 OKLCH 0.48–0.67 区间，且与失败色的色盲分离度不足，
-  // 因此深色单独降一档。三套主题均已通过对比度/色盲/亮度校验。
+
+
   --viz-success: #0fae78;
   --viz-failure: #cf4b3a;
 }

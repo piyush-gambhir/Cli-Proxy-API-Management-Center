@@ -8,7 +8,7 @@ import {
 import { getQuotaCacheKey } from '@/utils/quota/identity';
 import type { QuotaAdapter, QuotaCardState, QuotaMapUpdater } from './providers';
 
-/** Optional metadata must neither delay quota rendering nor replace a newer result. */
+
 export async function enrichQuotaInBackground(
   adapter: QuotaAdapter,
   file: AuthFileItem,
@@ -33,6 +33,6 @@ export async function enrichQuotaInBackground(
       });
     });
   } catch {
-    // Keep the successful quota and its original plan fallback on optional failures.
+
   }
 }

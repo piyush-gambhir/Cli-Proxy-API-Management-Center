@@ -3,7 +3,7 @@ import { describe, expect, test } from 'bun:test';
 const palette = await Bun.file('src/pages/login/_palette.scss').text();
 const veil = await Bun.file('src/components/common/LoginRevealVeil.scss').text();
 
-/** 取出某个 mixin 的 --login-* 变量表 */
+
 const tokens = (mixin: string): Record<string, string> => {
   const start = palette.indexOf(`@mixin ${mixin} {`);
   if (start < 0) throw new Error(`mixin ${mixin} not found`);
@@ -34,7 +34,7 @@ const contrast = (a: string, b: string) => {
 const light = tokens('login-tokens-light');
 const dark = tokens('login-tokens-dark');
 const backgrounds = {
-  light: [light['login-bg'], '#ffffff'], // 暖纸底 + 纯白主题
+  light: [light['login-bg'], '#ffffff'],
   dark: [dark['login-bg']],
 };
 

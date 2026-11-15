@@ -1,20 +1,20 @@
-/**
- * Session-scoped quota page preferences.
- *
- * The merge-on-write case is the one that matters: the tab strip and the sort
- * control each write a single field and know nothing about the other, so a
- * whole-object write would make changing a tab silently reset the sort.
- */
+
+
+
+
+
+
+
 
 import { afterAll, beforeEach, describe, expect, test } from 'bun:test';
 import { readQuotaUiState, writeQuotaUiState } from '@/features/quota/uiState';
 
 const KEY = 'quotaPage.uiState';
 
-/** Test files share one process — leaving a fake `window` behind would leak. */
+
 const originalWindow = (globalThis as { window?: unknown }).window;
 
-/** bun's global has no sessionStorage; a Map-backed stub is enough here. */
+
 function installSessionStorage() {
   const store = new Map<string, string>();
   const storage = {

@@ -1,6 +1,6 @@
-/**
- * OAuth and device-code login API
- */
+
+
+
 
 import { apiClient } from './client';
 import {
@@ -89,7 +89,7 @@ export const oauthApi = {
   },
 };
 
-/** Start and cleanup must use the same connection, even after the dialog closes. */
+
 export function captureSiwcBindingApi() {
   const client = apiClient.captureConnection();
   return {

@@ -13,7 +13,7 @@ export type SourceSearchBarProps = {
   disabled: boolean;
 };
 
-/** 源码模式的搜索条：占据工具栏行的搜索槽位（与可视化模式的字段搜索同位置）。 */
+
 export function SourceSearchBar({ search, disabled }: SourceSearchBarProps) {
   const { t } = useTranslation();
   const {
@@ -92,7 +92,7 @@ export type SourcePanelProps = {
   editable: boolean;
 };
 
-/** YAML 源码编辑面板：lazy CodeMirror（含语法高亮/折叠/内置搜索快捷键）。 */
+
 export function SourcePanel({ search, value, onChange, theme, editable }: SourcePanelProps) {
   const { t } = useTranslation();
 

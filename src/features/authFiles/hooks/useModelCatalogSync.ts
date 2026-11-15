@@ -4,7 +4,7 @@ import { apiClient, modelsApi } from '@/services/api';
 import { useAuthStore, useNotificationStore } from '@/stores';
 import { useModelsStore } from '@/stores/useModelsStore';
 
-/** Global catalog operation, deliberately independent of credential refreshes. */
+
 export function useModelCatalogSync(onSynced: () => void) {
   const { t } = useTranslation();
   const showNotification = useNotificationStore((state) => state.showNotification);

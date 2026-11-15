@@ -1,8 +1,8 @@
-/**
- * Routing, per provider: each provider's accounts in the order the proxy picks them, with why an
- * account is skipped, and Prefer / Demote to change that order. Edits stay a local draft until
- * saved together through upstream's routing writer (credential priorities, then one config patch).
- */
+
+
+
+
+
 
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -85,7 +85,7 @@ export function RoutingScreen() {
   const [settings, setSettings] = useState<LedgerSettings | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // Only the latest load may apply, and never over a newer connection's state.
+
   const loadId = useRef(0);
   const tRef = useRef(t);
   useEffect(() => {
@@ -138,7 +138,7 @@ export function RoutingScreen() {
     [now]
   );
 
-  /* ---------- draft and save ---------- */
+
 
   const changes = useMemo(() => {
     if (!board || !settings) return [] as RoutingChange[];
@@ -164,7 +164,7 @@ export function RoutingScreen() {
   }, [board, settings, priorities, savedStrategy]);
 
   const dirty = changes.length > 0;
-  // A refresh would replace the draft, so it asks first; leaving the page does the same.
+
   const refresh = useCallback(async () => {
     if (!dirty) return load();
     showConfirmation({
@@ -208,7 +208,7 @@ export function RoutingScreen() {
     const plan: RoutingPlan = { changes, priorities: {}, weights: {}, settings: {} };
     changes.forEach((change) => {
       if (change.kind === 'priority') plan.priorities[change.memberKey] = change.to;
-      // reset-soonest is a proxy strategy upstream's type doesn't list; the writer passes it on.
+
       if (change.kind === 'setting') Object.assign(plan.settings, { [change.field]: change.to });
     });
     setSaving(true);
@@ -230,8 +230,8 @@ export function RoutingScreen() {
     } catch (error) {
       showNotification(getErrorMessage(error, t('common.unknown_error')), 'error');
     } finally {
-      // Always reload: the board must show what actually landed, including after a failure.
-      // Controls stay locked until then, so nothing edited mid-save is silently dropped.
+
+
       await load();
       setSaving(false);
       void scheduler.reload();
@@ -249,7 +249,7 @@ export function RoutingScreen() {
     return '';
   };
 
-  /* ---------- render ---------- */
+
 
   if (loadError && !board) {
     return (
@@ -264,7 +264,7 @@ export function RoutingScreen() {
       ? [...STRATEGIES, 'weighted-round-robin' as const]
       : STRATEGIES;
 
-  // Radio keys: arrows move the selection and focus together, wrapping at the ends.
+
   const onStrategyKey = (event: KeyboardEvent<HTMLDivElement>) => {
     const step =
       event.key === 'ArrowRight' || event.key === 'ArrowDown'

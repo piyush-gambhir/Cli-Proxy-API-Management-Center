@@ -5,7 +5,7 @@ import { getAuthFileRefreshKey } from '../src/features/authFiles/manualRefresh';
 
 const source = readFileSync('src/features/authFiles/hooks/useAuthFilesData.ts', 'utf8');
 
-// Execute the actual callback bodies without mocking React globally or requiring a DOM.
+
 function harness() {
   const original = [
     { name: 'shared.json', authIndex: 'a', disabled: false },

@@ -21,7 +21,7 @@ import { SectionOAuthBehavior } from './SectionOAuthBehavior';
 
 const Icon = CONFIG_TAB_ICONS.advanced;
 
-/** 05 高级与实验：插件源、供应商敏感词、签名缓存与请求头默认值。 */
+
 export function SectionAdvanced({
   values,
   validationErrors,

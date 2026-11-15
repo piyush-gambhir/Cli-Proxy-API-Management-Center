@@ -18,7 +18,7 @@
     backface-visibility: hidden;
     transform: translateZ(0);
 
-    // During animation, exit layer uses absolute positioning
+
     &--exit {
       position: absolute;
       inset: 0;
@@ -30,8 +30,8 @@
     &--stacked {
       display: none;
 
-      // Keep the previous layer rendered (but invisible) to avoid a blank flash when popping back.
-      // Older stacked layers remain `display: none` for performance.
+
+
       &.page-transition__layer--stacked-keep {
         display: flex;
         position: absolute;

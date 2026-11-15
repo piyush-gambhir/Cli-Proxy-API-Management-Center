@@ -108,7 +108,7 @@ describe('matchedModelsByRule', () => {
 
 describe('summarizeExclusion', () => {
   test('counts catalog models hit by any rule, not the rules themselves', () => {
-    // One rule, three models — a rule count would say 1 and the meter would lie.
+
     expect(summarizeExclusion(['gpt-5-*'], CATALOG)).toEqual({
       total: 5,
       excluded: 3,

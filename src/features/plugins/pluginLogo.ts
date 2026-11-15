@@ -1,7 +1,7 @@
 import type { PluginListEntry, PluginStoreEntry } from '@/types';
 import { buildRepositoryURL } from './pluginResources';
 
-// Do not pick an arbitrary registry when multiple sources advertise the same ID.
+
 export const getPluginLogo = (plugin: PluginListEntry, entries: PluginStoreEntry[]): string => {
   const logo = plugin.logo.trim() || plugin.metadata?.logo.trim();
   if (logo) return logo;

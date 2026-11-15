@@ -11,7 +11,7 @@ export interface ErrorRuleDraft {
   status: string;
   action: string;
   matches: ErrorMatchDraft[];
-  /** Preserve untouched optional fields and backend-supported action spelling. */
+
   original?: RequestScopedErrorRule;
 }
 
@@ -35,7 +35,7 @@ export const createErrorRule = (id: string): ErrorRuleDraft => ({
   matches: [createErrorMatch(`${id}-initial-match`)],
 });
 
-/** Stable IDs keep repeated form initialization and dirty-state comparison deterministic. */
+
 export function readErrorRules(rules: RequestScopedErrorRule[] = []): ErrorRuleDraft[] {
   return rules.map((rule, index) => {
     const id = `rule-${index}`;
@@ -84,15 +84,15 @@ export function isInvalidErrorMatch(rule: ErrorRuleDraft, match: ErrorMatchDraft
   if (!['text', 'regex'].includes(match.kind)) return true;
   if (match.value.length > 0) return false;
   const original = match.kind === 'text' ? rule.original?.match : rule.original?.matchRegex;
-  // Go ignores empty patterns. Preserve an existing empty condition when another
-  // field changes, but reject newly added or newly cleared conditions.
+
+
   return !original?.some(
     (value, index) => value === '' && match.id === `${rule.id}-${match.kind}-${index}`
   );
 }
 
 export function validateErrorRule(rule: ErrorRuleDraft): string | null {
-  // Existing inert rules are accepted by the backend; unrelated edits must not discard them.
+
   if (isUnchangedRule(rule)) return null;
   const status = rule.status.trim();
   if (!/^\d+$/.test(status) || !Number.isSafeInteger(Number(status)) || Number(status) <= 0) {
@@ -103,7 +103,7 @@ export function validateErrorRule(rule: ErrorRuleDraft): string | null {
   if (rule.matches.some((match) => isInvalidErrorMatch(rule, match))) {
     return 'providersPage.errorRules.invalidMatch';
   }
-  // Match strings are literal (including whitespace/newlines). Go, not JS, interprets regexes.
+
   return null;
 }
 

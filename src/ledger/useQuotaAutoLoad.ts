@@ -4,19 +4,19 @@ import { getQuotaCacheKey } from '@/utils/quota/identity';
 import type { QuotaFileEntry } from '@/features/quota/logic';
 import type { QuotaCardState } from '@/features/quota/providers';
 
-/** A credential loaded this recently is not fetched again just because the page reopened. */
+
 const AUTO_LOAD_TTL_MS = 5 * 60_000;
 
-// Module scope so the throttle survives leaving and reopening the page within a session.
+
 const lastAutoLoadAt = new Map<string, number>();
 
-/**
- * Load quota for every visible credential, paused ones too, when the accounts screen opens, so
- * rows show numbers instead of a load button. Each credential loads at most once per visit, and not again within
- * AUTO_LOAD_TTL_MS of a successful load. No polling: "Refresh all" and the row refresh stay
- * manual. Covers Devin too, so a screen using this must not also run Devin's dedicated
- * auto-load (two auto-loaders in one render collide on the batch loader's single-flight guard).
- */
+
+
+
+
+
+
+
 export function useQuotaAutoLoad(
   entries: QuotaFileEntry[],
   disabled: boolean,
@@ -38,7 +38,7 @@ export function useQuotaAutoLoad(
         getQuotaCacheKey(entry.file),
       ]);
       const status = quotaFor(entry)?.status;
-      // Tried already this visit, unless its cache entry was since pruned (credential replaced).
+
       if (attempted.current.has(key) && status !== undefined) return false;
       if (status === 'loading') return false;
       if (status === 'success' && now - (lastAutoLoadAt.get(key) ?? 0) < AUTO_LOAD_TTL_MS) {

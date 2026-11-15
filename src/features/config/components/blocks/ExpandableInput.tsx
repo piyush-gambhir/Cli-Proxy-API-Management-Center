@@ -2,10 +2,10 @@ import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Blocks.module.scss';
 
-/** Minimum character count before the expand/collapse toggle appears. */
+
 const EXPAND_THRESHOLD = 30;
 
-/** Auto-expanding textarea that collapses back to a single-line input on demand. */
+
 export function ExpandableInput({
   value,
   placeholder,
@@ -31,16 +31,16 @@ export function ExpandableInput({
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    // Strip newlines — these fields are single-line identifiers/paths that
-    // would break YAML serialization if they contained line breaks.
+
+
     const sanitized = e.target.value.replace(/[\r\n]/g, '');
     onChange(sanitized);
-    // autoResize is handled by useLayoutEffect after React syncs the
-    // sanitized value back to the DOM — calling it here would measure
-    // stale content.
+
+
+
   };
 
-  // Resize synchronously before paint to avoid visual flicker.
+
   useLayoutEffect(() => {
     if (!collapsed && textareaRef.current) {
       autoResize(textareaRef.current);

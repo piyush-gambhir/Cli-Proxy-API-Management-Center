@@ -4,14 +4,14 @@ import { apiClient } from './client';
 export interface ConfigPatchPlan {
   patch: Record<string, unknown>;
   deletions: string[][];
-  /** Explicit empty maps require PUT at that map, since DELETE prunes empty ancestors. */
+
   emptyMaps?: string[][];
 }
 
 const isMap = (value: unknown): value is Record<string, unknown> =>
   value !== null && typeof value === 'object' && !Array.isArray(value);
 
-// Null-prototype records preserve literal keys such as __proto__ and constructor.
+
 const hasOwn = (value: object, key: string): boolean =>
   Object.prototype.hasOwnProperty.call(value, key);
 
@@ -70,8 +70,8 @@ function equal(a: unknown, b: unknown): boolean {
 }
 
 function fieldUrl(path: string[]): string {
-  // Gin splits decoded paths on '/'; encoding a slash cannot make it a literal key.
-  // Dot segments are normalized by URL clients before the request reaches the server.
+
+
   if (
     !path.length ||
     path.some(
@@ -111,7 +111,7 @@ export function buildConfigPatch(beforeYaml: string, afterYaml: string): ConfigP
       if (hasOwn(old, key) && equal(old[key], next[key])) continue;
       if (hasOwn(old, key) && isMap(old[key]) && isMap(next[key])) {
         if (Object.keys(next[key]).length === 0) {
-          // This is an intentional reset of the entire map, not deletion of the map.
+
           const target = [...path, key];
           fieldUrl(target);
           emptyMaps.push(target);
@@ -136,7 +136,7 @@ export class ConfigDraftConflictError extends Error {
   }
 }
 
-/** Lists have no stable backend IDs: refuse an ambiguous three-way replacement. */
+
 export function assertConfigListsUnchanged(
   beforeYaml: string,
   draftYaml: string,
@@ -180,14 +180,14 @@ export function assertConfigListsUnchanged(
   }
 }
 
-/** Replay the confirmed wire-level intent, not positional editor IDs, after a partial save. */
+
 export function rebaseConfigDraft(
   beforeYaml: string,
   draftYaml: string,
   latestYaml: string
 ): string {
   const plan = buildConfigPatch(beforeYaml, draftYaml);
-  // Validate readback and reject ambiguous list mutations before advancing the baseline.
+
   assertConfigListsUnchanged(beforeYaml, draftYaml, latestYaml);
   const doc = parseDocument(latestYaml);
 
@@ -217,7 +217,7 @@ export function rebaseConfigDraft(
   for (const path of plan.deletions) {
     if (!doc.hasIn(path)) continue;
     doc.deleteIn(path);
-    // Match the backend's empty-ancestor pruning, without deleting concurrent siblings.
+
     for (let length = path.length - 1; length > 0; length -= 1) {
       const parent = path.slice(0, length);
       const node = doc.getIn(parent, true);
@@ -245,7 +245,7 @@ export async function applyConfigPatch(
       throw new Error('Connection changed while saving configuration');
     }
   };
-  // Validate every path before performing any mutations, including for caller-built plans.
+
   const urls = plan.deletions.map(fieldUrl);
   const emptyMapUrls = (plan.emptyMaps ?? []).map(fieldUrl);
   checkConnection();

@@ -64,12 +64,12 @@ export const writeAuthFilesUiState = (state: AuthFilesUiState) => {
   try {
     window.localStorage.setItem(AUTH_FILES_UI_STATE_KEY, JSON.stringify(state));
   } catch {
-    // ignore
+
   }
   try {
     window.sessionStorage.removeItem(AUTH_FILES_UI_STATE_KEY);
   } catch {
-    // ignore
+
   }
 };
 
@@ -89,6 +89,6 @@ export const writePersistedAuthFilesCompactMode = (compactMode: boolean) => {
   try {
     window.localStorage.setItem(AUTH_FILES_COMPACT_MODE_KEY, JSON.stringify(compactMode));
   } catch {
-    // ignore
+
   }
 };

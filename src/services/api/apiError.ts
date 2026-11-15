@@ -8,13 +8,13 @@ export interface ParsedApiErrorResponse {
 const readString = (value: unknown): string =>
   typeof value === 'string' ? value.trim() : '';
 
-/**
- * Parse the Management API's error envelope.
- *
- * Newer endpoints use `error` as a stable machine-readable code and `message`
- * as the human-readable detail. Older endpoints may put the only useful text
- * directly in `error`, so that remains a fallback.
- */
+
+
+
+
+
+
+
 export const parseApiErrorResponse = (
   responseData: unknown,
   fallbackMessage: string

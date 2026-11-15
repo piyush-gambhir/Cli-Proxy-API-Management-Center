@@ -34,7 +34,7 @@ interface MetaQuotaDependencies {
   captureCurrent: (name: string) => () => boolean;
 }
 
-/** Extract only the backend's persisted DCA field; never fall back to the LLM key. */
+
 const readDcaToken = (text: string): string => {
   let value: unknown;
   try {
@@ -51,7 +51,7 @@ const readDcaToken = (text: string): string => {
   return token;
 };
 
-/** Secrets remain request-local, never in quota state, errors, or browser storage. */
+
 export function createMetaQuotaFetcher(deps: MetaQuotaDependencies) {
   return async (file: AuthFileItem): Promise<MetaQuotaData> => {
     const authIndex = normalizeAuthIndex(file.authIndex ?? file.auth_index);
@@ -106,8 +106,8 @@ export function createMetaQuotaFetcher(deps: MetaQuotaDependencies) {
     }
     assertCurrent();
 
-    // Never derive an error message from body/bodyText: the endpoint can echo
-    // api_key and other PII even on errors.
+
+
     if (!(response.statusCode >= 200 && response.statusCode < 300)) {
       throw new MetaQuotaError('request_failed', response.statusCode);
     }

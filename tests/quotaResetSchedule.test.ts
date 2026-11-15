@@ -1,6 +1,6 @@
-/**
- * Which row on a quota card recovers first, per provider.
- */
+
+
+
 
 import { describe, expect, test } from 'bun:test';
 import {
@@ -232,7 +232,7 @@ describe('resetCreditRowId', () => {
   });
 
   test('falls back to expiry and index when the payload carries no id', () => {
-    // Must stay byte-identical to CodexQuotaBody's React key.
+
     expect(resetCreditRowId({ id: '', expiresAt: '2026-08-13T00:00:00Z' }, 2)).toBe(
       '2026-08-13T00:00:00Z-2'
     );

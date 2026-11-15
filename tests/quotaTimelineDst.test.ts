@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test';
 
-// Separate processes keep timezone changes out of the other rendering suites.
+
 const cases: { zone: string; date: number[]; hours: number; startHour?: number }[] = [
   { zone: 'Europe/Paris', date: [2026, 9, 25], hours: 25 },
   { zone: 'Europe/Paris', date: [2026, 2, 29], hours: 23 },

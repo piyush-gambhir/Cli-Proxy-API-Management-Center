@@ -1,11 +1,11 @@
-/**
- * Timezone labelling, and the guard against the Asia/Shanghai hardcode
- * returning.
- *
- * Codex reset-credit expiry was rendered in a fixed GMT+8 while every other
- * timestamp on the same page used the browser's timezone — so one credit
- * appeared twice, in two timezones, on one screen.
- */
+
+
+
+
+
+
+
+
 
 import { describe, expect, test } from 'bun:test';
 import i18n from '@/i18n';
@@ -42,8 +42,8 @@ describe('resolveTimeZoneLabel', () => {
   });
 
   test('reflects the offset of the instant it is given, not of "now"', () => {
-    // A DST-observing zone answers differently in January than in July, so the
-    // label has to follow the date the timestamps are being rendered for.
+
+
     const january = new Date(2026, 0, 15, 12);
     const july = new Date(2026, 6, 15, 12);
     expect(resolveTimeZoneLabel(january)).toBe(

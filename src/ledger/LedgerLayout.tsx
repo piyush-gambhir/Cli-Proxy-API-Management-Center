@@ -1,10 +1,10 @@
-/**
- * Shell for the ledger screens, mounted at /ledger. The original dashboard (MainLayout and every
- * upstream route) stays untouched; this shell has its own navigation and look.
- *
- * Screens without a ledger version yet render the upstream page inside this shell, so they pick
- * up the ledger look. Replace a route's element when its ledger screen lands.
- */
+
+
+
+
+
+
+
 
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +43,7 @@ interface NavItem {
   to: string;
   label: string;
   end?: boolean;
-  /** Extra path prefixes that also mark this item active. */
+
   also?: string[];
   sub?: boolean;
   title?: string;
@@ -63,9 +63,9 @@ export function LedgerLayout() {
   useMaskedNotifications();
 
   useEffect(() => {
-    // Reaching the ledger shell ends a landing, so the Classic link opens the original.
+
     setLanding(false);
-    // While the shell is open, links from embedded upstream pages to classic paths stay here.
+
     setInLedger(true);
     const root = document.documentElement;
     root.dataset.ui = 'ledger';
@@ -75,7 +75,7 @@ export function LedgerLayout() {
     };
   }, []);
 
-  // Same startup fetch as MainLayout: provider and config screens read the cached config.
+
   useEffect(() => {
     fetchConfig().catch(() => {});
   }, [fetchConfig]);
@@ -145,7 +145,7 @@ export function LedgerLayout() {
               </option>
             ))}
           </select>
-          {/* `/` has no ledger mapping in classicRedirect, so this always opens the original. */}
+          {                                                                                      }
           <NavLink to="/" className={styles.link}>
             {t('ledger.classic')}
           </NavLink>

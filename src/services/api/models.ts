@@ -1,6 +1,6 @@
-/**
- * 可用模型获取
- */
+
+
+
 
 import axios from 'axios';
 import { apiClient } from './client';
@@ -84,7 +84,7 @@ const resolveBearerTokenFromAuthorization = (headers: Record<string, string>): s
 };
 
 export const modelsApi = {
-  /** Refresh the global backend catalogs, not auth-file credentials. */
+
   async refreshCatalog(): Promise<{ changedProviders: string[] }> {
     const response = await apiClient.post<{ changed_providers: string[] | null }>(
       '/models/refresh'
@@ -92,9 +92,9 @@ export const modelsApi = {
     return { changedProviders: response.changed_providers ?? [] };
   },
 
-  /**
-   * Fetch available models from /v1/models endpoint (for system info page)
-   */
+
+
+
   async fetchModels(baseUrl: string, apiKey?: string, headers: Record<string, string> = {}) {
     const endpoint = buildV1ModelsEndpoint(baseUrl);
     if (!endpoint) {
@@ -113,10 +113,10 @@ export const modelsApi = {
     return normalizeModelList(payload, { dedupe: true });
   },
 
-  /**
-   * Fetch models from /v1/models endpoint via api-call.
-   * Useful when the configured baseUrl is the upstream host root (e.g. https://api.example.com).
-   */
+
+
+
+
   async fetchV1ModelsViaApiCall(
     baseUrl: string,
     apiKey?: string,
@@ -153,9 +153,9 @@ export const modelsApi = {
     return normalizeModelList(payload, { dedupe: true });
   },
 
-  /**
-   * Fetch models from /models endpoint via api-call (for OpenAI provider discovery)
-   */
+
+
+
   async fetchModelsViaApiCall(
     baseUrl: string,
     apiKey?: string,
@@ -192,10 +192,10 @@ export const modelsApi = {
     return normalizeModelList(payload, { dedupe: true });
   },
 
-  /**
-   * Fetch Claude models from /v1/models via api-call.
-   * Anthropic requires `x-api-key` and `anthropic-version` headers.
-   */
+
+
+
+
   async fetchClaudeModelsViaApiCall(
     baseUrl: string,
     apiKey?: string,
@@ -258,10 +258,10 @@ export const modelsApi = {
     }
   },
 
-  /**
-   * Fetch Gemini models from /v1beta/models via api-call.
-   * Gemini API accepts API key via query param or `x-goog-api-key` header.
-   */
+
+
+
+
   async fetchGeminiModelsViaApiCall(
     baseUrl: string,
     apiKey?: string,

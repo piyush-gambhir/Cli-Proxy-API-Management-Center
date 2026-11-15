@@ -213,8 +213,8 @@ describe('v8 model row identity', () => {
     const config = row(b.group());
     await providersApi.updateCodexConfig(config.apiKey, undefined, {
       ...config,
-      // A new form row contains only the fields the user enters, not a clone of
-      // the deleted row's now-editable advanced properties.
+
+
       models: [
         {
           name: originalModel.name,

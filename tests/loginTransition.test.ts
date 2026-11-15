@@ -30,7 +30,7 @@ const formProps: LoginFormProps = {
   onSubmit: noop,
 };
 
-/** 读取 CSS 中 `animation: <name> <dur>ms ... [<delay>ms] ...;` 的总时长（时长 + 延迟） */
+
 const animationTotal = (css: string, name: string) => {
   const declaration = css.match(new RegExp(`animation:\\s*${name}\\s[^;]*;`))?.[0];
   if (!declaration) throw new Error(`animation ${name} not found`);
@@ -76,7 +76,7 @@ describe('login transition store', () => {
     expect(animationTotal(veil, 'loginVeilOut')).toBe(LOGIN_TRANSITION_TIMINGS.reveal);
     expect(animationTotal(page, 'exitToBase')).toBe(LOGIN_TRANSITION_TIMINGS.exit);
     expect(animationTotal(page, 'exitLift')).toBe(LOGIN_TRANSITION_TIMINGS.exit);
-    // 外壳入场必须在揭幕结束前落定，否则撤销类名时会跳变
+
     for (const name of ['shellSidebarIn', 'shellChromeIn', 'shellFadeIn']) {
       expect(animationTotal(layout, name)).toBeLessThanOrEqual(LOGIN_TRANSITION_TIMINGS.reveal);
     }

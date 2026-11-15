@@ -2,7 +2,7 @@ type ResetGrantRandomSource = Partial<Pick<Crypto, 'randomUUID' | 'getRandomValu
 
 const REQUEST_ID_RANDOM_BYTES = 16;
 
-/** 普通 HTTP 页面没有 randomUUID，使用同样安全的随机字节生成请求 ID。 */
+
 export function generateResetGrantRequestId(
   source: ResetGrantRandomSource | undefined = globalThis.crypto
 ): string {

@@ -1,4 +1,4 @@
-/** Per-browser preferences for the ledger shell. Storage can be unavailable; fail quietly. */
+
 
 import { create } from 'zustand';
 
@@ -19,12 +19,12 @@ const write = (patch: Persisted) => {
   try {
     window.localStorage.setItem(KEY, JSON.stringify({ ...read(), ...patch }));
   } catch {
-    // ignore
+
   }
 };
 
 type LedgerUiState = {
-  /** Emails are masked across the shell unless this is true (the screen gets shared). */
+
   showEmails: boolean;
   toggleEmails: () => void;
 };

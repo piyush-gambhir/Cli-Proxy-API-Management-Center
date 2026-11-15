@@ -32,8 +32,8 @@ export function ConfirmationModal() {
       hideConfirmation();
     } catch (error) {
       console.error('Confirmation action failed:', error);
-      // Optional: show error notification here if needed,
-      // but usually the calling component handles specific errors.
+
+
     } finally {
       setConfirmationLoading(false);
     }

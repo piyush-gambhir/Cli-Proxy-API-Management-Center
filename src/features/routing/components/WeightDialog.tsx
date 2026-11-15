@@ -18,7 +18,7 @@ export interface WeightDialogProps {
 const toText = (weight: number | null | undefined) =>
   weight === null || weight === undefined ? '' : String(weight);
 
-/** The caller remounts this per opening (via `key`) so fields start from the draft. */
+
 export function WeightDialog({
   open,
   member,

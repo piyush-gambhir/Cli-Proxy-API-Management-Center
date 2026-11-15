@@ -1,6 +1,6 @@
-/**
- * i18next 国际化配置
- */
+
+
+
 
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -26,7 +26,7 @@ i18n.use(initReactI18next).init({
   lng: getInitialLanguage(),
   fallbackLng: 'zh-CN',
   interpolation: {
-    escapeValue: false, // React 已经转义
+    escapeValue: false,
   },
   react: {
     useSuspense: false,

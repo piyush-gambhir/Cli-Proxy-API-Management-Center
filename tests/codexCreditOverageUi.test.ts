@@ -1,7 +1,7 @@
-/**
- * Static markup for the Codex credit overage row, its dialog, and the body slot that
- * hosts the row. Browser interaction is outside this harness.
- */
+
+
+
+
 
 import { beforeAll, describe, expect, test } from 'bun:test';
 import { createElement } from 'react';
@@ -28,7 +28,7 @@ const classes = bindQuotaClasses(
   'test-host'
 );
 
-// The i18n fallback is zh-CN; pin English so assertions read.
+
 beforeAll(async () => {
   await i18n.changeLanguage('en');
 });
@@ -70,7 +70,7 @@ describe('CodexCreditOverageRow', () => {
 
     expect(markup).toContain(`data-state="${state}"`);
     expect(markup).toContain(`>${label}<`);
-    // Only a confirmed write carries its confirmation time.
+
     expect(markup.includes('confirmed ')).toBe(entry.status === 'known');
   });
 

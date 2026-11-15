@@ -107,6 +107,6 @@ export const writeProvidersWorkbenchUiState = (state: ProvidersWorkbenchUiState)
   try {
     window.localStorage.setItem(PROVIDERS_UI_STATE_KEY, JSON.stringify(state));
   } catch {
-    // ignore storage failures
+
   }
 };

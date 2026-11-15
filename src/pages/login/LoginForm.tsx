@@ -5,7 +5,7 @@ import { IconAlertTriangle, IconCheck, IconEye, IconEyeOff } from '@/components/
 import styles from './LoginForm.module.scss';
 
 export interface LoginFormProps {
-  /** 输入框中的连接地址（可能为空，此时回退到 detectedBase） */
+
   apiBase: string;
   detectedBase: string;
   editingBase: boolean;

@@ -36,7 +36,7 @@ describe('confirmed config draft recovery', () => {
     const draft = before.replace('temperature: 1', 'temperature: 2');
     const latest = before.replace('name: a', 'name: b');
     expect(() => rebaseConfigDraft(before, draft, latest)).toThrow(ConfigDraftConflictError);
-    // Deleting a list must not discard concurrent additions either.
+
     expect(() => rebaseConfigDraft(before, 'server: {}', latest)).toThrow(ConfigDraftConflictError);
     expect(parse(rebaseConfigDraft(before, draft, draft))).toEqual(parse(draft));
   });

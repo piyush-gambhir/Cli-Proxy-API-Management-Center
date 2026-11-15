@@ -5,7 +5,7 @@ import {
   readCredentialPolicy,
 } from '@/features/authFiles/credentialPolicy';
 
-// Existing or future metadata must not be rewritten simply by opening the structured form.
+
 const fixtures: Record<string, unknown>[] = [
   {},
   { model_aliases: null, request_scoped_errors: null },

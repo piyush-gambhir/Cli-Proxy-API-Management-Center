@@ -1,6 +1,6 @@
-/**
- * 全局样式
- */
+
+
+
 
 @use './variables.scss' as *;
 @use './mixins.scss' as *;
@@ -26,7 +26,7 @@ body.modal-open .content {
   overflow: hidden;
 }
 
-// 滚动条样式
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

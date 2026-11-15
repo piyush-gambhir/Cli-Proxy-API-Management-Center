@@ -26,7 +26,7 @@ describe('accountLimits', () => {
       t,
       'en'
     );
-    // Unknown weekly usage must not borrow the monthly figure.
+
     expect(limits.map((limit) => [limit.id, limit.remaining])).toEqual([['xai:monthly', 80]]);
   });
 

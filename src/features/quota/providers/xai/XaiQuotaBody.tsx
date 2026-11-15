@@ -1,7 +1,7 @@
-/**
- * xAI 额度渲染体：套餐 chip 行（档位见 cardTier.ts）、
- * 周/月账单水位条、按量付费余额。
- */
+
+
+
+
 
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -62,11 +62,11 @@ const resolveXaiPlanLabelKey = (monthlyLimitCents: number | null): string | null
 
 export function XaiQuotaBody({ quota, classes }: QuotaBodyProps<XaiQuotaState>) {
   const { t, i18n } = useTranslation();
-  // Ahead of the early return below — hooks cannot be conditional.
+
   const now = useNow();
   const locale = i18n.resolvedLanguage;
-  // Only the weekly limit is a quota window; the monthly figure is a billing
-  // cycle, so it is never the row that "recovers first".
+
+
   const weeklySoon = useMemo(
     () => pickUrgentRowId(collectQuotaRowInstants('xai', quota), now) === XAI_WEEKLY_ROW_ID,
     [quota, now]
@@ -97,9 +97,9 @@ export function XaiQuotaBody({ quota, classes }: QuotaBodyProps<XaiQuotaState>) 
   const percentLabel = formatXaiPercent(remaining);
   const amountLabel = formatXaiRemainingAmount(billing);
   const resetLabel = formatQuotaResetTime(billing.billingPeriodEnd);
-  // The monthly row is a billing cycle, so it carries no resetAtMs (that field
-  // is derived from periodEnd, the weekly quota window). Parse for the
-  // countdown; the summary keeps the two periods deliberately distinct.
+
+
+
   const monthlyResetDisplay = buildResetDisplay(
     resetLabel,
     parseIsoToMs(billing.billingPeriodEnd),

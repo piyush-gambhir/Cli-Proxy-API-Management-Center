@@ -22,9 +22,9 @@ export interface VertexImportState {
 
 const isJsonFile = (file: File) => file.name.toLowerCase().endsWith('.json');
 
-/** Vertex 服务账号 JSON 导入：选文件（含拖放）→ 可选区域 → 上传。 */
+
 export function useVertexImport(options: {
-  /** 对话框开着时结果内联展示；关着（上传中途关闭）才用 toast 兜底。 */
+
   isFocused: () => boolean;
   onCredentialAdded: () => void;
 }) {
@@ -81,7 +81,7 @@ export function useVertexImport(options: {
     }
   };
 
-  /** 导入成功后再导入一个：清空文件与结果，保留区域。 */
+
   const resetForAnother = () => setVertex((prev) => ({ location: prev.location, loading: false }));
 
   return { vertex, pickFile, setLocation, importCredential, resetForAnother };

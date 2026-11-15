@@ -12,7 +12,7 @@ export type ErrorLogViewerAction =
   | { type: 'error'; message: string }
   | { type: 'close' };
 
-/** Request ownership is checked by the caller before dispatching asynchronous results. */
+
 export function errorLogViewerReducer(
   state: ErrorLogViewerState,
   action: ErrorLogViewerAction

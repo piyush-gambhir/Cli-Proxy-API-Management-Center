@@ -1,9 +1,9 @@
 @use '../../../../styles/mixins' as *;
 
-/* 字段原语：设置行（开关 / 输入 / 下拉 / 区块编辑器共用一副骨架）+ 区块编辑器的 scoped 覆盖。
-   交互反馈一律引用全局动效 tokens（--dur-* / --ease-out-strong）。 */
 
-/* ---------- 表单控件宿主（区块编辑器内 :global 控件的统一几何） ---------- */
+
+
+
 
 .fieldsRoot {
   :global(.form-group) {
@@ -18,7 +18,7 @@
     letter-spacing: 0.02em;
   }
 
-  /* 设置行与区块编辑器里的输入框同一副几何：36px 高、8px 圆角、纸色底。 */
+
   :global(.input) {
     min-height: 36px;
     padding: 7px 11px;
@@ -63,10 +63,10 @@
   }
 }
 
-/* ---------- 设置组：组标题 + 圆角列表容器 ---------- */
 
-/* 组本身是容器查询的宿主：列数与行内堆叠都看「这一组有多宽」，
-   而不是视口——侧栏收起、折叠组缩进都会自然生效。 */
+
+
+
 .group {
   container: setting-list / inline-size;
   display: flex;
@@ -105,7 +105,7 @@
   border: 1px solid var(--border-color);
   border-radius: 12px;
   background: color-mix(in srgb, var(--bg-secondary) 55%, transparent);
-  /* 裁掉分隔线越界的部分 + 圆角；下拉菜单走 portal，不受影响。 */
+
   overflow: hidden;
 }
 
@@ -115,7 +115,7 @@
   }
 }
 
-/* ---------- 设置行 ---------- */
+
 
 .row {
   --setting-control: auto;
@@ -128,14 +128,14 @@
   min-height: 64px;
   padding: 14px 18px;
   box-sizing: border-box;
-  /* 发丝分隔线：向右、向下各投 1px，越出列表的部分被 overflow 裁掉，只剩行间与列间的线。 */
+
   box-shadow:
     1px 0 0 var(--border-color),
     0 1px 0 var(--border-color);
   scroll-margin-top: calc(var(--header-height, 64px) + 16px);
 }
 
-/* 控件槽宽度分三档；百分比兜底保证标题列永远有一半以上的位置。 */
+
 .size_sm {
   --setting-control: min(136px, 42%);
 }
@@ -152,14 +152,14 @@
   grid-column: 1 / -1;
 }
 
-/* 区块编辑器行：标题区在上，编辑器独占下方整行。 */
+
 .rowBlock {
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
   gap: 12px;
 }
 
-/* 自带标题区的区块单元格（API 密钥等）。 */
+
 .rowCell {
   display: block;
   padding: 16px 18px;
@@ -180,7 +180,7 @@
   overflow-wrap: anywhere;
 }
 
-/* 开关行的标题同样是 <label htmlFor>：点标题即切换。 */
+
 .rowToggle .rowLabel {
   cursor: pointer;
 }
@@ -216,7 +216,7 @@
   display: block;
 }
 
-/* 下拉触发器对齐输入框几何（Select 自带 40px + 投影，这里收成同一套）。 */
+
 .selectControl > button[aria-haspopup='listbox'] {
   height: 36px;
   padding: 0 11px;
@@ -242,7 +242,7 @@
   }
 }
 
-/* 输入框内右侧的状态标记（keepalive「已禁用」）。 */
+
 .rowControl > :global(.input).inputWithAdornment {
   padding-right: 64px;
 }
@@ -266,7 +266,7 @@
   pointer-events: none;
 }
 
-/* 窄组（手机、深层折叠）：输入行改为上下堆叠，开关始终留在右侧。 */
+
 @container setting-list (max-width: 520px) {
   .row {
     padding: 12px 14px;
@@ -282,9 +282,9 @@
   }
 }
 
-/* ---------- 代理 URL 的赞助跳转（作为行说明渲染） ---------- */
 
-/* 与正文融为一体的高亮链接：同字号，复用全站金色（amber）badge 配方，hover 底色加深。 */
+
+
 .fieldSponsorLink {
   display: inline-flex;
   align-items: center;
@@ -316,7 +316,7 @@
   height: 13px;
 }
 
-/* ---------- 搜索锚点与脉冲高亮 ---------- */
+
 
 .fieldAnchor {
   display: block;
@@ -325,8 +325,8 @@
   scroll-margin-top: calc(var(--header-height, 64px) + 16px);
 }
 
-/* 内描边 + 淡底色：行位于 overflow:hidden 的列表里，外扩的 box-shadow 会被裁掉，
-   且行的分隔线本身就是 box-shadow，所以脉冲改走 outline（向内偏移）。 */
+
+
 .fieldHighlightActive {
   animation: config-field-highlight 1.8s var(--ease-out-strong, ease-out);
 }
@@ -349,7 +349,7 @@
   }
 }
 
-/* ---------- 区块编辑器内部布局原语 ---------- */
+
 
 .fieldGrid {
   display: grid;
@@ -387,7 +387,7 @@
   line-height: 1.55;
 }
 
-/* ---------- 无障碍 ---------- */
+
 
 @media (prefers-reduced-motion: reduce) {
   .fieldsRoot :global(.input),

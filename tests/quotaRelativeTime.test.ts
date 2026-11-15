@@ -1,6 +1,6 @@
-/**
- * Relative-time formatting for quota cards.
- */
+
+
+
 
 import { describe, expect, test } from 'bun:test';
 import {
@@ -22,7 +22,7 @@ describe('relativeTimeParts', () => {
   });
 
   test('never renders a magnitude that should have been the next unit up', () => {
-    // Rounding up here would produce "24 hours" and "60 minutes".
+
     expect(relativeTimeParts(NOW + DAY_MS - 1, NOW)).toEqual({ value: 23, unit: 'hour' });
     expect(relativeTimeParts(NOW + HOUR_MS - 1, NOW)).toEqual({ value: 59, unit: 'minute' });
   });
@@ -37,8 +37,8 @@ describe('relativeTimeParts', () => {
   });
 
   test('past instants are negative rather than clamped to zero', () => {
-    // The timeline-local predecessor clamped with Math.max(0, …), so an expired
-    // credit read "in 1 minute".
+
+
     expect(relativeTimeParts(NOW - 3 * DAY_MS, NOW)).toEqual({ value: -3, unit: 'day' });
     expect(relativeTimeParts(NOW - 2 * HOUR_MS, NOW)).toEqual({ value: -2, unit: 'hour' });
   });
@@ -91,7 +91,7 @@ describe('buildResetDisplay', () => {
   });
 
   test('keeps the baked label alone when the instant is missing', () => {
-    // A store entry cached by an older build carries resetLabel but no resetAtMs.
+
     expect(buildResetDisplay('08-13 14:30', null, NOW, 'en')).toEqual({
       absolute: '08-13 14:30',
       relative: null,
@@ -110,7 +110,7 @@ describe('buildResetDisplay', () => {
     expect(buildResetDisplay(undefined, null, NOW, 'en')).toBeNull();
     expect(buildResetDisplay('', null, NOW, 'en')).toBeNull();
     expect(buildResetDisplay('   ', null, NOW, 'en')).toBeNull();
-    // '-' is the providers' own placeholder for "no reset known".
+
     expect(buildResetDisplay('-', null, NOW, 'en')).toBeNull();
   });
 

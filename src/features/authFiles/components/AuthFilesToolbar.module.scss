@@ -1,6 +1,6 @@
 @use '../../../styles/mixins' as *;
 
-/* 工作区工具栏：高频操作区，无入场动画，反馈即时 */
+
 
 .toolbar {
   display: flex;
@@ -9,14 +9,14 @@
   gap: 8px 10px;
 }
 
-/* ---------- 搜索 ---------- */
+
 
 .search {
   flex: 1 1 220px;
   min-width: 180px;
   max-width: 340px;
 
-  /* Input 组件外层是 .form-group，去掉其默认下边距 */
+
   :global(.form-group) {
     margin-bottom: 0;
   }
@@ -25,7 +25,7 @@
     height: 36px;
     border-radius: 10px;
     font-size: 13px;
-    /* 为右侧搜索图标留出空间，避免与占位符/输入文字重叠 */
+
     padding-right: 34px;
     text-overflow: ellipsis;
   }
@@ -35,7 +35,7 @@
   color: var(--text-quaternary);
 }
 
-/* ---------- 状态分段控件 ---------- */
+
 
 .segmented {
   display: inline-flex;
@@ -101,13 +101,13 @@
     0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
-/* ---------- 排序 ---------- */
+
 
 .sort {
   min-width: 120px;
 }
 
-/* ---------- 显示设置 ---------- */
+
 
 .display {
   position: relative;
@@ -209,7 +209,7 @@
   }
 }
 
-/* ---------- 删除筛选结果（工具栏右端的 ghost danger） ---------- */
+
 
 .deleteAction {
   margin-left: auto;
@@ -253,7 +253,7 @@
   }
 }
 
-/* ---------- 响应式 ---------- */
+
 
 @media (max-width: 900px) {
   .search {

@@ -48,8 +48,8 @@ export function PluginInstallGateModal({
   const [typed, setTyped] = useState('');
   const [wasOpen, setWasOpen] = useState(false);
 
-  // Reset the gauntlet to step 1 on each fresh open. Adjusting state during render
-  // (React's "you might not need an effect" guidance) avoids a setState-in-effect.
+
+
   if (open !== wasOpen) {
     setWasOpen(open);
     if (open) {
@@ -81,7 +81,7 @@ export function PluginInstallGateModal({
     try {
       await onConfirm();
     } catch {
-      // The caller surfaces the error via a notification; stay on this step.
+
     }
   };
 

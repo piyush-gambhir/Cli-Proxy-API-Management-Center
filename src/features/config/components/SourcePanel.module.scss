@@ -1,6 +1,6 @@
 @use '../../../styles/mixins' as *;
 
-/* 源码模式：工具栏搜索条 + CodeMirror 编辑面板 */
+
 
 .searchBar {
   display: flex;
@@ -101,7 +101,7 @@
   }
 }
 
-/* ---------- 编辑器面板 ---------- */
+
 
 .editorWrapper {
   width: 100%;
@@ -162,7 +162,7 @@
   }
 }
 
-/* ---------- 响应式 ---------- */
+
 
 @include mobile {
   .searchBar {
@@ -188,7 +188,7 @@
   }
 }
 
-/* ---------- 无障碍 ---------- */
+
 
 @media (prefers-reduced-motion: reduce) {
   .searchButton {

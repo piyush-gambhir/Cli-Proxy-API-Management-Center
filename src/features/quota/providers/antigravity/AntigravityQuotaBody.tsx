@@ -1,6 +1,6 @@
-/**
- * Antigravity 额度渲染体：套餐 chip 行（档位见 cardTier.ts）+ 分组水位条。
- */
+
+
+
 
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -110,7 +110,7 @@ export function AntigravityQuotaBody({ quota, classes }: QuotaBodyProps<Antigrav
       ),
     [quota.groups]
   );
-  // 首屏直接显示准确文案；后续 effect 会在最近的分钟边界更新并重新排程。
+
   const [nowMs, setNowMs] = useState(() => Date.now() + serverTimeOffsetMs);
 
   useEffect(() => {
@@ -131,8 +131,8 @@ export function AntigravityQuotaBody({ quota, classes }: QuotaBodyProps<Antigrav
     };
   }, [resetTimestamps, serverTimeOffsetMs]);
 
-  // Ranked against this provider's own server-corrected clock rather than the
-  // shared one, so the final-hour warning and the countdown always agree.
+
+
   const soonestRowId = useMemo(
     () => pickUrgentRowId(collectQuotaRowInstants('antigravity', quota), nowMs),
     [quota, nowMs]

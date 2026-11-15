@@ -113,7 +113,7 @@ describe('routing board reading', () => {
     expect(compat?.modelSource).toEqual({ type: 'list', models: ['deepseek-v4'] });
     expect(byKey.get('cred:main.json')?.name).toBe('main@example.com');
     expect(byKey.get('cred:runtime')?.locked).toBe(true);
-    // Masked keys only: the raw key never reaches display fields.
+
     expect(JSON.stringify(members.map((member) => [member.name, member.detail]))).not.toContain(
       'sk-codex-aaaa'
     );
@@ -133,7 +133,7 @@ describe('arranging tiers', () => {
     const top = moveMember(tiers, 'cred:main.json', { kind: 'gap', index: 0 });
     expect(top[0].memberKeys).toEqual(['cred:main.json']);
     expect(top).toHaveLength(4);
-    // The lone member of the top tier cannot move above itself.
+
     expect(moveMember(tiers, 'key:codex:0:0', { kind: 'gap', index: 0 })).toEqual(tiers);
     expect(canStepMember(tiers, 'key:codex:0:0', 'up')).toBe(false);
     expect(stepMember(tiers, 'key:codex:0:0', 'down')[0].memberKeys).toContain('key:codex:0:0');
@@ -254,7 +254,7 @@ describe('writing a plan', () => {
       undefined,
       4,
     ]);
-    // Untouched families are not sent; the source document is not mutated.
+
     expect(patch['api-keys'].claude).toBeUndefined();
     expect(RAW['api-keys'].codex[0].keys[1].priority).toBe(10);
   });
@@ -348,7 +348,7 @@ describe('route preview', () => {
     const current = board();
     const draft = draftFromBoard(current);
     const preview = resolveRoute(current, draft, catalog, 'deepseek-v4', 2_000);
-    // p20 only has a codex key without that model: skipped.
+
     expect(preview.tiers[0].state).toBe('skipped');
     expect(preview.tiers[1].state).toBe('active');
     const compat = preview.tiers[1].members.find((member) => member.key === 'compat:0');
@@ -364,11 +364,11 @@ describe('route preview', () => {
     const draft = draftFromBoard(current);
     draft.tiers = moveMember(draft.tiers, 'key:codex:0:0', { kind: 'tier', tierId: 'p0' });
     const preview = resolveRoute(current, draft, catalog, null, 0);
-    // p10: compat (1 + 2) and the codex key (3).
+
     expect(preview.tiers[0].members.map((member) => member.share)).toEqual([50, 50]);
     draft.settings = { ...draft.settings, strategy: 'round-robin' };
     const even = resolveRoute(current, draft, catalog, null, 0);
-    // Round-robin counts keys: compat has two, the codex key one.
+
     const shares = Object.fromEntries(
       even.tiers[0].members.map((member) => [member.key, member.share])
     );

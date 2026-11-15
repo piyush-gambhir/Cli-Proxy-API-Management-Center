@@ -1,11 +1,11 @@
 name: Sync upstream and release
 
-# This fork's main is upstream main plus the "ledger" redesign. This job keeps it current and
-# publishes management.html as the latest release, which CLIProxyAPI's panel updater downloads
-# when `management.panel-github-repository` points at this fork (it checks every 3 hours).
-#
-# Tags pushed with GITHUB_TOKEN do not trigger other workflows, so the release happens here
-# rather than in release.yml.
+
+
+
+
+
+
 
 on:
   schedule:
@@ -40,7 +40,7 @@ jobs:
           node-version: '26.13.1'
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
         with:
           bun-version: '1.4.4'
 

@@ -275,7 +275,7 @@ export function SystemPage() {
 
   useEffect(() => {
     fetchConfig().catch(() => {
-      // ignore
+
     });
   }, [fetchConfig]);
 

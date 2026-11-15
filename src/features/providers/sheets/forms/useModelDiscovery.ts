@@ -109,9 +109,9 @@ export function useModelDiscovery(args: UseModelDiscoveryArgs): UseModelDiscover
             firstEntry?.proxyUrl
           );
         } catch (firstErr) {
-          // Some OpenAI-compatible endpoints expose /models without auth, or
-          // reject the configured key for the discovery route. Retry once
-          // without any auth/headers before surfacing the original error.
+
+
+
           try {
             next = await modelsApi.fetchModelsViaApiCall(
               baseUrl,

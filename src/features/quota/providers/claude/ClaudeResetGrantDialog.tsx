@@ -14,7 +14,7 @@ type ChoiceProps = {
   onSelect: (id: string) => void;
 };
 
-/** Native radios retain arrow-key navigation without a second confirmation dialog. */
+
 export function ClaudeResetGrantChoices({
   grants,
   selected,
