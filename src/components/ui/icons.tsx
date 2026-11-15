@@ -1,7 +1,7 @@
 import type { SVGProps } from 'react';
 
-// Inline SVG icons (Lucide, ISC). We embed paths to keep the WebUI single-file/offline friendly.
-// Source: https://github.com/lucide-icons/lucide (via lucide-static).
+
+
 
 export interface IconProps extends SVGProps<SVGSVGElement> {
   size?: number;
@@ -511,7 +511,7 @@ export function IconSidebarSystem({ size = 20, ...props }: IconProps) {
   );
 }
 
-/** Lucide "route". */
+
 export function IconSidebarRouting({ size = 20, ...props }: IconProps) {
   return (
     <svg {...baseSvgProps} width={size} height={size} {...props}>
@@ -522,7 +522,7 @@ export function IconSidebarRouting({ size = 20, ...props }: IconProps) {
   );
 }
 
-/** Lucide "grip-vertical". */
+
 export function IconGripVertical({ size = 20, ...props }: IconProps) {
   return (
     <svg {...baseSvgProps} width={size} height={size} {...props}>
@@ -536,7 +536,7 @@ export function IconGripVertical({ size = 20, ...props }: IconProps) {
   );
 }
 
-/** Lucide "ellipsis". */
+
 export function IconEllipsis({ size = 20, ...props }: IconProps) {
   return (
     <svg {...baseSvgProps} width={size} height={size} {...props}>
@@ -547,7 +547,7 @@ export function IconEllipsis({ size = 20, ...props }: IconProps) {
   );
 }
 
-/** Lucide "lock". */
+
 export function IconLock({ size = 20, ...props }: IconProps) {
   return (
     <svg {...baseSvgProps} width={size} height={size} {...props}>

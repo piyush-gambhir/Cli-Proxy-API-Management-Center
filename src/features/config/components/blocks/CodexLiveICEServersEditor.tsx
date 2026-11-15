@@ -6,10 +6,10 @@ import { makeClientId, type CodexLiveICEServerDraft } from '@/types/visualConfig
 import { FieldGrid, FieldShell } from '../fields/FieldPrimitives';
 import styles from './Blocks.module.scss';
 
-/**
- * ICE 服务器列表。标题、说明与校验错误由外层 BlockSetting 渲染；
- * describedBy / invalid 由它传入，挂到每个内部控件上。
- */
+
+
+
+
 export function CodexLiveICEServersEditor({
   value,
   disabled,

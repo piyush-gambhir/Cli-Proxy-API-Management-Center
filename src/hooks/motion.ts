@@ -1,14 +1,14 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { animate } from 'motion/mini';
 
-/**
- * Premium 动效档位：入场 0.45s、减速曲线、无回弹。
- * 与 PageTransition 保持同一套自定义 easing 写法。
- */
+
+
+
+
 const REVEAL_DISTANCE = 24;
 const REVEAL_DURATION = 0.45;
 const COUNT_UP_DURATION = 900;
-/** 分组入场的级差与总预算：级差再大也不许整组拖过 360ms */
+
 const GROUP_STAGGER = 0.07;
 const GROUP_MAX_TOTAL = 0.36;
 
@@ -19,12 +19,12 @@ export const prefersReducedMotion = (): boolean =>
   typeof window.matchMedia === 'function' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/**
- * 元素滚动进入视口时上浮淡入。
- *
- * 初始态由 JS 在绘制前写入行内样式，因此脚本未执行时内容始终可见，
- * 不依赖任何 CSS 前置类。
- */
+
+
+
+
+
+
 export function useRevealOnScroll<T extends HTMLElement>(delaySeconds = 0) {
   const ref = useRef<T | null>(null);
 
@@ -79,13 +79,13 @@ export function useRevealOnScroll<T extends HTMLElement>(delaySeconds = 0) {
   return ref;
 }
 
-/**
- * 容器进入视口时，其内 `[data-reveal]` 子元素按 DOM 顺序级联上浮淡入。
- *
- * 级差 70ms、整组封顶 360ms（子项多时自动压缩级差），符合 micro-cascade 预算；
- * `data-reveal="scale"` 的子项额外从 0.97 缩放入场（用于玻璃面板的 materialize）。
- * 初始态同样在绘制前写入行内样式，脚本缺席时内容始终可见。
- */
+
+
+
+
+
+
+
 export function useRevealGroup<T extends HTMLElement>(baseDelaySeconds = 0) {
   const ref = useRef<T | null>(null);
 
@@ -165,9 +165,9 @@ export function useRevealGroup<T extends HTMLElement>(baseDelaySeconds = 0) {
   return ref;
 }
 
-/**
- * 数字滚动到目标值。减少动效偏好下直接落到终值。
- */
+
+
+
 export function useCountUp(target: number, enabled = true): number {
   const [displayValue, setDisplayValue] = useState(target);
   const fromRef = useRef(target);

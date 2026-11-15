@@ -16,7 +16,7 @@ export interface PolicyPanelProps {
 }
 
 function StrategyMark({ strategy }: { strategy: RoutingStrategy }) {
-  // Three dots: even (round-robin), graded (weighted), first one filled (fill-first).
+
   const opacities =
     strategy === 'round-robin'
       ? [1, 1, 1]
@@ -73,7 +73,7 @@ export function PolicyPanel({ settings, disabled = false, onChange }: PolicyPane
     <aside
       className={styles.policy}
       aria-labelledby={`${id}-title`}
-      // The floating save bar lines up with this column (see RoutingSaveBar).
+
       data-routing-policy-column=""
     >
       <div className={styles.policyHead}>

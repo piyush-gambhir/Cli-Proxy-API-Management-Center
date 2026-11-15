@@ -1,7 +1,7 @@
-/**
- * 配置状态管理
- * 从原项目 src/core/config-service.js 迁移
- */
+
+
+
+
 
 import { create } from 'zustand';
 import type { Config } from '@/types';
@@ -17,7 +17,7 @@ interface ConfigCache {
 interface ConfigState {
   config: Config | null;
 
-  // 操作
+
   fetchConfig: (forceRefresh?: boolean) => Promise<Config>;
   updateConfigValue: (section: RawConfigSection, value: unknown) => void;
   clearCache: (section?: RawConfigSection) => void;
@@ -35,12 +35,12 @@ export const useConfigStore = create<ConfigState>((set, get) => ({
   config: null,
 
   fetchConfig: async (forceRefresh = false) => {
-    // 检查缓存
+
     if (!forceRefresh && fullConfigCache && isFullCacheValid()) {
       return fullConfigCache.data;
     }
 
-    // 同一时刻合并多个 /config 请求（如 StrictMode 或多个页面同时触发）
+
     if (inFlightConfigRequest) {
       return inFlightConfigRequest.promise;
     }
@@ -51,7 +51,7 @@ export const useConfigStore = create<ConfigState>((set, get) => ({
       inFlightConfigRequest = { id: requestId, promise: requestPromise };
       const data = await requestPromise;
 
-      // 如果在请求过程中连接已被切换/登出，则忽略旧请求的结果，避免覆盖新会话的状态
+
       if (requestId !== configRequestToken) {
         return data;
       }
@@ -68,9 +68,9 @@ export const useConfigStore = create<ConfigState>((set, get) => ({
 
   updateConfigValue: (section, value) => {
     set((state) => {
-      // Optimistic values are UI models, not serialized v8 config nodes (provider
-      // rows in particular are not upstream groups). Keep the last server document
-      // intact until the invalidated cache is fetched again.
+
+
+
       const nextConfig: Config = { ...(state.config || {}) };
 
       switch (section) {
@@ -141,18 +141,18 @@ export const useConfigStore = create<ConfigState>((set, get) => ({
       return { config: nextConfig };
     });
 
-    // 使缓存失效（保留当前 config 快照）
+
     get().clearCache(section);
   },
 
   clearCache: (section) => {
     fullConfigCache = null;
 
-    // 缓存失效通常伴随乐观写或“切换连接/登出/全量刷新”，需要让 in-flight 的旧请求失效
+
     configRequestToken += 1;
     inFlightConfigRequest = null;
 
-    // 无 section 代表“切换连接/登出/全量刷新”，连 config 快照一起清除
+
     if (!section) {
       set({ config: null });
     }

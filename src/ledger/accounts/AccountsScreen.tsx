@@ -1,7 +1,7 @@
-/**
- * Accounts: the ledger shell's home. Every credential with what is left on it, its controls, and
- * adding new ones. Reuses upstream's data hooks and quota store; the presentation is ours.
- */
+
+
+
+
 
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -58,7 +58,7 @@ import { accountCooldown, accountHealth } from './accountHealth';
 import { reauthenticationProvider } from './reauthentication';
 import styles from './AccountsScreen.module.scss';
 
-/** Search earns its space only once the list is long. */
+
 const SEARCH_MIN_ACCOUNTS = 9;
 
 type AccountFilter = 'all' | 'attention' | 'cooling' | 'paused';
@@ -67,14 +67,14 @@ const FILTERS: AccountFilter[] = ['all', 'attention', 'cooling', 'paused'];
 const providerKeyOf = (file: AuthFileItem) =>
   normalizeProviderKey(String(file.type ?? file.provider ?? ''));
 
-/**
- * Upstream's quota actions skip disabled files. Pausing only takes an account out of rotation and
- * the backend still answers quota lookups for it, so paused rows refresh and reset like any other.
- */
+
+
+
+
 const asActive = (file: AuthFileItem): AuthFileItem =>
   isDisabledAuthFile(file) ? { ...file, disabled: false } : file;
 
-/** Providers with quota first, in upstream's tab order, then everything else alphabetically. */
+
 const providerRank = (key: string) => {
   const index = QUOTA_TAB_ORDER.indexOf(key as QuotaProviderType);
   return index === -1 ? QUOTA_TAB_ORDER.length : index;
@@ -95,7 +95,7 @@ export function AccountsScreen() {
   const accountSignIn = useRef<AddAccountSheetHandle>(null);
   const disableControls = connectionStatus !== 'connected';
 
-  /* ---------- account data and actions (upstream hooks) ---------- */
+
 
   const {
     modelsModalOpen,
@@ -138,7 +138,7 @@ export function AccountsScreen() {
 
   const { syncingModelCatalog, syncModelCatalog } = useModelCatalogSync(invalidateModels);
 
-  // Only the excluded-model list is used here: the models dialog marks excluded models.
+
   const { excluded, loadExcluded } = useAuthFilesOauth({ viewMode: 'list', files });
 
   const {
@@ -155,7 +155,7 @@ export function AccountsScreen() {
     onFilesMutated: invalidateDerivedCaches,
   });
 
-  /* ---------- quota (upstream store, loader and actions) ---------- */
+
 
   const antigravityQuota = useQuotaStore((state) => state.antigravityQuota);
   const claudeQuota = useQuotaStore((state) => state.claudeQuota);
@@ -197,7 +197,7 @@ export function AccountsScreen() {
   const { batchLoading, loadQuota } = useQuotaBatchLoader();
   const { resettingQuotaName, refreshQuota, resetQuota } = useQuotaActions(disableControls);
 
-  /* ---------- loading ---------- */
+
 
   const reloadAll = useCallback(async () => {
     await Promise.all([loadFiles({ background: true }), loadExcluded()]);
@@ -214,18 +214,18 @@ export function AccountsScreen() {
     void loadFiles({ background: true }).catch(() => {});
   }, 240_000);
 
-  /* ---------- rows ---------- */
+
 
   const rows = useMemo(
     () =>
       files.map((file) => {
-        // Upstream's quota filters skip disabled files; resolve as enabled so a disabled row keeps
-        // its quota type and reads "paused" instead of "no quota".
+
+
         const quotaType = resolveQuotaProviderType({ ...file, disabled: false });
         return {
           file,
           provider: providerKeyOf(file),
-          // Runtime-only credentials have no file to read quota for, same as upstream's cards.
+
           entry:
             quotaType && !isRuntimeOnlyAuthFile(file)
               ? ({ file, type: quotaType } as QuotaFileEntry)
@@ -243,14 +243,14 @@ export function AccountsScreen() {
     return counts;
   }, [rows]);
 
-  /* The status filters, and the header's attention count, read the same per-row flags. */
+
   const flagsOf = useCallback(
     (row: (typeof rows)[number]) => {
       const paused = isDisabledAuthFile(row.file);
       const quota = row.entry ? getQuota(row.entry) : undefined;
       return {
         paused,
-        // A sign-in problem needs attention even when the provider has no quota lookup.
+
         attention:
           !paused &&
           (Boolean(accountHealth(row.file, quota).authentication) || quota?.status === 'error'),
@@ -274,8 +274,8 @@ export function AccountsScreen() {
     });
     return counts;
   }, [rows, flagsOf]);
-  // A filter that no longer matches anything falls back to everything, and stays there: a later
-  // match must not silently reapply a filter the screen no longer shows as selected.
+
+
   const activeFilter = filterCounts[filter] > 0 ? filter : 'all';
   useEffect(() => {
     if (filter !== 'all' && filterCounts[filter] === 0) setFilter('all');
@@ -308,13 +308,13 @@ export function AccountsScreen() {
         ),
     []
   );
-  // Paused accounts still load and show their quota.
+
   const visibleEntries = useMemo(() => quotaEntries(visibleRows), [quotaEntries, visibleRows]);
   const allEntries = useMemo(() => quotaEntries(rows), [quotaEntries, rows]);
 
-  // The proxy's poller already reads Claude and Codex usage on a rate-limited schedule. Paint those
-  // rows from its snapshot and never call Anthropic or OpenAI on load; only providers the poller
-  // does not cover (xAI and others) load directly, once per visit.
+
+
+
   const scheduler = useSchedulerStatus(!disableControls);
   const autoLoadEntries = useMemo(
     () =>
@@ -330,9 +330,9 @@ export function AccountsScreen() {
     getQuota
   );
 
-  // After each successful listing, drop cached quota for credentials that are gone, as upstream's
-  // quota page does, so a replacement under the same filename never shows the old numbers.
-  // `files` only changes identity when a listing succeeds.
+
+
+
   const initialFiles = useRef(files);
   useEffect(() => {
     if (files === initialFiles.current) return;
@@ -355,10 +355,10 @@ export function AccountsScreen() {
   const enabledCount = rows.length - filterCounts.paused;
   const attentionCount = filterCounts.attention;
 
-  /* ---------- usage windows chart (upstream's timeline) ---------- */
 
-  // A live read when this session has one, otherwise the proxy's snapshot in the same shape, so
-  // the chart never needs a provider call of its own.
+
+
+
   const timelineQuota = useCallback(
     (entry: QuotaFileEntry): QuotaCardState | undefined => {
       const live = getQuota(entry);
@@ -383,10 +383,10 @@ export function AccountsScreen() {
     [timelineNames, showEmails]
   );
 
-  /* ---------- handlers ---------- */
 
-  // Re-reads the proxy's snapshot and the file list: no provider calls. A live provider read is
-  // per account (the row's refresh button), so one click can never fan out into rate limits.
+
+
+
   const refreshQuotaAll = useCallback(() => {
     void scheduler.reload();
     void loadFiles({ background: true });
@@ -396,7 +396,7 @@ export function AccountsScreen() {
     void loadFiles({ background: true });
   }, [loadFiles]);
 
-  // A new or reauthenticated credential can change models and quota, not just the file list.
+
   const credentialsAdded = useCallback(() => {
     invalidateDerivedCaches();
     reloadFiles();
@@ -420,7 +420,7 @@ export function AccountsScreen() {
     [showNotification, t]
   );
 
-  /* ---------- render ---------- */
+
 
   return (
     <div className={styles.page}>

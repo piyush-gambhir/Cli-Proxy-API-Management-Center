@@ -145,7 +145,7 @@ export function PluginsPage() {
         }
       },
       () => {
-        // Store metadata is optional; its failure must not block plugin management.
+
       }
     );
     return () => {
@@ -486,20 +486,20 @@ export function PluginsPage() {
 
   return (
     <div className={styles.page}>
-      {/* ── Page Header ── */}
+      {                               }
       <div className={styles.pageHeader}>
         <h1 className={styles.title}>{t('plugin_management.title')}</h1>
         <p className={styles.description}>{t('plugin_management.description')}</p>
       </div>
 
-      {/* ── Alerts ── */}
+      {                          }
       {error ? <div className={styles.errorBox}>{error}</div> : null}
 
       {data && !data.pluginsEnabled ? (
         <div className={styles.warningBox}>{t('plugin_management.global_disabled_hint')}</div>
       ) : null}
 
-      {/* ── Status Bar ── */}
+      {                              }
       {data ? (
         <div className={styles.statusBar}>
           <div className={styles.statusPill}>
@@ -546,7 +546,7 @@ export function PluginsPage() {
         </div>
       ) : null}
 
-      {/* ── Toolbar ── */}
+      {                           }
       <div className={styles.toolbar}>
         <Input
           type="search"
@@ -572,7 +572,7 @@ export function PluginsPage() {
         </Button>
       </div>
 
-      {/* ── Plugin List ── */}
+      {                               }
       {loading ? (
         <div className={styles.pluginList}>
           {Array.from({ length: 4 }, (_, index) => (
@@ -609,12 +609,12 @@ export function PluginsPage() {
 
             return (
               <article key={plugin.id} className={styles.pluginRow}>
-                {/* Logo */}
+                {          }
                 <div className={styles.logoBox} aria-hidden="true">
                   <PluginCardLogo key={logo} src={logo} />
                 </div>
 
-                {/* Info */}
+                {          }
                 <div className={styles.pluginInfo}>
                   <div className={styles.pluginName}>
                     <h2>{getPluginTitle(plugin)}</h2>
@@ -672,7 +672,7 @@ export function PluginsPage() {
                   ) : null}
                 </div>
 
-                {/* Actions */}
+                {             }
                 <div className={styles.rowActions}>
                   <ToggleSwitch
                     checked={plugin.enabled}
@@ -721,7 +721,7 @@ export function PluginsPage() {
         </div>
       )}
 
-      {/* ── Config Sheet ── */}
+      {                                }
       <Sheet
         open={Boolean(editingPlugin && draft)}
         onClose={closeConfigSheet}

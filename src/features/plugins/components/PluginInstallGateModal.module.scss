@@ -1,10 +1,10 @@
-// Multi-step install confirmation ("gauntlet") for third-party plugins.
+
 
 .gateModal {
   text-align: left;
 }
 
-// ── Plugin identity card (shown on every step) ──
+
 .identity {
   display: flex;
   flex-direction: column;
@@ -94,7 +94,7 @@
   overflow-wrap: anywhere;
 }
 
-// ── Step 2: caution banner + effects + untrusted alert ──
+
 .warningBanner {
   display: flex;
   align-items: center;
@@ -181,7 +181,7 @@
   }
 }
 
-// ── Step 3: type-to-confirm ──
+
 .confirmBlock {
   margin-top: $spacing-lg;
 }

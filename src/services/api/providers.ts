@@ -59,7 +59,7 @@ const serializeRuntimePolicy = (config: ProviderRuntimePolicy, supportsErrors = 
   return payload;
 };
 
-/** Restore parent inheritance without turning untouched nulls into persisted defaults. */
+
 const applyPolicyIntent = (
   next: Record<string, unknown>,
   raw: Record<string, unknown>,
@@ -72,7 +72,7 @@ const applyPolicyIntent = (
       if (raw[field] === null) next[field] = null;
       else delete next[field];
     } else if (after[field] !== undefined && raw[field] == null) {
-      // An explicit override equal to the inherited effective value is still a change.
+
       next[field] = after[field];
     }
   }
@@ -258,8 +258,8 @@ const getGroups = async (family: ProviderFamily) => {
     throw conflict();
   return readProviderGroups(raw, family);
 };
-// Remove the old UI-only field at known config locations, not inside opaque
-// user maps such as headers. Raw snapshots otherwise preserve unknown fields.
+
+
 const removeTestModel = (value: Record<string, unknown>) => {
   const next = { ...value };
   delete next['test-model'];
@@ -283,7 +283,7 @@ const putGroups = (family: ProviderFamily, groups: Record<string, unknown>[]) =>
     }))
   );
 
-/** Locate by persisted snapshot, never by flattened row index. Refuse ambiguous duplicates. */
+
 export const locateProviderGroup = (
   groups: Record<string, unknown>[],
   source: ProviderSource
@@ -318,7 +318,7 @@ const emptyOverride = (field: string): unknown => {
   if (['priority', 'weight'].includes(field)) return 0;
   return '';
 };
-/** Only changed effective fields become overrides. Unchanged null/missing values retain inheritance. */
+
 export const applyProviderChanges = (
   raw: Record<string, unknown>,
   before: Record<string, unknown>,
@@ -328,8 +328,8 @@ export const applyProviderChanges = (
   const next = { ...raw };
   for (const field of new Set([...Object.keys(before), ...Object.keys(after)])) {
     if (equal(before[field], after[field])) continue;
-    // The row form displays an omitted WebSocket flag as off. Do not materialize
-    // that default when editing another field (preserve missing/null on disk).
+
+
     if (field === 'websockets' && before[field] === undefined && after[field] === false) continue;
     if (after[field] !== undefined) {
       const fieldRaw = raw[field] ?? inherited?.[field];
@@ -365,7 +365,7 @@ export const applyProviderChanges = (
   }
   return next;
 };
-/** Form row identity survives renames, deletion and reordering; it is never serialized. */
+
 const preserveModelMetadata = (
   next: Record<string, unknown>,
   raw: unknown,
@@ -393,8 +393,8 @@ const preserveModelMetadata = (
       old = original?.find((entry) => entry.sourceIndex === model.sourceIndex);
       if (!old || used.has(model.sourceIndex)) throw conflict();
     } else {
-      // Preserve compatibility with callers without row identities, but never guess
-      // between multiple aliases of the same upstream model or steal an indexed row.
+
+
       const candidates = (original ?? []).filter(
         (entry) =>
           typeof entry.sourceIndex === 'number' &&
@@ -484,7 +484,7 @@ const updateKey = async (
     config.models,
     family === 'vertex' ? serializeVertexModelAliases : serializeModelAliases
   );
-  // Response metadata belongs to credentials, not arbitrary nested maps such as headers.
+
   delete keys[keyIndex]['auth-index'];
   groups[index] = { ...nextGroup, keys };
   await putGroups(family, groups);
@@ -587,8 +587,8 @@ export const providersApi = {
       const rawKeys = groups[index].keys as Record<string, unknown>[];
       const used = new Set<number>();
       next.keys = config.apiKeyEntries.map((entry) => {
-        // Existing form entries retain their source index; its absence means a new credential.
-        // API keys alone are not identities: the same key can use different proxies.
+
+
         const keyIndex = entry.sourceIndex;
         if (keyIndex === undefined) return serializeApiKeyEntry(entry);
         if (used.has(keyIndex) || !isRecord(rawKeys[keyIndex])) throw conflict();

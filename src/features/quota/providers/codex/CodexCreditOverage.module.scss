@@ -1,6 +1,6 @@
-/* Codex "use credits after the usage limit": card row state/action and dialog body.
- * The state badge mirrors QuotaBody's Claude extra-usage badge so both overage
- * settings read alike; tones only separate "unknown" and "spending" from neutral. */
+
+
+
 
 .status {
   display: inline-flex;
@@ -14,7 +14,7 @@
   color: var(--text-primary);
   white-space: nowrap;
 
-  // Unknown is the honest default and stays quieter than any confirmed state.
+
   &[data-state='unknown'],
   &[data-state='writing'] {
     background: transparent;
@@ -22,7 +22,7 @@
     color: var(--text-tertiary);
   }
 
-  // Allowed means the account may spend credits; unconfirmed needs another look.
+
   &[data-state='allowed'],
   &[data-state='unconfirmed'] {
     background: var(--warning-bg);
@@ -38,7 +38,7 @@
   white-space: nowrap;
 }
 
-/* Same quiet outline-pill family as the card footer actions, one size down. */
+
 .manage {
   display: inline-flex;
   flex-shrink: 0;
@@ -92,7 +92,7 @@
   }
 }
 
-/* ---------- dialog ---------- */
+
 
 .facts {
   display: grid;
@@ -131,7 +131,7 @@
   color: var(--text-primary);
 }
 
-/* Scope is part of the decision; reserve the feedback panel for an actual outcome. */
+
 .scope {
   margin: 0;
   color: var(--text-secondary);

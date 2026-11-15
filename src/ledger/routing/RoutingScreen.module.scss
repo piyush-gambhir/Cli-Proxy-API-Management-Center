@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 28px;
   min-width: 0;
-  // Room for the save bar, which floats over the bottom of the page.
+
   padding-bottom: 72px;
 }
 
@@ -20,7 +20,7 @@
   font-size: 13px;
 }
 
-/* ---------- strategy ---------- */
+
 
 .strategy {
   display: flex;
@@ -58,7 +58,7 @@
   font-weight: 550;
 }
 
-/* ---------- providers ---------- */
+
 
 .provider {
   display: flex;
@@ -121,7 +121,7 @@
   transition: background-color var(--dur-hover) var(--ease-out-strong);
 }
 
-// An unsaved move is tinted until it is saved or discarded.
+
 .moved {
   background: color-mix(in srgb, var(--primary-color) 7%, var(--bg-primary));
 }
@@ -215,7 +215,7 @@
     opacity: 0.3;
   }
 
-  // Hover and focus explain the action, on a solid fill.
+
   &[data-tip]::after {
     content: attr(data-tip);
     position: absolute;
@@ -255,7 +255,7 @@
   }
 }
 
-/* ---------- failover settings ---------- */
+
 
 .settings {
   display: grid;
@@ -334,7 +334,7 @@
   }
 }
 
-/* ---------- save bar ---------- */
+
 
 .saveBar {
   position: sticky;

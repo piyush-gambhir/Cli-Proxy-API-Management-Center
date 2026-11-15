@@ -1,18 +1,18 @@
 @use '../../styles/mixins' as *;
 
-/* ============================================================
- * Routing board: a vertical ladder of priority tiers on a rail,
- * with the gateway policy beside it.
- * ============================================================ */
 
-// One vertical axis: the rail runs through the centre of every tier index.
+
+
+
+
+
 $tier-pad: 16px;
 $index-size: 22px;
-$rail-x: $tier-pad + 1px + 11px; // tier border + padding + half the index
+$rail-x: $tier-pad + 1px + 11px;
 $policy-width: 300px;
 $layout-gap: 24px;
-$layout-stack: 1100px; // below this the policy panel stacks under the board
-$label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
+$layout-stack: 1100px;
+$label-x: $tier-pad + 1px + $index-size + 10px;
 
 .page {
   display: flex;
@@ -20,13 +20,13 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   gap: 20px;
   width: 100%;
   min-width: 0;
-  /* While the floating save bar is up, leave room to scroll the last row above it. */
+
   padding-bottom: calc(
     var(--routing-action-bar-height, 0px) + 16px + env(safe-area-inset-bottom, 0px)
   );
 }
 
-/* ---------- header ---------- */
+
 
 .header {
   display: flex;
@@ -45,7 +45,7 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   color: var(--text-primary);
 }
 
-/* ---------- layout ---------- */
+
 
 .layout {
   display: grid;
@@ -97,7 +97,7 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   border: 0;
 }
 
-/* ---------- ladder ---------- */
+
 
 .ladder {
   display: flex;
@@ -118,7 +118,7 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   padding-left: $label-x;
 }
 
-/* Pinned to the first line so the dot stays on the rail when the picker wraps below. */
+
 .entryDot,
 .exhaustedDot {
   position: absolute;
@@ -193,7 +193,7 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   color: var(--text-tertiary);
 }
 
-/* Gaps carry the rail between tiers and open into drop zones while dragging. */
+
 
 .gap {
   position: relative;
@@ -240,7 +240,7 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   color: var(--text-primary);
 }
 
-/* ---------- tier ---------- */
+
 
 .tier {
   position: relative;
@@ -309,7 +309,7 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   color: var(--amber-color);
 }
 
-/* State reads as a quiet status line on the right; its dot carries the color. */
+
 .tierState {
   display: inline-flex;
   align-items: center;
@@ -373,7 +373,7 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   color: var(--text-secondary);
 }
 
-/* Skipped tiers recede by outline, not opacity, so their (already dimmed) cards stay legible. */
+
 .tierSkipped {
   border-style: dashed;
   background: transparent;
@@ -393,7 +393,7 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   }
 }
 
-/* ---------- policy panel ---------- */
+
 
 .policy {
   position: sticky;
@@ -434,7 +434,7 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   color: var(--text-tertiary);
 }
 
-/* Sections are separated by hairlines instead of extra boxes. */
+
 .policySection,
 .policyRow {
   padding: 18px 0;
@@ -459,7 +459,7 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   color: var(--text-tertiary);
 }
 
-/* Vertical segmented control: a recessed track with one raised selection. */
+
 .strategyGroup {
   display: flex;
   flex-direction: column;
@@ -573,7 +573,7 @@ $label-x: $tier-pad + 1px + $index-size + 10px; // where tier names begin
   }
 }
 
-/* ---------- dialogs ---------- */
+
 
 .dialogHint {
   margin: 0 0 12px;

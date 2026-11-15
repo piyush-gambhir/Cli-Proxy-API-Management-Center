@@ -1,7 +1,7 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
-// ─── Page Container ─────────────────────────────────────
+
 
 .page {
   display: flex;
@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-// ─── Header ─────────────────────────────────────────────
+
 
 .pageHeader {
   display: flex;
@@ -33,7 +33,7 @@
   line-height: 1.5;
 }
 
-// ─── Alert Boxes ────────────────────────────────────────
+
 
 .errorBox,
 .warningBox {
@@ -55,7 +55,7 @@
   color: var(--text-primary);
 }
 
-// ─── Status Bar ─────────────────────────────────────────
+
 
 .statusBar {
   display: flex;
@@ -128,7 +128,7 @@
   }
 }
 
-// ─── Toolbar ────────────────────────────────────────────
+
 
 .toolbar {
   display: flex;
@@ -161,7 +161,7 @@
   }
 }
 
-// ─── Plugin List ────────────────────────────────────────
+
 
 .pluginList {
   display: flex;
@@ -173,7 +173,7 @@
   background: color-mix(in srgb, var(--border-color) 30%, transparent);
 }
 
-// ─── Plugin Row ─────────────────────────────────────────
+
 
 .pluginRow {
   display: grid;
@@ -291,7 +291,7 @@
   flex-shrink: 0;
 }
 
-// ─── Badges ─────────────────────────────────────────────
+
 
 .badgeRow {
   display: flex;
@@ -337,7 +337,7 @@
   color: var(--text-tertiary);
 }
 
-// ─── Row Actions ────────────────────────────────────────
+
 
 .rowActions {
   display: flex;
@@ -391,7 +391,7 @@
   flex: 0 0 auto;
 }
 
-// ─── Skeleton ───────────────────────────────────────────
+
 
 .skeletonRow {
   display: flex;
@@ -445,7 +445,7 @@
   }
 }
 
-// ─── Sheet Config Form ──────────────────────────────────
+
 
 .sheetFooter {
   display: flex;
@@ -558,7 +558,7 @@
   font-size: 14px;
 }
 
-// ─── Animation ──────────────────────────────────────────
+
 
 @keyframes skeletonPulse {
   0% {
@@ -569,7 +569,7 @@
   }
 }
 
-// ─── Mobile Overrides ───────────────────────────────────
+
 
 @include mobile {
   .page {

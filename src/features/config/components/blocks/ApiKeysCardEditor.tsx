@@ -125,7 +125,7 @@ function ScopedApiKeysCardEditor({
       return;
     }
     setNames(readApiKeyNames(apiBase));
-    // Retain old fingerprints: configuration edits can still be discarded or fail to save.
+
     if (editingApiKeyId === null) {
       setApiKeyIds([...renderApiKeyIds, makeClientId()]);
     }

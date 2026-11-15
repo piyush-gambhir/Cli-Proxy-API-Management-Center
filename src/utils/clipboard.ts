@@ -5,7 +5,7 @@ export async function copyToClipboard(text: string): Promise<boolean> {
       return true;
     }
   } catch {
-    // fallback below
+
   }
 
   try {
@@ -38,7 +38,7 @@ export async function copyToClipboard(text: string): Promise<boolean> {
       try {
         activeElement.focus();
       } catch {
-        // ignore
+
       }
     }
 

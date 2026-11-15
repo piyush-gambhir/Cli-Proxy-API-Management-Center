@@ -1,6 +1,6 @@
-/**
- * Read-only normalization of the raw Claude OAuth usage response.
- */
+
+
+
 import type { ClaudeDollarWindow, ClaudeUsageSnapshot } from '@/types/quota';
 import { isRecord } from '@/utils/helpers';
 import { normalizeNumberValue, normalizeStringValue } from '@/utils/quota/parsers';

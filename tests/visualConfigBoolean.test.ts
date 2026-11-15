@@ -19,7 +19,7 @@ describe('backend-compatible visual booleans', () => {
       expect(readConfigBoolean(false, fallback)).toBe(false);
       for (const value of trueSpellings) expect(readConfigBoolean(value, fallback)).toBe(true);
       for (const value of falseSpellings) expect(readConfigBoolean(value, fallback)).toBe(false);
-      // Quoted true/false and unconventional casing/whitespace are not bool strings in yaml.v3.
+
       for (const value of [null, undefined, '', 'true', 'false', 'yEs', 'oFF', ' yes ', 0, 1, {}]) {
         expect(readConfigBoolean(value, fallback)).toBe(fallback);
       }

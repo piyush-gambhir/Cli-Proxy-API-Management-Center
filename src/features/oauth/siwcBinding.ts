@@ -9,7 +9,7 @@ export function supportsSiwcBinding(file: AuthFileItem): boolean {
   );
 }
 
-/** Credentials that can be picked as the SIWC binding target, sorted by name. */
+
 export function listSiwcTargets(files: readonly AuthFileItem[]): AuthFileItem[] {
   return files
     .filter(supportsSiwcBinding)
@@ -22,7 +22,7 @@ export function getSiwcBindingStatus(file: AuthFileItem): SiwcBindingStatus {
   return file.useSiwc && file.siwcBound ? 'active' : file.siwcBound ? 'bound' : 'unbound';
 }
 
-/** Validate the fixed redirect URI without rewriting the pasted callback. */
+
 export function isSiwcCallbackValid(value: string, state: string): boolean {
   try {
     const raw = value.trim();
@@ -42,9 +42,9 @@ export function isSiwcCallbackValid(value: string, state: string): boolean {
   }
 }
 
-/** A start is never aborted: its late response is needed to clean up the server session.
- * If the network loses that response, the server TTL remains the backstop.
- */
+
+
+
 export function createSiwcStart<T extends { state: string }>(options: {
   start: () => Promise<T>;
   cancel: (state: string) => Promise<unknown>;

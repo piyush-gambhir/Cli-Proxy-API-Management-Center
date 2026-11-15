@@ -4,7 +4,7 @@ import type { VisualConfigValues, VisualConfigValidationErrors } from '@/types/v
 import { assertConfigListsUnchanged } from '@/services/api/configPatch';
 import { readConfigBoolean } from './visualConfigBoolean';
 
-// Backend: config_v8.go, trusted_proxies.go and discovery/service.go.
+
 export const SERVER_FIELDS = [
   { key: 'githubToken', path: ['server', 'github-token'], kind: 'string' },
   { key: 'trustedProxies', path: ['server', 'trusted-proxies'], kind: 'list' },
@@ -73,7 +73,7 @@ function parents(doc: Doc, path: readonly string[]) {
   }
 }
 
-/** Lists are atomic, guarded against concurrent edits, and use the retained draft AST. */
+
 export function writeVisualServer(
   doc: Doc,
   values: VisualConfigValues,
@@ -90,7 +90,7 @@ export function writeVisualServer(
     if (kind === 'list' && Array.isArray(value)) {
       const old = source.getIn(path, true);
       const seq = isSeq(old) ? old : source.createNode([]);
-      // Match duplicate occurrences independently; never deduplicate or interpret patterns.
+
       const available = [...seq.items];
       seq.items = cleanList(value).map((text) => {
         const index = available.findIndex((item) => isScalar(item) && item.value === text);
@@ -121,8 +121,8 @@ function validIPv4(raw: string): boolean {
 function validIPv6(raw: string): boolean {
   if (!raw.includes(':') || !/^[\da-fA-F:.]+$/.test(raw)) return false;
   if (raw.includes('.') && !validIPv4(raw.slice(raw.lastIndexOf(':') + 1))) return false;
-  // URL's bracketed-host parser implements IPv6 syntax; the checks above reject
-  // zones and its otherwise permissive embedded IPv4 spelling.
+
+
   try {
     return new URL(`http://[${raw}]/`).hostname.startsWith('[');
   } catch {

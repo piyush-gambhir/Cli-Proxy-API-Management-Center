@@ -1,10 +1,10 @@
 @use '../../../styles/mixins' as *;
 
-/*
- * Floating save bar, portalled to the body. RoutingSaveBar.tsx sets the dock's left/width to
- * the policy column (or centres it over the layout once the panel stacks). Visuals follow the
- * config page's FloatingSaveBar: glass surface, mono status, quiet discard, ink save pill.
- */
+
+
+
+
+
 
 .dock {
   position: fixed;
@@ -12,7 +12,7 @@
   left: 0;
   right: 0;
   width: min(560px, calc(100vw - 24px));
-  margin: 0 auto; /* fallback centring until the column is measured */
+  margin: 0 auto;
   z-index: $z-dropdown;
   pointer-events: none;
 }

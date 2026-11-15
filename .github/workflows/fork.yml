@@ -1,6 +1,6 @@
 name: Fork
 
-# Fork only (see FORK.md): every file this fork changes relative to upstream must be documented.
+
 
 on:
   pull_request:

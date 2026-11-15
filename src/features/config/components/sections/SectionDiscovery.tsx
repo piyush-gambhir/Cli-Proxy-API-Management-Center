@@ -5,7 +5,7 @@ import { BlockSetting, SettingList, TextSetting, ToggleSetting } from '../fields
 import { StringListEditor } from '../blocks/StringListEditor';
 import { getValidationMessage } from '../blocks/shared';
 
-/** Kept mounted inside native details so search can reveal every discovery field. */
+
 export function SectionDiscovery({
   values,
   validationErrors,

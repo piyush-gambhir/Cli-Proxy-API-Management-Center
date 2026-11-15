@@ -7,43 +7,43 @@ import styles from './ConfigSearch.module.scss';
 
 export type ConfigSearchProps = {
   disabled?: boolean;
-  /** 用户选中结果：由页面切换 tab 并滚动/脉冲目标字段（useFieldJump）。 */
+
   onJump: (entry: ConfigFieldSearchEntry) => void;
 };
 
-/**
- * 全局字段搜索 combobox（标签 / YAML 键名 / 关键词），键盘可导航。
- * 跳转后保留输入文本，只收起结果列表，便于继续调整查询。
- */
+
+
+
+
 export function ConfigSearch({ disabled = false, onJump }: ConfigSearchProps) {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
-  // Dropdown visibility is tracked separately from the query text so a jump can close the
-  // results while leaving the typed text in the box for further editing.
+
+
   const [searchOpen, setSearchOpen] = useState(false);
-  // Highlighted option for keyboard navigation of the results listbox (-1 = none).
+
   const [activeResultIndex, setActiveResultIndex] = useState(0);
   const searchListboxId = useId();
   const searchResultsRef = useRef<HTMLDivElement | null>(null);
   const searchBoxRef = useRef<HTMLDivElement | null>(null);
 
   const searchResults = useMemo(() => searchConfigFields(searchQuery, t), [searchQuery, t]);
-  // The results popup is visible only when the box is open AND there's a (trimmed) query.
+
   const isResultsOpen = searchOpen && Boolean(searchQuery.trim());
-  // Clamp the highlighted index to the current result set so a stale index (e.g. after the
-  // query narrows the list) never points past the end or at an option that no longer exists.
+
+
   const effectiveActiveIndex =
     searchResults.length > 0
       ? Math.min(Math.max(activeResultIndex, 0), searchResults.length - 1)
       : -1;
 
   const handleResultJump = (entry: ConfigFieldSearchEntry) => {
-    // Keep the query text so the user can tweak it; just close the results dropdown.
+
     setSearchOpen(false);
     onJump(entry);
   };
 
-  // Close the results dropdown (keeping the query) when clicking outside the search box.
+
   useEffect(() => {
     if (!searchOpen) return;
     const handlePointerDown = (event: MouseEvent) => {
@@ -55,7 +55,7 @@ export function ConfigSearch({ disabled = false, onJump }: ConfigSearchProps) {
     return () => document.removeEventListener('mousedown', handlePointerDown);
   }, [searchOpen]);
 
-  // Keep the highlighted option scrolled into view during keyboard navigation.
+
   useEffect(() => {
     if (!isResultsOpen || effectiveActiveIndex < 0) return;
     const node = searchResultsRef.current?.querySelector<HTMLElement>(
@@ -88,8 +88,8 @@ export function ConfigSearch({ disabled = false, onJump }: ConfigSearchProps) {
         }}
         onFocus={() => setSearchOpen(true)}
         onKeyDown={(e) => {
-          // Ignore keys fired while an IME is composing (e.g. picking a Chinese
-          // candidate) — otherwise candidate selection triggers navigation/jump.
+
+
           if (e.nativeEvent.isComposing) return;
           if (e.key === 'Escape') {
             setSearchOpen(false);

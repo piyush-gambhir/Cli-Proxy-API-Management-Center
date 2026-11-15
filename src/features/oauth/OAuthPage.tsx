@@ -27,18 +27,18 @@ import {
 } from './providers';
 import styles from './OAuthPage.module.scss';
 
-/** 对话框焦点标识：Vertex 不是 OAuth 提供商，用保留 id 避免与提供商冲突。 */
+
 const VERTEX_DIALOG_ID = '__vertex__';
 const VERTEX_LABEL = 'Vertex AI';
 
 type DialogTarget = { kind: 'oauth'; id: string } | { kind: 'vertex' };
 
-/**
- * OAuth 登录：提供商画廊（一屏看全）+ 聚焦的授权对话框。
- *
- * 点磁贴即开始登录；对话框可随时关闭，授权在后台继续，磁贴副行实时反映进度。
- * 对话框关闭后保留最后一个目标，让退出动画期间内容不消失。
- */
+
+
+
+
+
+
 export function OAuthPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ export function OAuthPage() {
   const [dialog, setDialog] = useState<DialogTarget | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [siwcOpen, setSiwcOpen] = useState(false);
-  // 每次打开换新 key 重新挂载（全新选择与会话）；关闭后保持挂载，让退出动画走完
+
   const [siwcKey, setSiwcKey] = useState(0);
   const openSiwc = () => {
     setSiwcKey((key) => key + 1);
@@ -118,7 +118,7 @@ export function OAuthPage() {
     focusedRef.current = card.id;
     setDialog({ kind: 'oauth', id: card.id });
     setDialogOpen(true);
-    // 已有进行中/失败/刚成功的尝试 → 只是重新打开查看；否则立即开始登录
+
     if (!flows.states[card.id]?.status) void flows.startAuth(card.id);
   };
 
@@ -142,7 +142,7 @@ export function OAuthPage() {
   const providerCount = providerCards.length;
   const sponsorCards = providerCards.filter(isSponsor);
   const regularCards = providerCards.filter((card) => !isSponsor(card));
-  // 赞助商卡占级联的第 0 位，其余磁贴顺延
+
   const tileIndexOffset = sponsorCards.length > 0 ? 1 : 0;
 
   const sponsorSites: SponsorCardSite[] = sponsorCards.map((card) => {
@@ -185,7 +185,7 @@ export function OAuthPage() {
         addedCount={flows.addedCount}
       />
 
-      {/* 赞助商独占首行：一张品牌卡收拢两站入口，其余提供商在下方紧凑网格 */}
+      {                                                                                                      }
       {sponsorCards.length > 0 && (
         <SponsorCard
           title={KIMI_DISPLAY_NAME}

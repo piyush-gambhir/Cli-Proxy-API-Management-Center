@@ -1,6 +1,6 @@
-/**
- * 通用类型定义
- */
+
+
+
 
 export type Theme = 'light' | 'white' | 'dark' | 'auto';
 

@@ -44,7 +44,7 @@ import { RuntimePolicyEditor } from './RuntimePolicyEditor';
 import { ProviderBehaviorEditor } from './ProviderBehaviorEditor';
 import { pickProviderBehavior } from '../../providerBehavior';
 
-/** 模块级常量，免得每次渲染都给 picker 一个新数组引用。 */
+
 const DISABLE_ALL_RULES = [DISABLE_ALL_RULE];
 
 interface BaseProviderFormProps {
@@ -163,10 +163,10 @@ function buildInitialForm(
   const disabled = hasDisableAllModelsRule(cfg.excludedModels);
   const excludedList = stripDisableAllRule(cfg.excludedModels);
   return {
-    // Keep the API key blank in edit mode. Pre-filling the real key makes this
-    // password field a browser-autofill target (the saved management key can
-    // overwrite it) and defeats the "leave empty = keep unchanged" contract; an
-    // empty field is preserved on save via buildProviderKeyConfig's existing fallback.
+
+
+
+
     apiKey: '',
     name: '',
     baseUrl: cfg.baseUrl ?? '',
@@ -423,7 +423,7 @@ export function BaseProviderForm({
     }
   };
 
-  /* ------------------ entries helpers ------------------ */
+
 
   const headersList = useMemo(
     () => (form.headers.length ? form.headers : [emptyHeader()]),
@@ -443,13 +443,13 @@ export function BaseProviderForm({
     () => parseExcludedRulesText(form.excludedModelsText),
     [form.excludedModelsText]
   );
-  /**
-   * 候选目录 = discovery 发现的模型 ∪ 表单里已配置的模型名。
-   *
-   * 两者都可能为空——`vertex` 支持排除模型却不在 MODEL_DISCOVERY_BRANDS 里，永远没有
-   * discovery；其余 brand 在用户手动跑一次发现之前也没有。因此**无目录是常态**，
-   * picker 必须能在没有目录时退化成纯规则编辑器。
-   */
+
+
+
+
+
+
+
   const excludedCandidates = useMemo(() => {
     const byKey = new Map<string, { id: string; displayName?: string }>();
     discovery.models.forEach((model) => {
@@ -495,7 +495,7 @@ export function BaseProviderForm({
 
   return (
     <form id={formId} className={styles.form} onSubmit={handleSubmit} noValidate>
-      {/* 基础字段 */}
+      {                  }
       <div className={styles.section}>
         {descriptor.supportsName ? (
           <div className={styles.field}>
@@ -742,7 +742,7 @@ export function BaseProviderForm({
         supportsErrors={descriptor.supportsRequestScopedErrors}
       />
 
-      {/* 高级折叠区 */}
+      {                     }
       {descriptor.supportsApiKeyEntries && form.apiKeyEntries ? (
         <Collapsible
           label={t('providersPage.form.apiKeyEntriesSection')}
@@ -899,8 +899,8 @@ export function BaseProviderForm({
               catalogState={excludedCatalogState}
               onRetryCatalog={discovery.available ? () => void discovery.fetch() : undefined}
               disabled={mutating}
-              // `'*'` = 该 provider 已停用，唯一所有者是下面的 Disabled 开关。
-              // 传进来后 picker 双向过滤它，用户手打 `*` 也会被拦下并解释原因。
+
+
               reservedRules={DISABLE_ALL_RULES}
               reservedRuleMessage={t('providersPage.form.excludedDisabledNote')}
             />

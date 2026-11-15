@@ -10,18 +10,18 @@ import {
 } from './dotMatrixField';
 import styles from './DotMatrixHero.module.scss';
 
-/** 点色取自 CSS 变量 --login-dot-color（随主题切换），读取失败时回退到深色版点色 */
+
 export const FALLBACK_DOT_COLOR = '#e2e8f0';
 
-/** 与 $breakpoint-mobile 一致：移动端点阵为页面顶部的横幅 */
+
 const COMPACT_QUERY = '(max-width: 768px)';
 
 const readDotColor = (element: Element) =>
   getComputedStyle(element).getPropertyValue('--login-dot-color').trim() || FALLBACK_DOT_COLOR;
-/** 品牌标语：按设计要求在所有语言下统一使用英文，不走 i18n */
+
 export const HERO_TITLE = 'Welcome to CLI Proxy API.';
 const FRAME_INTERVAL_MS = 1000 / 30;
-/** 减少动效模式下展示的固定时刻（秒），避开入场阶段 */
+
 const STATIC_TIME = 4;
 
 function paintIntro(
@@ -43,7 +43,7 @@ function paintIntro(
   context.globalAlpha = 1;
 }
 
-/** 稳态只有两档亮度：按档位分两遍绘制，避免逐点切换 globalAlpha */
+
 function paintSteady(
   context: CanvasRenderingContext2D,
   grid: DotGrid,
@@ -89,7 +89,7 @@ export function DotMatrixHero() {
       else paintSteady(context, grid, targets, dotColor);
     };
 
-    // 主题切换（含 auto 跟随系统）：换点色并立即重绘当前帧
+
     const themeObserver =
       typeof MutationObserver === 'undefined'
         ? null
@@ -115,7 +115,7 @@ export function DotMatrixHero() {
     const start = () => {
       if (running || reduced || !visible || document.hidden || targets.length === 0) return;
       running = true;
-      // 暂停后恢复时从暂停处的时钟继续，避免星云跳变
+
       startTime = null;
       frameId = requestAnimationFrame(tick);
     };
@@ -140,7 +140,7 @@ export function DotMatrixHero() {
       if (reduced) {
         render(STATIC_TIME, false);
       } else {
-        // 重设画布会清空内容，立即补画当前帧，避免尺寸变化时闪黑
+
         render(clock, clock < grid.introDuration);
         start();
       }

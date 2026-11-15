@@ -1,8 +1,8 @@
-/**
- * Pick which Claude reset grant to spend. Same hook and redeem path as upstream's
- * ClaudeResetGrantDialog (eligibility, retry of an unresolved claim); only the presentation is
- * ours: one compact row per grant, soonest expiry first, nothing spent until Confirm.
- */
+
+
+
+
+
 
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';

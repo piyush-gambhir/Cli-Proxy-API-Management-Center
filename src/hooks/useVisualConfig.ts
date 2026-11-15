@@ -60,7 +60,7 @@ function docHas(doc: YamlDocument, path: YamlPath): boolean {
 function ensureMapInDoc(doc: YamlDocument, path: YamlPath): void {
   const existing = doc.getIn(path, true);
   if (isMap(existing)) return;
-  // Use a YAML node here; plain objects are not treated as collections by subsequent `setIn`.
+
   doc.setIn(path, doc.createNode({}));
 }
 
@@ -70,15 +70,15 @@ function deleteIfMapEmpty(doc: YamlDocument, path: YamlPath): void {
   if (value.items.length === 0) deletePathInDoc(doc, path);
 }
 
-/** Prune only ancestors made empty by this deletion; keep unknown sibling nodes. */
+
 function deletePathInDoc(doc: YamlDocument, path: YamlPath): void {
   doc.deleteIn(path);
   if (path.length > 1) deleteIfMapEmpty(doc, path.slice(0, -1));
 }
 
 function setBooleanInDoc(doc: YamlDocument, path: YamlPath, value: boolean): void {
-  // Callers only write dirty fields. Explicit false must override backend defaults
-  // even when the original document omitted the key (for example, ws-auth).
+
+
   doc.setIn(path, value);
 }
 
@@ -89,8 +89,8 @@ function setStringInDoc(doc: YamlDocument, path: YamlPath, value: unknown): void
     doc.setIn(path, safe);
     return;
   }
-  // Preserve existing empty-string keys to avoid dropping template blocks/comments.
-  // Only keep the key when it already exists in the YAML.
+
+
   if (docHas(doc, path)) {
     doc.setIn(path, '');
   }
@@ -857,7 +857,7 @@ function syncConditionSequence(
   baseline: PayloadParamEntry[] | undefined,
   desired: PayloadParamEntry[] | undefined
 ): void {
-  // Unedited conditions retain their original grouping and nested value comments.
+
   if (JSON.stringify(baseline ?? []) === JSON.stringify(desired ?? [])) return;
 
   const entries = (desired ?? []).filter((entry) => entry.path.trim());
@@ -869,9 +869,9 @@ function syncConditionSequence(
   const flattened: YAMLMap[] = [];
   seq.items.forEach((node, itemIndex) => {
     if (isMap(node)) {
-      // Match parsePayloadConditions' Object.entries order, including numeric keys.
-      // Every map field is a condition, not an unknown extension field. The backend
-      // ANDs all fields across all maps, so singleton maps preserve its semantics.
+
+
+
       Object.keys(node.toJSON()).forEach((path) => {
         const pair = mapPair(node, path);
         if (!pair) return;
@@ -886,7 +886,7 @@ function syncConditionSequence(
         flattened.push(item);
       });
     } else if (isScalar(node) && typeof node.value === 'string') {
-      // Keep the parser's compatibility with scalar entries without shifting IDs.
+
       const item = doc.createNode({ [node.value]: '' }) as YAMLMap;
       preserveNodeComments(node, item);
       if (itemIndex === 0) item.commentBefore = seq.commentBefore;
@@ -910,8 +910,8 @@ function syncConditionSequence(
     }
     return item;
   });
-  // These are new singleton wrappers; replaceSequenceItems would discard their
-  // comments because they are not members of the original sequence.
+
+
   seq.items = items;
   seq.commentBefore = items[0]?.commentBefore;
   if (items[0]) items[0].commentBefore = undefined;
@@ -1020,10 +1020,10 @@ function syncPayloadFilterSequence(
   replaceSequenceItems(seq, items);
 }
 
-/** IDs are editor identity, not YAML data. Reserve exact matches before matching edited
- * entries, so a deletion/reorder cannot steal another entry's AST node. New entries
- * use a separate namespace rather than their parsed positional IDs.
- */
+
+
+
+
 function withoutEditorIds(value: unknown): string {
   return JSON.stringify(value, (key, item: unknown) => (key === 'id' ? undefined : item));
 }
@@ -1589,7 +1589,7 @@ export function useVisualConfig() {
     }
   }, []);
 
-  // Both documents are parsed before dispatch so a malformed draft cannot advance the baseline.
+
   const rebaseVisualValuesFromYaml = useCallback((serverYaml: string, draftYaml: string) => {
     try {
       const baseline = parseVisualValuesFromYaml(serverYaml);
@@ -1597,8 +1597,8 @@ export function useVisualConfig() {
       dispatch({ type: 'rebase_success', baseline, draft, draftYaml, serverYaml });
       return { ok: true as const };
     } catch (error: unknown) {
-      // A failed readback is not a parse failure of the user's retained draft. Keep
-      // the whole editor state intact; the document hook blocks editing until recovery.
+
+
       const message = error instanceof Error ? error.message : 'Invalid YAML';
       return { ok: false as const, error: message };
     }
@@ -1612,10 +1612,10 @@ export function useVisualConfig() {
         if (!isMap(doc.contents)) {
           doc.contents = doc.createNode({}) as unknown as typeof doc.contents;
         }
-        // YAML has no stable rule IDs. For rebased payload edits, retain the already
-        // merged draft's AST as well as its ID snapshot. Inferring lineage solely
-        // from server/draft contents is ambiguous (e.g. delete + rename + append),
-        // and could otherwise attach unknown fields to the wrong rule/model.
+
+
+
+
         const payloadBaseline = rebasedPayload?.values ?? baselineValues;
         if (rebasedPayload && hasPayloadDirtyFields(dirtyFields)) {
           const draftDoc = parseDocument(rebasedPayload.yaml);
@@ -1654,8 +1654,8 @@ export function useVisualConfig() {
         }
         const shouldWritePluginStoreAuth = dirtyFields.has('pluginStoreAuth');
 
-        // The backend accepts null routing as defaults, but YAML setIn cannot traverse it.
-        // Normalize only this legal null section, and only when routing is being edited.
+
+
         const routingNode = doc.getIn(['routing'], true);
         if (
           isScalar(routingNode) &&
@@ -2093,8 +2093,8 @@ export function useVisualConfig() {
 
         const draftYaml = doc.toString({ indent: 2, lineWidth: 120, minContentWidth: 0 });
         if (target === 'server' && rebasedPayload && hasPayloadDirtyFields(dirtyFields)) {
-          // The retained AST preserves local lineage, but must never silently replace a
-          // list another client changed after recovery (including unknown model fields).
+
+
           const paths = PAYLOAD_DIRTY_FIELDS.flatMap((field, index) =>
             dirtyFields.has(field) ? [['requests', 'payload', PAYLOAD_SECTIONS[index]]] : []
           );
@@ -2116,7 +2116,7 @@ export function useVisualConfig() {
   return {
     visualValues,
     visualDirty,
-    /** 脏字段的叶值键集合（streaming 为点号叶），供 tab 脏点 / 头部计数消费。 */
+
     visualDirtyFields: dirtyFields as ReadonlySet<string>,
     visualParseError,
     visualValidationErrors,

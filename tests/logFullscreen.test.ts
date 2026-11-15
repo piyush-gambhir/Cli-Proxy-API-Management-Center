@@ -8,7 +8,7 @@ describe('log fullscreen Escape handling', () => {
 
   test('Escape consumed by a nested Select does not exit fullscreen', () => {
     expect(shouldExitLogFullscreen({ key: 'Escape', defaultPrevented: true }, false)).toBe(false);
-    // After the Select closes, the next unhandled Escape can exit fullscreen.
+
     expect(shouldExitLogFullscreen({ key: 'Escape', defaultPrevented: false }, false)).toBe(true);
   });
 

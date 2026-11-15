@@ -1,21 +1,21 @@
-/**
- * Quota windows timeline: lane derivation and window projection.
- *
- * Pure functions over board entries — no React, no clock of its own (`now` is
- * always passed in), so every case here is directly testable.
- *
- * The chart answers one question the cards can't: *when does capacity come
- * back, and does it come back all at once?* Four credentials all resetting on
- * the same evening is a very different situation from four staggered across a
- * week, and no per-card percentage shows that.
- */
+
+
+
+
+
+
+
+
+
+
+
 
 import { DAY_MS, HOUR_MS } from '@/utils/time/durations';
 import type { QuotaProviderType } from './providers/types';
 
 export { DAY_MS, HOUR_MS };
 
-/** Weekly view spans a fortnight; the session view zooms to three days. */
+
 export type TimelineMode = 'weekly' | 'session';
 
 export const TIMELINE_SPAN_DAYS: Record<TimelineMode, number> = {
@@ -23,71 +23,71 @@ export const TIMELINE_SPAN_DAYS: Record<TimelineMode, number> = {
   session: 3,
 };
 
-/** The rolling window the session view projects, in hours. */
+
 const SESSION_PERIOD_HOURS = 5;
 
-/** A limit summarized in the lane's left column. */
+
 export interface TimelineLimit {
   label: string;
-  /** Remaining percent, 0..100. */
+
   remaining: number;
 }
 
-/** A manual quota-reset credit attached to a Codex credential. */
+
 export interface TimelineResetCredit {
   id: string;
   grantedAtMs: number | null;
   expiresAtMs: number;
 }
 
-/** A reset-credit expiry projected onto the visible span. */
+
 export interface TimelineResetCreditMark extends TimelineResetCredit {
   leftPercent: number;
 }
 
-/** One credential's row in the chart. */
+
 export interface TimelineLane {
   name: string;
   displayName: string;
   provider: QuotaProviderType;
-  /** Instant a window boundary falls on; all other boundaries derive from it. */
+
   anchorMs: number | null;
-  /** Window length in hours. */
+
   periodHours: number | null;
-  /** Remaining percent reported for the window ending at `anchorMs`. */
+
   remaining: number | null;
   limits: TimelineLimit[];
   resetCredits: TimelineResetCredit[];
 }
 
-/** One drawn bar: a single window occurrence within the visible span. */
+
 export interface TimelineWindow {
   startMs: number;
   endMs: number;
-  /** Fractions of the span, 0..100, already clipped to the visible range. */
+
   leftPercent: number;
   widthPercent: number;
   state: 'past' | 'live' | 'next';
-  /** Remaining percent only when this is the API-reported current window. */
+
   remaining: number | null;
-  /**
-   * Used-quota width inside the already clipped bar, 0..100.
-   * Null when this window has no reported remaining percent.
-   * Measured from the full window, then clipped, so a start that falls
-   * before the span does not stretch the used segment into the future.
-   */
+
+
+
+
+
+
   usedFillPercent: number | null;
 }
 
-/**
- * Every window boundary of `periodMs` aligned to `anchorMs`, covering
- * [fromMs, toMs].
- *
- * The anchor is a known *reset* instant, so windows are projected backwards and
- * forwards from it by whole periods. Both directions matter: the visible span
- * usually starts before the current window opened, and the point of the chart
- * is what's coming.
- */
+
+
+
+
+
+
+
+
+
 export function windowsIn(
   anchorMs: number,
   periodMs: number,
@@ -97,8 +97,8 @@ export function windowsIn(
   if (!Number.isFinite(anchorMs) || !(periodMs > 0)) return [];
   if (!(toMs > fromMs)) return [];
 
-  // Guard against a pathological period (a bad payload) turning this into a
-  // multi-million-iteration loop.
+
+
   const maxWindows = Math.ceil((toMs - fromMs) / periodMs) + 2;
   if (maxWindows > 1000) return [];
 
@@ -111,28 +111,28 @@ export function windowsIn(
   return out;
 }
 
-/** Start of the local day containing `ms`. */
+
 export function startOfDay(ms: number): number {
   const d = new Date(ms);
   d.setHours(0, 0, 0, 0);
   return d.getTime();
 }
 
-/** Start of the local week (Sunday) containing `ms`. */
+
 export function startOfWeek(ms: number): number {
   const d = new Date(startOfDay(ms));
   d.setDate(d.getDate() - d.getDay());
   return d.getTime();
 }
 
-/**
- * Visible span for a mode and offset.
- *
- * Weekly steps a week at a time from the containing Sunday; session steps a day
- * at a time from today. Uses date arithmetic rather than adding fixed
- * millisecond counts so a DST transition inside the span doesn't shift every
- * subsequent day by an hour.
- */
+
+
+
+
+
+
+
+
 export function timelineSpan(
   mode: TimelineMode,
   offset: number,
@@ -151,7 +151,7 @@ export function timelineSpan(
   return { startMs, endMs: end.getTime(), days };
 }
 
-/** Local calendar boundaries, weighted by elapsed time to match bar positions. */
+
 export function timelineCells(
   mode: TimelineMode,
   span: { startMs: number; days: number }
@@ -170,14 +170,14 @@ export function timelineCells(
   });
 }
 
-/**
- * Width of the used-quota overlay inside the visible slice of one window.
- *
- * `remainingPercent` is the unused share of the whole window, not of the
- * visible slice. A weekly span opens on Sunday, so a window that started
- * earlier is clipped; applying the raw used percent to that leftover slice
- * draws the overlay past "now".
- */
+
+
+
+
+
+
+
+
 function usedFillWithinBar(
   windowStartMs: number,
   windowEndMs: number,
@@ -198,12 +198,12 @@ function usedFillWithinBar(
   return Math.min(100, Math.max(0, width));
 }
 
-/**
- * Project one lane's windows onto a span, clipped and positioned.
- *
- * Windows falling entirely outside the span are dropped rather than returned
- * with a zero width, so a caller can treat an empty result as "nothing to draw".
- */
+
+
+
+
+
+
 export function projectLane(
   lane: TimelineLane,
   spanStartMs: number,
@@ -228,8 +228,8 @@ export function projectLane(
 
       const state: TimelineWindow['state'] =
         window.endMs <= now ? 'past' : window.startMs <= now ? 'live' : 'next';
-      // `lane.remaining` belongs to the current payload window ending at the
-      // anchor. Once that reset passes, projected windows must not reuse it.
+
+
       const remaining = state === 'live' && window.endMs === lane.anchorMs ? lane.remaining : null;
 
       return {
@@ -251,7 +251,7 @@ export function projectLane(
     .filter((window): window is TimelineWindow => window !== null);
 }
 
-/** Project unexpired reset-credit expiry instants onto the visible span. */
+
 export function projectResetCredits(
   lane: TimelineLane,
   spanStartMs: number,
@@ -274,20 +274,20 @@ export function projectResetCredits(
     }));
 }
 
-/**
- * Pick the window a lane is drawn from: the one whose period best fits the
- * visible span, tie-broken by the soonest reset.
- *
- * A credential usually has several (5-hour, 7-day, per-model). Picking the
- * soonest reset outright looks right and renders uselessly: across a fortnight
- * the 5-hour window always resets first, so every lane becomes ~67 slivers
- * instead of two readable weekly bars. The long window is what a two-week view
- * is *for*; the session view exists precisely to see the short one.
- *
- * `maxPeriodHours` bounds what counts as fitting — the caller passes the span.
- * With nothing under the bound, the shortest available window is used rather
- * than drawing nothing.
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export function pickLaneWindow<
   T extends { resetAtMs?: number | null; periodHours?: number | null },
 >(windows: readonly T[], maxPeriodHours?: number): T | null {
@@ -304,7 +304,7 @@ export function pickLaneWindow<
       ? usable
       : usable.filter((window) => periodOf(window) <= maxPeriodHours);
 
-  // Longest period that still fits; soonest reset breaks a tie.
+
   const pool = fitting.length > 0 ? fitting : usable;
   return pool.reduce((best, window) => {
     const byPeriod = periodOf(window) - periodOf(best);
@@ -313,24 +313,24 @@ export function pickLaneWindow<
   });
 }
 
-/**
- * Whether a lane has anything to draw, in any mode.
- *
- * Without an anchor no bar can be projected at any span or zoom, so the row
- * would be permanently blank. The card grid above already enumerates every
- * credential, so a blank row here adds no information — it just makes the
- * chart taller and the real lanes harder to compare against each other.
- *
- * Note this is about the lane, not the current view: an anchored lane whose
- * windows fall outside the visible span still gets a row, and says so.
- */
+
+
+
+
+
+
+
+
+
+
+
 export function laneHasWindow(lane: TimelineLane): boolean {
   return lane.anchorMs !== null;
 }
 
-/* ------------------------------------------------------------------ lanes */
 
-/** Shape the lane builder reads. Deliberately structural — see the note below. */
+
+
 interface WindowLike {
   id?: string;
   label?: string;
@@ -365,7 +365,7 @@ interface XaiBillingLike {
 
 interface AntigravityBucketLike {
   label?: string;
-  /** Fraction 0..1 of quota REMAINING — the inverse of the percent-used providers. */
+
   remainingFraction?: number | null;
   resetAtMs?: number | null;
   periodHours?: number | null;
@@ -374,7 +374,7 @@ interface AntigravityBucketLike {
 interface MetaWindowLike {
   id: 'window' | 'weekly';
   usedPercent: number | null;
-  /** Unix seconds from the upstream Meta contract. */
+
   resetAt?: number;
   durationMinutes?: number;
 }
@@ -384,28 +384,28 @@ export interface TimelineLaneInput {
   displayName: string;
   provider: QuotaProviderType;
   quota: { status?: string } | undefined;
-  /**
-   * Longest window period worth drawing, in hours — normally the visible span.
-   * A window longer than the whole view can't show a boundary, and a much
-   * shorter one degenerates into slivers.
-   */
+
+
+
+
+
   maxPeriodHours?: number;
 }
 
 const clampPercent = (value: number) => Math.min(100, Math.max(0, value));
 
-/**
- * Build a lane for one credential.
- *
- * Read structurally per provider rather than through a normalized model: the
- * five state shapes disagree about where a window lives and what its percentage
- * means, and flattening them would lose exactly the detail the chart needs.
- *
- * Providers that expose no usable reset instant produce a lane with a null
- * anchor. That renders as an explicitly empty row rather than being dropped —
- * a missing credential reads as an oversight, an empty one reads as "nothing
- * scheduled", which is the truth.
- */
+
+
+
+
+
+
+
+
+
+
+
+
 export function buildTimelineLane(input: TimelineLaneInput): TimelineLane {
   const { name, displayName, provider, quota, maxPeriodHours } = input;
   const empty: TimelineLane = {
@@ -431,11 +431,11 @@ export function buildTimelineLane(input: TimelineLaneInput): TimelineLane {
       : provider === 'codex'
         ? 'weekly'
         : 'seven-day';
-    // Both providers can report model-scoped windows with the same period as
-    // the account window (Codex Spark weekly, Claude Opus/Sonnet/Fable 7-day).
-    // A reset-time tie-break would make the lane silently switch to that
-    // model's quota. Keep the lane anchored to the standard account window
-    // whenever it fits this view.
+
+
+
+
+
     const accountWindow = windows.find(
       (window) =>
         window.id === accountWindowId &&
@@ -468,7 +468,7 @@ export function buildTimelineLane(input: TimelineLaneInput): TimelineLane {
       ...empty,
       anchorMs: chosen.resetAtMs ?? null,
       periodHours: chosen.periodHours ?? null,
-      // Claude and Codex store percent USED.
+
       remaining:
         typeof chosen.usedPercent === 'number' ? clampPercent(100 - chosen.usedPercent) : null,
       limits: windows
@@ -512,10 +512,10 @@ export function buildTimelineLane(input: TimelineLaneInput): TimelineLane {
 
   if (provider === 'xai') {
     const billing = (quota as { billing?: XaiBillingLike | null }).billing;
-    // Only the weekly limit is a quota window. The monthly figure on the same
-    // summary is a billing cycle — a spend cap rolling over, not rate-limited
-    // capacity coming back — so an account without a weekly limit contributes
-    // no lane rather than a lane that means something different from the rest.
+
+
+
+
     if (!billing || billing.periodType !== 'weekly') return empty;
     if (typeof billing.resetAtMs !== 'number' || !Number.isFinite(billing.resetAtMs)) return empty;
 
@@ -525,25 +525,25 @@ export function buildTimelineLane(input: TimelineLaneInput): TimelineLane {
     return {
       ...empty,
       anchorMs: billing.resetAtMs,
-      // A payload that states an end without a start can't derive its own
-      // length; weekly is what `periodType` already told us.
+
+
       periodHours: billing.periodHours ?? 24 * 7,
       remaining,
-      // Products contribute to the shared weekly usage, not independent limits.
+
       limits: [],
     };
   }
 
   if (provider === 'antigravity' || provider === 'plugin') {
-    // Buckets live one level down, inside groups, and the groups are a display
-    // concern the chart doesn't care about — flatten them.
+
+
     const buckets = ((quota as { groups?: { buckets?: AntigravityBucketLike[] }[] }).groups ?? [])
       .flatMap((group) => group.buckets ?? [])
       .filter((bucket) => typeof bucket.resetAtMs === 'number');
     const chosen = pickLaneWindow(buckets, maxPeriodHours);
     if (!chosen) return empty;
 
-    // Antigravity reports the fraction REMAINING, not percent used.
+
     const remainingOf = (bucket: AntigravityBucketLike) =>
       typeof bucket.remainingFraction === 'number'
         ? clampPercent(Math.round(bucket.remainingFraction * 100))
@@ -567,7 +567,7 @@ export function buildTimelineLane(input: TimelineLaneInput): TimelineLane {
     const chosen = pickLaneWindow(rows, maxPeriodHours);
     if (!chosen) return empty;
 
-    // Kimi reports raw counts; remaining is derived.
+
     const remainingOf = (row: KimiRowLike) =>
       row.limit > 0 ? clampPercent(Math.round(((row.limit - row.used) / row.limit) * 100)) : null;
 
@@ -585,7 +585,7 @@ export function buildTimelineLane(input: TimelineLaneInput): TimelineLane {
   if (provider === 'meta') {
     const sourceWindows = (quota as { data?: { windows?: MetaWindowLike[] } }).data?.windows ?? [];
     const windows = sourceWindows
-      // The upstream weekly bucket has no duration field; its scope defines seven days.
+
       .map((window) => ({
         ...window,
         durationMinutes: window.id === 'weekly' ? 7 * 24 * 60 : window.durationMinutes,

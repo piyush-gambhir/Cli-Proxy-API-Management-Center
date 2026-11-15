@@ -24,7 +24,7 @@ describe('v2 storage obfuscation', () => {
       configurable: true,
       value: { userAgent: 'Firefox/158.0' },
     });
-    // Long enough to exercise the UA-dependent portion of the old XOR key.
+
     const value = JSON.stringify({ managementKey: 'test-only-'.repeat(100), label: '测试' });
     const encoded = obfuscateData(value);
     expect(encoded.startsWith('enc::v2::')).toBe(true);

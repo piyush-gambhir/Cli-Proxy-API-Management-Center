@@ -1,7 +1,7 @@
-/**
- * Plugin resource pages for the ledger sidebar, discovered the same way as MainLayout's: list the
- * plugins and collect their menu entries, and reload when the plugins change.
- */
+
+
+
+
 
 import { useCallback, useEffect, useState } from 'react';
 import {

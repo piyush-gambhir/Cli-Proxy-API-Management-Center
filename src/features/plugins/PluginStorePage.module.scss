@@ -1,7 +1,7 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
-// ─── Page Container ─────────────────────────────────────
+
 
 .page {
   display: flex;
@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-// ─── Header ─────────────────────────────────────────────
+
 
 .pageHeader {
   display: flex;
@@ -33,7 +33,7 @@
   line-height: 1.5;
 }
 
-// ─── Alert Boxes ────────────────────────────────────────
+
 
 .errorBox,
 .warningBox {
@@ -100,7 +100,7 @@
   }
 }
 
-// ─── Security Banner (third-party plugin risk) ──────────
+
 
 .securityBanner {
   display: flex;
@@ -137,7 +137,7 @@
   }
 }
 
-// ─── Status Bar ─────────────────────────────────────────
+
 
 .statusBar {
   display: flex;
@@ -210,7 +210,7 @@
   }
 }
 
-// ─── Toolbar ────────────────────────────────────────────
+
 
 .toolbar {
   display: flex;
@@ -243,7 +243,7 @@
   }
 }
 
-// ─── Status Filter Chips ────────────────────────────────
+
 
 .filterChips {
   display: flex;
@@ -295,7 +295,7 @@
   font-weight: 700;
 }
 
-// ─── Card Grid ──────────────────────────────────────────
+
 
 .cardGrid {
   display: grid;
@@ -307,7 +307,7 @@
   }
 }
 
-// ─── Plugin Card ────────────────────────────────────────
+
 
 .card {
   display: flex;
@@ -591,7 +591,7 @@
   }
 }
 
-// ─── Install Options Dialog ───────────────────────────────
+
 
 .installOptions {
   display: flex;
@@ -762,7 +762,7 @@
   }
 }
 
-// ─── Skeleton ───────────────────────────────────────────
+
 
 .skeletonCard {
   display: flex;
@@ -837,7 +837,7 @@
   animation: skeletonPulse 1.35s ease-in-out infinite;
 }
 
-// ─── Animation ──────────────────────────────────────────
+
 
 @keyframes skeletonPulse {
   0% {
@@ -848,7 +848,7 @@
   }
 }
 
-// ─── Mobile Overrides ───────────────────────────────────
+
 
 @include mobile {
   .page {

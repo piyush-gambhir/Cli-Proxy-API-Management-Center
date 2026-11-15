@@ -18,7 +18,7 @@ export interface ProviderDescriptor {
   supportsWebsockets: boolean;
   supportsCloak: boolean;
   supportsApiKeyEntries: boolean;
-  /** Sheet 默认宽度 */
+
   sheetSize: 'md' | 'lg' | 'xl';
 }
 
@@ -299,7 +299,7 @@ export interface ProviderModelCapabilities {
   modalities: boolean;
 }
 
-/** API-key model capabilities; aliases of CodexModel do not imply runtime support. */
+
 export const getProviderModelCapabilities = (brand: ProviderBrand): ProviderModelCapabilities => ({
   maxContextLength: brand !== 'vertex',
   isCompat: brand !== 'vertex',

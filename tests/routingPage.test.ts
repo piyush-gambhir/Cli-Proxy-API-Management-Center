@@ -41,7 +41,7 @@ const FILES: AuthFileItem[] = [
   { name: 'runtime', type: 'gemini', runtimeOnly: true },
 ];
 
-/** One card's markup: from its key to the next card. */
+
 const cardMarkup = (html: string, key: string): string => {
   const rest = html.slice(html.indexOf(`data-member-key="${key}"`));
   const next = rest.indexOf('data-member-key=', 1);
@@ -53,7 +53,7 @@ afterEach(() => {
   restores.splice(0).forEach((spy) => spy.mockRestore());
 });
 
-// i18n is a process-wide singleton shared with other test files.
+
 const initialLanguage = i18n.language;
 afterAll(async () => {
   await i18n.changeLanguage(initialLanguage);
@@ -91,7 +91,7 @@ describe('routing board rendering', () => {
     expect(html).toContain('整层不可用时转入下一层');
     expect(html).toContain('main@example.com');
     expect(html).toContain('aria-haspopup="menu"');
-    // Runtime-only credentials show a lock instead of a drag handle and are not draggable.
+
     expect(html).toMatch(/draggable="false"[^>]*data-member-key="cred:runtime"/);
     expect(html).not.toContain('sk-codex-aaaa');
   });
@@ -115,17 +115,17 @@ describe('routing board rendering', () => {
         onEditWeights: () => {},
       })
     );
-    // CSS Modules are not compiled under bun:test; the route state drives the dimmed style.
+
     const cardState = (key: string) =>
       html.match(new RegExp(`data-member-key="${key}" data-state="([^"]*)"`))?.[1] ?? '';
 
-    // Disabled in configuration: reliable, so marked and dimmed, with no cooldown note.
+
     const disabledKey = cardMarkup(html, 'key:claude:0:0');
     expect(disabledKey).toContain('已停用');
     expect(disabledKey).not.toContain('无冷却信息');
     expect(cardState('key:claude:0:0')).toBe('disabled');
 
-    // Enabled API key: normal; the missing-runtime-state note lives in its tooltip, not inline.
+
     const enabledKey = cardMarkup(html, 'key:codex:0:0');
     const cardTitle = (key: string) =>
       html.match(new RegExp(`title="([^"]*)" data-member-key="${key}"`))?.[1] ?? '';
@@ -135,7 +135,7 @@ describe('routing board rendering', () => {
     expect(enabledKey).not.toContain('已停用');
     expect(cardState('key:codex:0:0')).toBe('serving');
 
-    // Credentials report real runtime state and never carry the note.
+
     expect(cardMarkup(html, 'cred:main.json')).not.toContain('无冷却信息');
     const card = readFileSync('src/features/routing/components/MemberCard.tsx', 'utf8');
     expect(card).toContain("const muted = state === 'disabled' || state === 'ineligible';");
@@ -180,12 +180,12 @@ describe('routing save bar', () => {
     const bar = readFileSync('src/features/routing/components/RoutingSaveBar.tsx', 'utf8');
     const policy = readFileSync('src/features/routing/components/PolicyPanel.tsx', 'utf8');
     const page = readFileSync('src/features/routing/RoutingPage.tsx', 'utf8');
-    // Portalled: sticky/fixed inside the page-transition layer does not track the viewport.
+
     expect(bar).toContain('createPortal(');
-    // The bar measures the column the policy panel marks.
+
     expect(bar).toContain("POLICY_COLUMN_ATTR = 'data-routing-policy-column'");
     expect(policy).toContain('data-routing-policy-column=""');
-    // A page sliding out must not leave its bar behind.
+
     expect(page).toContain('visible={isCurrentLayer && dirty}');
   });
 });
@@ -195,7 +195,7 @@ describe('applying a routing plan', () => {
     const board = buildRoutingBoard(RAW, FILES);
     const draft = draftFromBoard(board);
     draft.tiers = moveMember(draft.tiers, 'cred:main.json', { kind: 'gap', index: 0 });
-    // Joining the runtime-only credential's tier takes its fixed priority.
+
     draft.tiers = moveMember(draft.tiers, 'key:codex:0:0', { kind: 'tier', tierId: 'p0' });
     draft.settings = { ...draft.settings, sessionAffinity: true };
     return { board, plan: buildRoutingPlan(board, draft) };

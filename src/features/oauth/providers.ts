@@ -9,7 +9,7 @@ import iconMeta from '@/assets/icons/meta.svg';
 import iconCodex from '@/assets/icons/codex.svg';
 import iconClaude from '@/assets/icons/claude.svg';
 import iconAntigravity from '@/assets/icons/antigravity.svg';
-// 赞助卡用的 App 图标版：K 与蓝点等比内缩进方块，蓝点不再顶出圆角
+
 import iconKimiTileBlack from '@/assets/icons/kimi-tile-black.svg';
 import iconKimiTileWhite from '@/assets/icons/kimi-tile-white.svg';
 import iconGrok from '@/assets/icons/grok.svg';
@@ -19,24 +19,24 @@ import iconDevinDark from '@/assets/icons/devin-dark.svg';
 
 export type ThemedIcon = string | { light: string; dark: string };
 
-/** 设备码流程会返回 user_code；浏览器流程依赖回调（本地自动 / 远程手动粘贴）。 */
+
 export type OAuthFlowKind = 'device' | 'browser';
 
 export interface BuiltInOAuthProviderCard {
   kind: 'builtin';
   id: BuiltInOAuthProvider;
-  /** 磁贴短名：品牌名是常量（与仪表盘 providerLabel 一致），区域站点走 i18n。 */
+
   label: string | { key: string };
-  /** 对话框标题，沿用 `auth_login.<id>_oauth_title`。 */
+
   titleKey: string;
   icon: ThemedIcon;
   flow: OAuthFlowKind;
-  /** 区分同品牌的不同站点，磁贴副行展示。 */
+
   domain?: string;
-  /**
-   * 赞助商：同品牌的各站点合并进画廊首行的一张品牌卡，每站一个登录入口 + 开放平台注册链接
-   * （目前是 Kimi 国内站 / 国际站）。`siteKey` 是卡内站点短名（品牌名由卡片标题承载）。
-   */
+
+
+
+
   sponsor?: SponsorSite;
 }
 
@@ -54,7 +54,7 @@ export interface PluginOAuthProviderCard {
 
 export type OAuthProviderCard = BuiltInOAuthProviderCard | PluginOAuthProviderCard;
 
-/** 展示顺序即数组顺序：赞助商（Kimi 两站）置首，其余沿用原有次序。 */
+
 export const OAUTH_PROVIDERS: BuiltInOAuthProviderCard[] = [
   {
     kind: 'builtin',
@@ -131,7 +131,7 @@ export const OAUTH_PROVIDERS: BuiltInOAuthProviderCard[] = [
 
 const BUILTIN_PROVIDER_IDS = new Set<string>(OAUTH_PROVIDERS.map((provider) => provider.id));
 
-/** 后端接受手动回调提交的内置提供商；插件提供商一律允许。 */
+
 export const CALLBACK_SUPPORTED = new Set<string>([
   'codex',
   'anthropic',
@@ -151,10 +151,10 @@ export const isSponsor = (
 export const resolveThemedIcon = (icon: ThemedIcon, theme: 'light' | 'dark'): string =>
   typeof icon === 'string' ? icon : icon[theme];
 
-/**
- * 一个插件可能声明多个登录入口（各自带标题与图标），每个入口一张卡；
- * v8.0.49 之前只有单个 `oauth_provider`，那时仍然只出一张卡。
- */
+
+
+
+
 export const buildPluginOAuthProviderCards = (
   plugins: PluginListEntry[],
   apiBase: string

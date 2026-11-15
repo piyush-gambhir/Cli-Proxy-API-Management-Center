@@ -1,10 +1,10 @@
-// 登录页配色：左右同底、极简，跟随应用主题（html[data-theme]）。
-// - 浅色（默认，无 data-theme）：与应用浅色主题同一张暖纸底
-// - 纯白（data-theme='white'，含 auto 的浅色解析）：纯白底
-// - 深色（data-theme='dark'，含 auto 的深色解析）：纯黑底
-//
-// 组件只消费 --login-* 变量；同时覆盖少量主题 token，让共享组件（复选框等）自动跟随。
-// 色值对比度见 tests/loginPalette.test.ts。
+
+
+
+
+
+
+
 
 @mixin login-tokens-light {
   color-scheme: light;
@@ -42,7 +42,7 @@
   --login-loader-track: rgba(28, 25, 23, 0.1);
   --login-loader-bar: #1c1917;
 
-  // 共享组件 token
+
   --bg-secondary: var(--login-bg);
   --bg-primary: #ffffff;
   --text-primary: var(--login-text);
@@ -109,7 +109,7 @@
   --shadow-lg: var(--login-dropdown-shadow);
 }
 
-// 在 CSS Module 中使用：按 html[data-theme] 选择配色
+
 @mixin login-palette {
   @include login-tokens-light;
 

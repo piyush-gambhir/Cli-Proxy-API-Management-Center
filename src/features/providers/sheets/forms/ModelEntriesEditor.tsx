@@ -9,12 +9,12 @@ const COLLAPSED_LIMIT = 10;
 
 interface ModelEntriesEditorProps {
   models: ModelEntryInput[];
-  /** Restrict advanced controls to the OAuthModelAlias contract. */
+
   oauthAliasOnly?: boolean;
   providerBrand?: ProviderBrand;
-  /** Only OpenAI-compatible entries can expose the image-generation capability. */
+
   supportsImage: boolean;
-  /** Every backend provider model can override its thinking capability. */
+
   supportsThinking: boolean;
   mutating: boolean;
   removeDisabled: boolean;
@@ -40,7 +40,7 @@ export function ModelEntriesEditor({
   const [showAll, setShowAll] = useState(false);
 
   const handleAdd = () => {
-    // New rows are appended; make sure the truncated list doesn't hide them.
+
     if (!showAll && models.length >= COLLAPSED_LIMIT) {
       setShowAll(true);
     }

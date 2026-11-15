@@ -1,7 +1,7 @@
 export interface OAuthAttempt {
   readonly signal: AbortSignal;
   isCurrent: () => boolean;
-  /** True from poll() until a terminal result, a request error or invalidation. */
+
   isPolling: () => boolean;
   invalidate: () => void;
   schedule: (callback: () => void, delay: number) => void;
@@ -18,8 +18,8 @@ interface Scheduler {
   clearTimeout: (timer: number) => void;
 }
 
-// A provider owns one attempt and at most one scheduled task. Invalidating an
-// attempt also makes already-dispatched requests inert when they settle.
+
+
 export function createOAuthAttempts(scheduler: Scheduler) {
   const attempts = new Map<string, OAuthAttempt>();
 

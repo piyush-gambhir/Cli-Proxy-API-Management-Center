@@ -1,7 +1,7 @@
-/**
- * Axios API client
- * Replaces the original src/core/api-client.js
- */
+
+
+
+
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import type { ApiClientConfig, ApiError } from '@/types';
@@ -33,9 +33,9 @@ class ApiClient {
     this.setupInterceptors();
   }
 
-  /**
-   * Set API configuration
-   */
+
+
+
   setConfig(config: ApiClientConfig): void {
     const apiBase = computeApiUrl(config.apiBase);
     if (apiBase !== this.apiBase || config.managementKey !== this.managementKey) {
@@ -51,12 +51,12 @@ class ApiClient {
     }
   }
 
-  /** Guards read/modify/write operations across connection changes, including ABA switches. */
+
   getConnectionRevision(): number {
     return this.connectionRevision;
   }
 
-  /** Pin credentials and suppress response side effects after the owning connection changes. */
+
   captureConnection(isCurrent: () => boolean = () => true): ApiClient {
     const revision = this.connectionRevision;
     const client = new ApiClient(() => this.connectionRevision === revision && isCurrent());
@@ -117,17 +117,17 @@ class ApiClient {
     return null;
   }
 
-  /**
-   * Set request/response interceptors
-   */
+
+
+
   private setupInterceptors(): void {
-    // Request interceptor
+
     this.instance.interceptors.request.use(
       (config) => {
-        // Set baseURL
+
         config.baseURL = this.apiBase;
 
-        // Add authorization header
+
         if (this.managementKey) {
           config.headers.Authorization = `Bearer ${this.managementKey}`;
         }
@@ -137,7 +137,7 @@ class ApiClient {
       (error) => Promise.reject(this.handleError(error))
     );
 
-    // Response interceptor
+
     this.instance.interceptors.response.use(
       (response) => {
         const headers = response.headers as Record<string, string | undefined>;
@@ -147,7 +147,7 @@ class ApiClient {
         const buildDate = cpaBuildDate || this.readHeader(headers, BUILD_DATE_HEADER_KEYS);
         const supportsPlugin = this.readBooleanHeader(headers, CPA_SUPPORT_PLUGIN_HEADER_KEYS);
 
-        // Dispatch version updates for store consumers
+
         if (this.emitEvents() && (version || buildDate)) {
           window.dispatchEvent(
             new CustomEvent('server-version-update', {
@@ -169,9 +169,9 @@ class ApiClient {
     );
   }
 
-  /**
-   * Error handling
-   */
+
+
+
   private handleError(error: unknown): ApiError {
     if (axios.isAxiosError(error)) {
       const responseData: unknown = error.response?.data;
@@ -184,7 +184,7 @@ class ApiClient {
       apiError.details = responseData;
       apiError.data = responseData;
 
-      // Dispatch logout for unauthorized responses
+
       if (this.emitEvents() && error.response?.status === 401) {
         window.dispatchEvent(new Event('unauthorized'));
       }
@@ -203,56 +203,56 @@ class ApiClient {
     return fallback;
   }
 
-  /**
-   * GET request
-   */
+
+
+
   async get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.instance.get<T>(url, config);
     return response.data;
   }
 
-  /**
-   * POST request
-   */
+
+
+
   async post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.instance.post<T>(url, data, config);
     return response.data;
   }
 
-  /**
-   * PUT request
-   */
+
+
+
   async put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.instance.put<T>(url, data, config);
     return response.data;
   }
 
-  /**
-   * PATCH request
-   */
+
+
+
   async patch<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.instance.patch<T>(url, data, config);
     return response.data;
   }
 
-  /**
-   * DELETE request
-   */
+
+
+
   async delete<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.instance.delete<T>(url, config);
     return response.data;
   }
 
-  /**
-   * Get the raw response (for downloads, etc.)
-   */
+
+
+
   async getRaw(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse> {
     return this.instance.get(url, config);
   }
 
-  /**
-   * Send FormData
-   */
+
+
+
   async postForm<T = unknown>(
     url: string,
     formData: FormData,
@@ -269,5 +269,5 @@ class ApiClient {
   }
 }
 
-// Export singleton
+
 export const apiClient = new ApiClient();

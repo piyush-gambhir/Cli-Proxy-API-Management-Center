@@ -1,9 +1,9 @@
-/**
- * 本地存储混淆工具函数（可逆）
- * 从原项目 src/utils/secure-storage.js 迁移
- *
- * IMPORTANT: 这不是安全边界。浏览器端长期持久化的密钥仍应视为可被读取。
- */
+
+
+
+
+
+
 
 const ENC_PREFIX = 'enc::v2::';
 const LEGACY_ENC_PREFIX = 'enc::v1::';
@@ -22,7 +22,7 @@ function decodeText(bytes: Uint8Array): string {
 function getKeyBytes(legacy = false): Uint8Array {
   try {
     const host = window.location.host;
-    // Only non-auth legacy data may still be read; new writes never depend on the UA.
+
     return encodeText(
       legacy ? `${SECRET_SALT}|${host}|${navigator.userAgent}` : `${SECRET_SALT}|${host}`
     );
@@ -56,9 +56,9 @@ function fromBase64(base64: string): Uint8Array {
   return bytes;
 }
 
-/**
- * 加密数据
- */
+
+
+
 export function obfuscateData(value: string): string {
   if (!value) return value;
 
@@ -72,9 +72,9 @@ export function obfuscateData(value: string): string {
   }
 }
 
-/**
- * 解密数据
- */
+
+
+
 export function deobfuscateData(payload: string): string {
   if (!payload || !isObfuscated(payload)) {
     return payload;
@@ -92,9 +92,9 @@ export function deobfuscateData(payload: string): string {
   }
 }
 
-/**
- * 检查是否已加密
- */
+
+
+
 export function isObfuscated(value: string): boolean {
   return isCurrentObfuscated(value) || value?.startsWith(LEGACY_ENC_PREFIX) || false;
 }

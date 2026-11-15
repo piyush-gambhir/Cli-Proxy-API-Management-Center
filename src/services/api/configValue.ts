@@ -1,6 +1,6 @@
 import { apiClient } from './client';
 
-/** Capture before a config read and check immediately before its dependent write. */
+
 export function guardConfigConnection(): () => void {
   const revision = apiClient.getConnectionRevision();
   return () => {
@@ -10,7 +10,7 @@ export function guardConfigConnection(): () => void {
   };
 }
 
-/** Only an absent persisted config field is optional, not a missing API route. */
+
 export const isMissingConfigValue = (error: unknown): boolean =>
   typeof error === 'object' &&
   error !== null &&

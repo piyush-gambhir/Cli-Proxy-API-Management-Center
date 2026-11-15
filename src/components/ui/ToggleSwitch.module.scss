@@ -32,7 +32,7 @@
   transition: background-color var(--dur-hover, 200ms) var(--ease-out-strong, ease-out);
 }
 
-/* 隐藏的原生 checkbox 仍是焦点载体：键盘聚焦时把焦点环画到轨道上。 */
+
 .root input:focus-visible + .track {
   outline: 2px solid var(--text-primary);
   outline-offset: 2px;

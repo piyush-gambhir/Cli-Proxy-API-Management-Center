@@ -313,7 +313,7 @@ const normalizeOauthExcluded = (payload: unknown): Record<string, string[]> | un
   return map;
 };
 
-/** Resolve effective values for display only; retain the complete persisted group for writes. */
+
 export const normalizeProviderGroups = (groups: unknown, openai = false) => {
   if (!Array.isArray(groups)) return [];
   return groups.flatMap<ProviderKeyConfig | OpenAIProviderConfig>((group, groupIndex) => {

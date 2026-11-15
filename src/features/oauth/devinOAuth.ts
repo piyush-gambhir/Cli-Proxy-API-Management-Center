@@ -1,7 +1,7 @@
 export type DevinCallbackError = 'invalid' | 'state_mismatch';
 
-// Never infer a state or manufacture a callback URL: remote users must paste the
-// complete redirect from this attempt, including the server's port and TLS mode.
+
+
 export function validateDevinCallback(
   input: string,
   expectedState?: string

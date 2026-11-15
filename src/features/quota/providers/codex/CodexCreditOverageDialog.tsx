@@ -1,8 +1,8 @@
-/**
- * Dialog for the account-level "use credits after the usage limit" setting.
- * A write is explicit. An unresolved earlier write only permits same-value retries;
- * a successful retry does not prove that the earlier request has finished.
- */
+
+
+
+
+
 
 import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +25,7 @@ export interface CodexCreditOverageDialogProps {
   operation?: CodexCreditOverageOperation;
   writeDisabled?: boolean;
   contextCurrent?: boolean;
-  /** Credentials in the panel that share this account user's setting. */
+
   sharedCredentialCount: number;
   selection: boolean | null;
   pendingTarget: boolean | null;

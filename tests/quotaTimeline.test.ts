@@ -18,24 +18,24 @@ const at = (y: number, m: number, d: number, h = 0, min = 0) => new Date(y, m, d
 
 describe('windowsIn', () => {
   test('projects backwards and forwards from the anchor', () => {
-    // Anchor is a known reset; the span opens before the current window did.
+
     const anchor = at(2026, 6, 29, 12);
     const from = anchor - 2.5 * DAY_MS;
     const to = anchor + 1.5 * DAY_MS;
 
     const windows = windowsIn(anchor, DAY_MS, from, to);
 
-    // A 4-day span of daily windows needs 5 bars: the span edges fall mid-window,
-    // so there's a partial window at each end.
+
+
     expect(windows.length).toBe(5);
-    // Every boundary sits on a whole period from the anchor.
+
     for (const window of windows) {
-      // `+ 0` normalizes JS's -0 from a negative remainder (windows before the anchor).
+
       expect(((window.endMs - anchor) % DAY_MS) + 0).toBe(0);
       expect(window.endMs - window.startMs).toBe(DAY_MS);
     }
     expect(windows.some((w) => w.startMs <= anchor && w.endMs >= anchor)).toBe(true);
-    // Fully covers the requested range.
+
     expect(windows[0].startMs).toBeLessThanOrEqual(from);
     expect(windows[windows.length - 1].endMs).toBeGreaterThanOrEqual(to);
   });
@@ -55,7 +55,7 @@ describe('windowsIn', () => {
   });
 
   test('bails out rather than looping forever on an absurd period', () => {
-    // A bad payload could give a 1ms period over a fortnight.
+
     expect(windowsIn(0, 1, 0, 14 * DAY_MS)).toEqual([]);
   });
 });
@@ -69,7 +69,7 @@ describe('span boundaries', () => {
   });
 
   test('weekly span is a fortnight from the containing Sunday', () => {
-    const now = at(2026, 6, 29, 14, 0); // a Wednesday
+    const now = at(2026, 6, 29, 14, 0);
     const span = timelineSpan('weekly', 0, now);
 
     expect(new Date(span.startMs).getDay()).toBe(0);
@@ -91,7 +91,7 @@ describe('span boundaries', () => {
   });
 
   test('spans a whole number of days even across a DST transition', () => {
-    // US DST springs forward 2026-03-08; a fixed +14*DAY_MS would land at 23:00.
+
     const span = timelineSpan('weekly', 0, at(2026, 2, 10, 12));
     expect(new Date(span.startMs).getHours()).toBe(0);
     expect(new Date(span.endMs).getHours()).toBe(0);
@@ -139,9 +139,9 @@ describe('projectLane', () => {
   });
 
   test('measures used fill on the full window after the week clips its start', () => {
-    // Sunday 2026-10-25 opens a new fortnight. A 7-day window that began
-    // Wednesday is cut off on the left; 76% remaining means only 24% was used,
-    // and that usage ended before Sunday.
+
+
+
     const reset = at(2026, 9, 29, 16, 44);
     const now = at(2026, 9, 25, 12);
     const sunday = timelineSpan('weekly', 0, now);
@@ -244,17 +244,17 @@ describe('pickLaneWindow', () => {
     expect(chosen?.resetAtMs).toBe(1000);
   });
 
-  /**
-   * The bug this rule exists for: across a fortnight, the 5-hour window always
-   * resets soonest, so "pick the soonest" drew ~67 slivers per lane instead of
-   * two readable weekly bars.
-   */
+
+
+
+
+
   test('prefers the longest window that fits the span, not the soonest reset', () => {
     const fiveHour = { resetAtMs: 1_000, periodHours: 5 };
     const weekly = { resetAtMs: 9_000, periodHours: 168 };
 
     expect(pickLaneWindow([fiveHour, weekly], 14 * 24)).toBe(weekly);
-    // A three-day span can't fit a weekly window, so the short one wins.
+
     expect(pickLaneWindow([fiveHour, weekly], 3 * 24)).toBe(fiveHour);
   });
 
@@ -265,7 +265,7 @@ describe('pickLaneWindow', () => {
   });
 
   test('falls back to the shortest available rather than drawing nothing', () => {
-    // Every window is longer than the span — still better to draw one.
+
     const monthly = { resetAtMs: 5_000, periodHours: 720 };
     expect(pickLaneWindow([monthly], 3 * 24)).toBe(monthly);
   });
@@ -290,7 +290,7 @@ describe('buildTimelineLane', () => {
       ],
     };
 
-    // Fortnight view: the weekly window, even though the 5-hour resets sooner.
+
     const weekly = buildTimelineLane({
       ...base,
       provider: 'claude',
@@ -299,9 +299,9 @@ describe('buildTimelineLane', () => {
     });
     expect(weekly.anchorMs).toBe(later);
     expect(weekly.periodHours).toBe(168);
-    expect(weekly.remaining).toBe(7); // stored USED
+    expect(weekly.remaining).toBe(7);
 
-    // Three-day view: the weekly window doesn't fit, so the short one is used.
+
     const session = buildTimelineLane({
       ...base,
       provider: 'claude',
@@ -312,7 +312,7 @@ describe('buildTimelineLane', () => {
     expect(session.periodHours).toBe(5);
     expect(session.remaining).toBe(80);
 
-    // Every limit is still summarized in the lane head regardless of the pick.
+
     expect(weekly.limits).toEqual([
       { label: '7-day', remaining: 7 },
       { label: '5-hour', remaining: 80 },
@@ -354,7 +354,7 @@ describe('buildTimelineLane', () => {
 
   test('claude: keeps the weekly lane on the 7-day limit instead of a model limit', () => {
     const accountReset = at(2026, 7, 1, 20);
-    // Same period, reset stamp a few seconds earlier: must not win the lane.
+
     const fableReset = accountReset - 5_000;
     const quota = {
       status: 'success',
@@ -444,7 +444,7 @@ describe('buildTimelineLane', () => {
           { label: 'Monthly', used: 8100, limit: 30000, resetAtMs: 9000, periodHours: 720 },
         ],
       },
-      // A fortnight fits the daily window but not the monthly one.
+
       maxPeriodHours: 14 * 24,
     });
 
@@ -474,10 +474,10 @@ describe('buildTimelineLane', () => {
       maxPeriodHours: 336,
     });
 
-    // Longest window that fits wins, exactly as it does for claude/codex.
+
     expect(lane.anchorMs).toBe(5000);
     expect(lane.periodHours).toBe(168);
-    // remainingFraction is REMAINING, so it is not inverted.
+
     expect(lane.remaining).toBe(82);
     expect(lane.limits).toEqual([
       { label: '5h', remaining: 40 },
@@ -520,12 +520,12 @@ describe('buildTimelineLane', () => {
     expect(lane.anchorMs).toBe(9000);
     expect(lane.periodHours).toBe(168);
     expect(lane.remaining).toBe(95);
-    // Product usage is a contribution to the total, not a separate quota pool.
+
     expect(lane.limits).toEqual([]);
   });
 
   test('xai without a weekly limit produces no window at all', () => {
-    // A monthly summary carries periodEnd too, but that is a billing cycle.
+
     for (const periodType of ['monthly', 'unknown'] as const) {
       const lane = buildTimelineLane({
         ...base,
@@ -562,15 +562,15 @@ describe('buildTimelineLane', () => {
       },
     });
     expect(laneHasWindow(drawable)).toBe(true);
-    // Unloaded quota has nothing to show yet, so it takes no row.
+
     expect(
       laneHasWindow(buildTimelineLane({ ...base, provider: 'claude', quota: undefined }))
     ).toBe(false);
   });
 
   test('providers with no usable reset produce an empty lane, not a dropped one', () => {
-    // buildTimelineLane always returns a lane; dropping is the caller's job via
-    // laneHasWindow, so the two concerns stay separately testable.
+
+
     for (const provider of ['antigravity', 'xai'] as const) {
       const lane = buildTimelineLane({
         ...base,

@@ -4,14 +4,14 @@ import type { StatusBarData, StatusBlockDetail } from '@/utils/recentRequests';
 
 const defaultStyles: Record<string, string> = {};
 
-/**
- * 根据成功率 (0–1) 在三个色标之间做 RGB 线性插值
- * 0 → 红 (#ef4444)  →  0.5 → 金黄 (#facc15)  →  1 → 绿 (#22c55e)
- */
+
+
+
+
 const COLOR_STOPS = [
-  { r: 239, g: 68, b: 68 }, // #ef4444
-  { r: 250, g: 204, b: 21 }, // #facc15
-  { r: 34, g: 197, b: 94 }, // #22c55e
+  { r: 239, g: 68, b: 68 },
+  { r: 250, g: 204, b: 21 },
+  { r: 34, g: 197, b: 94 },
 ] as const;
 
 function rateToColor(rate: number): string {
@@ -60,7 +60,7 @@ export function ProviderStatusBar({ statusData, styles: stylesProp }: ProviderSt
         ? s.statusRateMedium
         : s.statusRateLow;
 
-  // 点击外部关闭 tooltip（移动端）
+
   useEffect(() => {
     if (activeTooltip === null) return;
     const handler = (e: PointerEvent) => {

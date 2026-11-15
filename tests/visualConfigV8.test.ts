@@ -79,7 +79,7 @@ describe('v8 visual config contract', () => {
         payloadDefaultRules: [{ ...rule, params: [{ ...rule.params[0], value: '1' }] }],
       },
     ]);
-    const latest = baseline.replace('future-rule: keep', 'future-rule: server-update');
+    const latest = '# v8 visual editor fixture\n' + baseline.replace('future-rule: keep', 'future-rule: server-update');
     const outputText = config.applyVisualChangesToYaml(latest);
     const output = parseYaml(outputText);
     expect(output.routing.retry['request-retry']).toBe(0);

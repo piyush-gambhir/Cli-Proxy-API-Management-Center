@@ -1,6 +1,6 @@
-/**
- * Auth files and OAuth excluded-model API
- */
+
+
+
 
 import { apiClient } from './client';
 import { getConfigValue, guardConfigConnection } from './configValue';
@@ -122,7 +122,7 @@ const normalizeBatchUploadResponse = (
   const failed = normalizeBatchFailures(payload?.failed);
   const filesFromPayload = normalizeBatchFileNames(payload?.files);
   // Backend single-file success path returns only {status:"ok"} (auth_files.go:680).
-  // Derive count + names from the request when no failures and counts are absent.
+
   const inferFromRequest = payload?.uploaded === undefined && failed.length === 0;
   return {
     status: payload?.status ?? (failed.length > 0 ? 'partial' : 'ok'),
@@ -221,7 +221,7 @@ const mergeAuthFileEntries = (entries: AuthFileEntry[]): AuthFileEntry => {
 
   rest.forEach((entry) => {
     Object.entries(entry).forEach(([key, value]) => {
-      // Cooldown snapshots are atomic: [] and null are meaningful, not missing fields.
+
       if (key === 'cooldowns' && Object.prototype.hasOwnProperty.call(merged, key)) return;
       if (!hasMeaningfulValue(merged[key]) && hasMeaningfulValue(value)) {
         merged[key] = value;
@@ -260,11 +260,11 @@ const readBooleanField = (value: unknown): boolean | undefined => {
   return undefined;
 };
 
-/**
- * Normalize backend kebab/snake_case fields into AuthFileItem camelCase fields.
- * Preserve raw fields for quota resolvers that read plan_type, id_token,
- * metadata and attributes directly.
- */
+
+
+
+
+
 const normalizeAuthFileEntry = (
   entry: AuthFileEntry,
   observedAt: string | undefined,
@@ -275,7 +275,7 @@ const normalizeAuthFileEntry = (
   const statusMessage = readTextField(entry, 'status_message') || declaredStatusMessage;
   const note = readTextField(entry, 'note');
   const email = readTextField(entry, 'email');
-  // Never normalize account/account_type: API-key credentials expose secrets there.
+
   const projectId = readTextField(entry, 'project_id');
   const modified = readDateField(entry);
   const priority = readIntegerField(entry['priority']);
@@ -462,8 +462,8 @@ const OAUTH_EXCLUDED_MODELS_ENDPOINT = '/config/oauth/excluded-models';
 
 const oauthMapWrites = new Map<string, Promise<void>>();
 
-// v8 replaces a whole provider map. Serialize local read/modify/write operations
-// so a batch cannot overwrite another provider's changes with an older snapshot.
+
+
 function queueOauthMapWrite(path: string, write: () => Promise<void>): Promise<void> {
   const assertConnection = guardConfigConnection();
   const queueKey = `${apiClient.getConnectionRevision()}:${path}`;
@@ -491,8 +491,8 @@ async function updateOauthProviderMap(path: string, provider: string, value?: un
     const current = await getConfigValue<unknown>(path, {});
     assertConnection();
     if (current != null && !isRecord(current)) throw new Error('Invalid OAuth configuration map');
-    // v8 reads preserve YAML key spelling. The UI groups normalized providers, so
-    // remove every spelling of this provider, preserving unrelated entries verbatim.
+
+
     const next = Object.fromEntries(
       Object.entries(current ?? {}).filter(([name]) => normalizeOAuthProviderKey(name) !== key)
     );
@@ -527,7 +527,7 @@ export const normalizeAuthFileRefreshResults = (payload: unknown): AuthFileRefre
     ) {
       throw new Error('Invalid credential refresh result');
     }
-    // Whitelist result fields: never expose credential metadata or tokens.
+
     return {
       id: entry.id,
       success: entry.success,
@@ -562,7 +562,7 @@ export const authFilesApi = {
     apiClient.patch('/credentials/fields', { name, ...fields }),
 
   requestManualRefresh: async (name: string, authIndex?: string): Promise<void> => {
-    // The refresh response may include tokens. Never return it to callers.
+
     await apiClient.post<unknown>('/credentials/refresh', {
       name,
       ...(authIndex ? { auth_index: authIndex } : {}),
@@ -628,7 +628,7 @@ export const authFilesApi = {
     return blob.text();
   },
 
-  // OAuth excluded models
+
   async getOauthExcludedModels(): Promise<Record<string, string[]>> {
     const data = await getConfigValue(OAUTH_EXCLUDED_MODELS_ENDPOINT, {});
     return normalizeOauthExcludedModels(data);
@@ -645,7 +645,7 @@ export const authFilesApi = {
       await apiClient.put(OAUTH_EXCLUDED_MODELS_ENDPOINT, normalizeOauthExcludedModels(map));
     }),
 
-  // OAuth model aliases
+
   async getOauthModelAlias(): Promise<Record<string, OAuthModelAliasEntry[]>> {
     const data = await getConfigValue(OAUTH_MODEL_ALIAS_ENDPOINT, {});
     return normalizeOauthModelAlias(data);
@@ -665,7 +665,7 @@ export const authFilesApi = {
   deleteOauthModelAlias: (channel: string) =>
     updateOauthProviderMap(OAUTH_MODEL_ALIAS_ENDPOINT, channel),
 
-  // Get models supported by the credential
+
   async getModelsForAuthFile(
     name: string
   ): Promise<{ id: string; display_name?: string; type?: string; owned_by?: string }[]> {
@@ -678,7 +678,7 @@ export const authFilesApi = {
       : [];
   },
 
-  // Get model definitions for the specified channel
+
   async getModelDefinitions(
     channel: string
   ): Promise<{ id: string; display_name?: string; type?: string; owned_by?: string }[]> {

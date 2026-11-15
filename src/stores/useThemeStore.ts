@@ -1,7 +1,7 @@
-/**
- * 主题状态管理
- * 从原项目 src/modules/theme.js 迁移
- */
+
+
+
+
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -75,10 +75,10 @@ export const useThemeStore = create<ThemeState>()(
       initializeTheme: () => {
         const { theme, setTheme } = get();
 
-        // 应用已保存的主题
+
         setTheme(theme);
 
-        // 监听系统主题变化（仅在 auto 模式下生效）
+
         if (!window.matchMedia) {
           return () => {};
         }

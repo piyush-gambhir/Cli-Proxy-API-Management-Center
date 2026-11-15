@@ -1,13 +1,13 @@
 import { parseTimestamp } from './timestamp';
 
-/**
- * 格式化工具函数
- * 从原项目 src/utils/string.js 迁移
- */
 
-/**
- * 隐藏 API Key 中间部分，仅保留前后两位
- */
+
+
+
+
+
+
+
 export function maskApiKey(key: string): string {
   const trimmed = String(key || '').trim();
   if (!trimmed) {
@@ -24,9 +24,9 @@ export function maskApiKey(key: string): string {
   return `${start}${masked}${end}`;
 }
 
-/**
- * 格式化文件大小
- */
+
+
+
 export function formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 B';
 
@@ -39,9 +39,9 @@ export function formatFileSize(bytes: number): string {
 
 const COMPACT_SUFFIXES = ['', 'K', 'M', 'B', 'T'] as const;
 
-/**
- * 将较大的计数压缩为紧凑形式（1284 → 1.3K），用于统计卡片与图表标签
- */
+
+
+
 export function formatCompactNumber(value: number): string {
   if (!Number.isFinite(value)) return '0';
 
@@ -54,10 +54,10 @@ export function formatCompactNumber(value: number): string {
     tier += 1;
   }
 
-  // 三位有效数字以内保留一位小数；Number() 顺带去掉 "1.0K" 这类冗余尾巴
+
   let rendered = tier === 0 ? Math.round(scaled) : Number(scaled.toFixed(scaled < 100 ? 1 : 0));
 
-  // 四舍五入后又进位到 1000（如 999,999 → 1000K）时再升一档
+
   if (rendered >= 1000 && tier < COMPACT_SUFFIXES.length - 1) {
     rendered = 1;
     tier += 1;
@@ -66,9 +66,9 @@ export function formatCompactNumber(value: number): string {
   return `${sign}${rendered}${COMPACT_SUFFIXES[tier]}`;
 }
 
-/**
- * 格式化百分比，去掉无意义的 ".0" 尾巴
- */
+
+
+
 export function formatPercent(value: number, fractionDigits = 1): string {
   if (!Number.isFinite(value)) return '—';
 
@@ -76,9 +76,9 @@ export function formatPercent(value: number, fractionDigits = 1): string {
   return `${rendered.replace(/\.0+$/, '')}%`;
 }
 
-/**
- * 将 Unix 时间戳（秒/毫秒/微秒/纳秒）格式化为本地时间字符串
- */
+
+
+
 export function formatUnixTimestamp(value: unknown, locale?: string): string {
   if (value === null || value === undefined || value === '') return '';
 
@@ -90,16 +90,16 @@ export function formatUnixTimestamp(value: unknown, locale?: string): string {
 
     const abs = Math.abs(asNumber);
 
-    // 秒：常见 10 位（~1e9）
+
     if (abs < 1e11) return new Date(asNumber * 1000);
 
-    // 毫秒：常见 13 位（~1e12）
+
     if (abs < 1e14) return new Date(asNumber);
 
-    // 微秒：常见 16 位（~1e15）
+
     if (abs < 1e17) return new Date(Math.round(asNumber / 1000));
 
-    // 纳秒：常见 19 位（~1e18）
+
     return new Date(Math.round(asNumber / 1e6));
   })();
 

@@ -82,7 +82,7 @@ describe('existing backend duration fallbacks', () => {
         if (step === 2) {
           expect(v.visualValidationErrors[key]).toBe(error);
           checks++;
-          // Once the backend confirms this value, it no longer blocks unrelated edits.
+
           v.rebaseVisualValuesFromYaml(draft, draft);
         }
         if (step === 3) {

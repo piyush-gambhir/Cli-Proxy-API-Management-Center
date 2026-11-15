@@ -1,13 +1,13 @@
-/**
- * Quota management types.
- */
 
-// Theme types
+
+
+
+
 export type ThemeColors = { bg: string; text: string; border?: string };
 export type TypeColorSet = { light: ThemeColors; dark?: ThemeColors };
 export type ResolvedTheme = 'light' | 'dark';
 
-// API payload types
+
 export interface AntigravityQuotaSummaryBucketPayload {
   bucketId?: string;
   bucket_id?: string;
@@ -96,7 +96,7 @@ export interface CodexUsagePayload {
   rateLimitResetCredits?: CodexRateLimitResetCredits | null;
 }
 
-// Claude API payload types
+
 export interface ClaudeUsageWindow {
   utilization: number | null;
   resets_at: string | null;
@@ -130,22 +130,22 @@ export interface ClaudeExtraUsagePayload {
   spend_limit_reached?: boolean | null;
 }
 
-/** Amounts are in minor currency units, unlike the separate dollar windows. */
+
 export interface ClaudeExtraUsage {
-  /** Anthropic's extra-usage setting, independent of CPA credential enablement. */
+
   isEnabled: boolean | null;
   monthlyLimit: number | null;
   usedCredits: number | null;
   utilization: number | null;
   currency: string | null;
   disabledReason: string | null;
-  /** Raw extra_usage.user_disabled flag; never AuthFileItem.disabled. */
+
   userDisabled: boolean | null;
   spendLimitReached: boolean | null;
 }
 
 export interface ClaudeDollarWindow {
-  /** Original upstream key; never conflated with extra usage. */
+
   key: string;
   limitDollars: number | null;
   usedDollars: number | null;
@@ -202,13 +202,13 @@ export interface ClaudeQuotaWindow {
   labelKey?: string;
   usedPercent: number | null;
   resetLabel: string;
-  /**
-   * Reset instant in epoch ms, kept alongside the display label so callers that
-   * need to compute (ordering, the timeline) aren't stuck comparing formatted
-   * strings. Null when the payload carried no parseable timestamp.
-   */
+
+
+
+
+
   resetAtMs?: number | null;
-  /** Window length in hours — 5 for the rolling window, 168 for the weekly ones. */
+
   periodHours?: number | null;
 }
 
@@ -224,7 +224,7 @@ export interface ClaudeQuotaState {
   errorStatus?: number;
 }
 
-// Quota state types
+
 export interface AntigravityQuotaGroup {
   id: string;
   label: string;
@@ -245,17 +245,17 @@ export interface AntigravityQuotaBucket {
   remainingFraction: number;
   resetTime?: string;
   description?: string;
-  /**
-   * Reset instant in epoch ms, parsed from `resetTime`. Kept alongside the raw
-   * string so the timeline can position a bar without re-parsing.
-   *
-   * Not corrected by `serverTimeOffsetMs`: that offset is applied to *now* when
-   * rendering the card countdown, and every other provider's `resetAtMs` is an
-   * uncorrected instant too. Keeping them consistent matters more than the few
-   * seconds of clock skew it represents.
-   */
+
+
+
+
+
+
+
+
+
   resetAtMs?: number | null;
-  /** Window length in hours, from the bucket's `window` field. */
+
   periodHours?: number | null;
 }
 
@@ -268,7 +268,7 @@ export interface AntigravityQuotaState {
   errorStatus?: number;
 }
 
-/** A provider-defined numeric/currency value rendered above generic quota windows. */
+
 export interface PluginQuotaMetric {
   key: string;
   label: string;
@@ -289,9 +289,9 @@ export interface CodexQuotaWindow {
   labelParams?: Record<string, string | number>;
   usedPercent: number | null;
   resetLabel: string;
-  /** Reset instant in epoch ms; null when the payload carried no timestamp. */
+
   resetAtMs?: number | null;
-  /** Window length in hours, from the payload's limit_window_seconds. */
+
   periodHours?: number | null;
 }
 
@@ -310,16 +310,16 @@ export interface CodexQuotaState {
   errorStatus?: number;
 }
 
-/**
- * Session knowledge of the account-level "use credits after the usage limit" setting.
- * This feature records confirmed writes; an absent entry means the value is unknown.
- */
+
+
+
+
 export type CodexCreditOverageEntry =
   | { status: 'writing'; target: boolean }
   | { status: 'known'; value: boolean; at: number }
   | { status: 'unconfirmed'; target: boolean; at: number };
 
-/** Account-wide mutex and unresolved-write journal, separate from user snapshots. */
+
 export type CodexCreditOverageOperation =
   | { status: 'writing'; target: boolean; unconfirmed: boolean }
   | { status: 'unconfirmed'; target: boolean; at: number };
@@ -332,7 +332,7 @@ export interface DevinQuotaWindow {
   periodHours: number;
 }
 
-/** Only quota observations, never the credential-bearing refresh response. */
+
 export interface DevinQuotaData {
   windows: DevinQuotaWindow[];
   observedAtMs: number | null;
@@ -347,16 +347,16 @@ export interface DevinQuotaState extends DevinQuotaData {
   errorStatus?: number;
 }
 
-/** A whitelisted quota observation from Meta's Muse key endpoint. */
+
 export interface MetaQuotaWindow {
   id: 'window' | 'weekly';
   usedPercent: number | null;
-  /** Reset instant as Unix seconds, matching the upstream contract. */
+
   resetAt?: number;
   durationMinutes?: number;
 }
 
-/** Contains quota/display fields only; credential-bearing response fields are discarded. */
+
 export interface MetaQuotaData {
   planName?: string;
   isSubscriptionActive?: boolean;
@@ -370,7 +370,7 @@ export interface MetaQuotaState {
   errorStatus?: number;
 }
 
-// Kimi API payload types
+
 export interface KimiUsageDetail {
   used?: number | string;
   limit?: number | string;
@@ -417,7 +417,7 @@ export interface KimiUsageRatio {
 export interface KimiUsagePayload {
   usage?: KimiUsageDetail;
   limits?: KimiLimitItem[];
-  /** Plans without a weekly limit report their monthly total here as a 0–1 ratio. */
+
   usages?: {
     limit_month_total?: KimiUsageRatio;
   };
@@ -431,22 +431,22 @@ export interface KimiQuotaRow {
   used: number;
   limit: number;
   resetHint?: string;
-  /** Reset instant in epoch ms; null when only a relative hint was available. */
+
   resetAtMs?: number | null;
-  /** Window length in hours, derived from explicit duration metadata or the limit scope. */
+
   periodHours?: number | null;
 }
 
 export interface KimiQuotaState {
   status: 'idle' | 'loading' | 'success' | 'error';
   rows: KimiQuotaRow[];
-  /** Official user_level_name from /me; absent for unavailable account information. */
+
   planName?: string | null;
   error?: string;
   errorStatus?: number;
 }
 
-// xAI/Grok API payload types
+
 export interface XaiBillingCent {
   val?: number | string;
 }
@@ -515,21 +515,21 @@ export interface XaiBillingSummary {
   onDemandUsedCents: number | null;
   onDemandUsedPercent: number | null;
   prepaidBalanceCents?: number | null;
-  /** Display name from Grok settings, for example "SuperGrok Heavy". */
+
   planLabel?: string;
   planTier?: 'elite' | 'premium' | 'standard';
   billingPeriodStart?: string;
   billingPeriodEnd?: string;
   usedPercent: number | null;
-  /**
-   * Reset instant of the *active* period (`periodEnd`) in epoch ms.
-   *
-   * Only meaningful as a quota window when `periodType` is 'weekly' — for a
-   * monthly summary this is the billing cycle rollover, which is a spend cap
-   * resetting, not rate-limited capacity coming back.
-   */
+
+
+
+
+
+
+
   resetAtMs?: number | null;
-  /** Active period length in hours, derived from `periodStart` → `periodEnd`. */
+
   periodHours?: number | null;
 }
 

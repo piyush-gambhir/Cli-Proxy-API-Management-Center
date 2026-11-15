@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { useVisualConfig } from '../../src/hooks/useVisualConfig';
 import type { VisualConfigValues } from '../../src/types/visualConfig';
 
-/** Exercise the real reducer/codec without a browser or management connection. */
+
 export function runVisualConfig(yaml?: string, patches: Partial<VisualConfigValues>[] = []) {
   let result: ReturnType<typeof useVisualConfig> | undefined;
 

@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'bun:test';
 import { readFileSync } from 'node:fs';
 
-// The quota host binds CSS-module classes at import time, which Bun cannot render.
-// Keep these source contracts small; browser checks cover the actual card interactions.
+
+
 const source = readFileSync(
   new URL('../src/features/authFiles/components/AuthFileCard.tsx', import.meta.url),
   'utf8'

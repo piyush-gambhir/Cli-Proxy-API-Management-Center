@@ -1,4 +1,4 @@
-// Upstream cedar_ember contract, following opencodex anthropic-reset-grants.
+
 import { apiCallApi } from './apiCall';
 import { CLAUDE_REQUEST_HEADERS } from '@/utils/quota/constants';
 
@@ -6,7 +6,7 @@ export const ANTHROPIC_API_ORIGIN = 'https://api.anthropic.com';
 export const ANTHROPIC_RESET_GRANT_PROGRAM = 'cedar_ember';
 export const ANTHROPIC_RESET_GRANT_STATUS_PATH = '/api/oauth/usage?cedar_ember=1&skip_spend=1';
 export const ANTHROPIC_PROFILE_PATH = '/api/oauth/profile';
-/** Same bound the Claude Code client uses for the claim. */
+
 export const ANTHROPIC_RESET_GRANT_REDEEM_TIMEOUT_MS = 25_000;
 
 export const ANTHROPIC_RESET_GRANT_ID_RE = /^[a-z0-9_-]{1,40}$/;
@@ -14,7 +14,7 @@ export const ANTHROPIC_RESET_REQUEST_ID_RE = /^[A-Za-z0-9_-]{1,64}$/;
 export const ORGANIZATION_UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-/** Usage windows a grant can clear. Others upstream may add are dropped. */
+
 export const ANTHROPIC_RESET_WINDOWS = [
   'five_hour',
   'seven_day',
@@ -22,7 +22,7 @@ export const ANTHROPIC_RESET_WINDOWS = [
 ] as const;
 export type AnthropicResetWindow = (typeof ANTHROPIC_RESET_WINDOWS)[number];
 
-/** Terminal answers the claim endpoint can give. */
+
 export const ANTHROPIC_RESET_RESULTS = [
   'reset',
   'already_used',
@@ -32,7 +32,7 @@ export const ANTHROPIC_RESET_RESULTS = [
   'unavailable',
 ] as const;
 export type AnthropicResetUpstreamResult = (typeof ANTHROPIC_RESET_RESULTS)[number];
-/** Upstream results plus the two HTTP refusals that prove nothing was spent. */
+
 export type AnthropicResetSettledCode =
   AnthropicResetUpstreamResult | 'rate_limited' | 'auth_error';
 
@@ -64,7 +64,7 @@ export interface AnthropicResetGrantStatus {
 
 export type AnthropicResetGrantErrorCode = 'auth' | 'upstream' | 'malformed' | 'rate_limited';
 
-/** A read failure. `message` is fixed text; upstream detail is never attached. */
+
 export class AnthropicResetGrantError extends Error {
   constructor(readonly code: AnthropicResetGrantErrorCode) {
     super(`Anthropic reset-grant read failed (${code})`);
@@ -72,7 +72,7 @@ export class AnthropicResetGrantError extends Error {
   }
 }
 
-/** The claim was sent (or may have been) and no terminal answer came back. */
+
 export class AnthropicResetGrantUnknownOutcome extends Error {
   constructor() {
     super('Anthropic reset-grant claim outcome is unknown');
@@ -102,7 +102,7 @@ function isCount(value: unknown): value is number {
   return typeof value === 'number' && Number.isInteger(value) && value >= 0;
 }
 
-/** Optional ISO timestamp: absent/null → null, anything unparsable rejects the block. */
+
 function optionalTimestamp(value: unknown): string | null | undefined {
   if (value === undefined || value === null) return null;
   if (typeof value !== 'string' || Number.isNaN(Date.parse(value))) return undefined;
@@ -114,12 +114,12 @@ function optionalBoolean(value: unknown, fallback: boolean): boolean | undefined
   return typeof value === 'boolean' ? value : undefined;
 }
 
-/** Upstream display text, stripped of control characters and bounded. */
+
 function safeLabel(value: unknown): string {
   if (typeof value !== 'string') return '';
   return (
     value
-      // Strip untrusted display control characters.
+
       // eslint-disable-next-line no-control-regex
       .replace(/[\u0000-\u001f\u007f-\u009f]/g, ' ')
       .replace(/\s+/g, ' ')
@@ -138,7 +138,7 @@ function parsePercentUsed(value: unknown): Record<string, number> {
   const out: Record<string, number> = {};
   if (!isRecord(value)) return out;
   for (const [window, percent] of Object.entries(value)) {
-    // Preserve model-specific windows. Dropping one could mistake a refill for zero usage.
+
     if (typeof percent !== 'number' || !Number.isFinite(percent) || percent < 0 || percent > 100)
       return {};
     Object.defineProperty(out, window, { value: percent, enumerable: true });
@@ -155,8 +155,8 @@ function parseGrant(value: unknown): AnthropicResetGrant | null {
   const endsAt = optionalTimestamp(value.ends_at);
   const clears = parseWindows(value.clears);
   const paused = optionalBoolean(value.paused, false);
-  // Missing usability flags default to the refusing side: a grant that does not
-  // say it is usable is not offered for spending.
+
+
   const usableNow = optionalBoolean(value.usable_now, false);
   const useRequiresLimit = optionalBoolean(value.use_requires_limit, true);
   const givesBackWeekly = optionalBoolean(value.gives_back_weekly, false);
@@ -190,10 +190,10 @@ function parseGrant(value: unknown): AnthropicResetGrant | null {
   };
 }
 
-/**
- * Parses the `cedar_ember` block. Returns null for a missing or malformed block;
- * one malformed grant, a duplicate id, or a bad timestamp rejects the whole block.
- */
+
+
+
+
 export function parseAnthropicResetGrantStatus(block: unknown): AnthropicResetGrantStatus | null {
   if (!isRecord(block) || typeof block.eligible !== 'boolean') return null;
   const rawGrants = block.grants ?? [];
@@ -230,7 +230,7 @@ export function parseAnthropicResetGrantStatus(block: unknown): AnthropicResetGr
   };
 }
 
-/** Why a grant cannot be spent right now, or null when it can. */
+
 export function anthropicResetGrantBlocker(
   status: AnthropicResetGrantStatus,
   grantId: string
@@ -254,7 +254,7 @@ export function anthropicResetGrantBlocker(
   return null;
 }
 
-/** Missing usage is unknown, not evidence that a model refill would be wasted. */
+
 export function resetGrantHasNoUsage(grant: AnthropicResetGrant): boolean {
   const percentages = Object.values(grant.percentUsed);
   return Boolean(
@@ -336,7 +336,7 @@ export async function claimClaudeResetGrant(
       return result as AnthropicResetUpstreamResult;
     }
   } catch {
-    /* The proxy may have sent the claim even if the management request failed. */
+
   }
   throw new AnthropicResetGrantUnknownOutcome();
 }

@@ -11,7 +11,7 @@ interface ClaudeResetGrantDetailsProps {
   classes: QuotaClassMap;
 }
 
-/** Match Codex's reset-credit details without treating a multi-reset grant as one credit. */
+
 export function ClaudeResetGrantDetails({ grants, classes }: ClaudeResetGrantDetailsProps) {
   const { t, i18n } = useTranslation();
   const now = useNow();

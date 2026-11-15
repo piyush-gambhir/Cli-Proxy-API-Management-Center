@@ -26,11 +26,11 @@ interface SheetProps {
   closeDisabled?: boolean;
   className?: string;
   ariaLabel?: string;
-  /**
-   * If provided, called before starting the close animation when the user
-   * triggers a close (Escape, overlay click, or close button). Return false
-   * (or a Promise that resolves to false) to keep the sheet open.
-   */
+
+
+
+
+
   confirmClose?: () => boolean | Promise<boolean>;
 }
 

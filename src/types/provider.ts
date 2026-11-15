@@ -17,11 +17,11 @@ export interface ProviderBehaviorOptions {
 export interface ProviderRuntimePolicy {
   requestRetry?: number;
   requestScopedErrors?: RequestScopedErrorRule[];
-  /** Explicit form intent: remove the local override, preserving an untouched null. */
+
   inheritFields?: ProviderPolicyField[];
 }
 
-/** Persisted v8 identity. Never derive a group from its endpoint or credential. */
+
 export interface ProviderSource {
   groups?: unknown[];
   groupIndex: number;
@@ -29,13 +29,13 @@ export interface ProviderSource {
   group: Record<string, unknown>;
 }
 
-/**
- * AI 提供商相关类型
- * 基于原项目 src/modules/ai-providers.js
- */
+
+
+
+
 
 export interface ModelAlias {
-  /** Persisted model position; null marks a new form row. Never sent to the backend. */
+
   sourceIndex?: number | null;
   name: string;
   alias?: string;
@@ -112,7 +112,7 @@ export interface OpenAIProviderConfig extends ProviderRuntimePolicy, ProviderBeh
   priority?: number;
   disableCooling?: boolean;
   authIndex?: string;
-  /** Original index in the backend openai-compatibility array. */
+
   sourceIndex?: number;
   [key: string]: unknown;
 }

@@ -9,18 +9,18 @@ import {
 } from '../sponsor';
 import styles from './SponsorCampaignCard.module.scss';
 
-/** 三团光池：与 OAuth 赞助卡同一套「无中心流体」光效，换成节日红 / 橙 / 金。 */
+
 const LIGHT_POOLS = ['a', 'b', 'c'] as const;
 
 interface SponsorCampaignCardProps {
-  /** 便于测试注入当前时间；默认取 Date.now()。 */
+
   now?: number;
 }
 
-/**
- * APIKEY.FUN 双 11 充值赠送活动卡。活动结束后自动不渲染。
- * 整张卡只有一个交互目标（「立即参与」），宣传信息全部是静态文本。
- */
+
+
+
+
 export function SponsorCampaignCard({ now }: SponsorCampaignCardProps) {
   const { t } = useTranslation();
   const titleId = useId();

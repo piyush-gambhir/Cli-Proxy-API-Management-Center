@@ -7,7 +7,7 @@ $diff-line-height: 20px;
 $diff-gutter-width: 50px;
 $diff-prefix-width: 20px;
 
-// GitHub-inspired diff colors (theme-adaptive via color-mix)
+
 $diff-add-color: #3fb950;
 $diff-del-color: #f85149;
 $diff-hunk-color: #388bfd;
@@ -39,7 +39,7 @@ $diff-hunk-color: #388bfd;
   margin: $spacing-md;
 }
 
-// ── File container ──────────────────────────────────────
+
 
 .diffContainer {
   flex: 1;
@@ -49,7 +49,7 @@ $diff-hunk-color: #388bfd;
   overflow: hidden;
 }
 
-// ── File header ─────────────────────────────────────────
+
 
 .fileHeader {
   display: flex;
@@ -111,7 +111,7 @@ $diff-hunk-color: #388bfd;
   background: $diff-del-color;
 }
 
-// ── Diff body (scrollable) ──────────────────────────────
+
 
 .diffBody {
   flex: 1;
@@ -122,7 +122,7 @@ $diff-hunk-color: #388bfd;
   line-height: $diff-line-height;
 }
 
-// ── Hunk ────────────────────────────────────────────────
+
 
 .hunk + .hunk {
   border-top: 1px solid var(--border-color);
@@ -158,14 +158,14 @@ $diff-hunk-color: #388bfd;
   white-space: nowrap;
 }
 
-// ── Diff line ───────────────────────────────────────────
+
 
 .diffLine {
   display: flex;
   min-height: $diff-line-height;
 }
 
-// ── Line number gutters ─────────────────────────────────
+
 
 .lineNum {
   width: $diff-gutter-width;
@@ -183,7 +183,7 @@ $diff-hunk-color: #388bfd;
   color: transparent;
 }
 
-// ── Prefix column (+/-/space) ───────────────────────────
+
 
 .linePrefix {
   width: $diff-prefix-width;
@@ -193,7 +193,7 @@ $diff-hunk-color: #388bfd;
   font-weight: 700;
 }
 
-// ── Code text ───────────────────────────────────────────
+
 
 .lineText {
   flex: 1;
@@ -203,7 +203,7 @@ $diff-hunk-color: #388bfd;
   word-break: break-word;
 }
 
-// ── Context lines ───────────────────────────────────────
+
 
 .context {
   background: var(--bg-primary);
@@ -217,7 +217,7 @@ $diff-hunk-color: #388bfd;
   }
 }
 
-// ── Deletion lines ──────────────────────────────────────
+
 
 .deletion {
   background: color-mix(in srgb, $diff-del-color 8%, var(--bg-primary));
@@ -237,7 +237,7 @@ $diff-hunk-color: #388bfd;
   }
 }
 
-// ── Addition lines ──────────────────────────────────────
+
 
 .addition {
   background: color-mix(in srgb, $diff-add-color 8%, var(--bg-primary));
@@ -257,7 +257,7 @@ $diff-hunk-color: #388bfd;
   }
 }
 
-// ── Mobile responsive ───────────────────────────────────
+
 
 @include mobile {
   .content {

@@ -1,4 +1,4 @@
-/** Matches the Muse key response shape; credentials and identity are synthetic. */
+
 export const metaQuotaResponse = {
   api_key: 'LLM|fixture-only|not-a-real-key',
   base_url: 'https://api.meta.ai/v1',

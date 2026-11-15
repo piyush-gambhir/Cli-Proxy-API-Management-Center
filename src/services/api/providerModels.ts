@@ -29,7 +29,7 @@ export function normalizeModelOptions(raw: Record<string, unknown>): Partial<Mod
   return result;
 }
 
-/** Management v8 JSON is decoded as YAML; its field names follow the YAML tags. */
+
 export function normalizeModelThinking(value: unknown): Record<string, unknown> | undefined {
   if (!isRecord(value)) return undefined;
   const result = { ...value };

@@ -2,7 +2,7 @@ import type { ProviderBehaviorOptions, ProviderKeyConfig } from '@/types/provide
 import { getProviderBehaviorCapabilities } from './descriptors';
 import type { ProviderBrand } from './types';
 
-/** Keep protocol-specific form values out of other provider payloads. */
+
 export function pickProviderBehavior(
   input: ProviderBehaviorOptions | ProviderKeyConfig,
   brand: ProviderBrand

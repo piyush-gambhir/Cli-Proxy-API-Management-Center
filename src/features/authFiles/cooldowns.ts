@@ -23,8 +23,8 @@ export function cooldownRemainingSeconds(
   receivedAtMs: number,
   nowMs: number
 ): number {
-  // remaining_seconds is measured by the server. Never subtract a local wall clock
-  // from retry_at, or infer a deadline from backoff_level. Clamp pre-receipt ticks.
+
+
   const elapsedMs = Math.max(0, nowMs - receivedAtMs);
   return Math.max(0, Math.ceil(record.remainingSeconds - elapsedMs / 1000));
 }

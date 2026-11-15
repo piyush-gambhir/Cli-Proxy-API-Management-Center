@@ -1,6 +1,6 @@
-/**
- * Normalization and parsing functions for quota data.
- */
+
+
+
 
 import type {
   ClaudeUsagePayload,
@@ -83,7 +83,7 @@ export function parseIdTokenPayload(value: unknown): Record<string, unknown> | n
     const parsed = JSON.parse(trimmed) as Record<string, unknown>;
     if (parsed && typeof parsed === 'object') return parsed;
   } catch {
-    // Continue to JWT parsing
+
   }
   const segments = trimmed.split('.');
   if (segments.length < 2) return null;

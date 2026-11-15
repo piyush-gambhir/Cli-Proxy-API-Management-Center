@@ -16,7 +16,7 @@ const object = (value: unknown): value is Record<string, unknown> =>
 export const readCredentialPolicyValue = (json: Record<string, unknown>, key: string): unknown =>
   Object.prototype.hasOwnProperty.call(json, key) ? json[key] : json[key.replace(/_/g, '-')];
 
-/** null means opaque existing data: retain it until explicitly replaced or cleared. */
+
 export function readCredentialAliases(value: unknown): CredentialAliasDraft[] | null {
   if (value == null) return [];
   if (!Array.isArray(value)) return null;

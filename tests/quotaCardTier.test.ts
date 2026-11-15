@@ -87,7 +87,7 @@ describe('quota plan tier ladder', () => {
     expect(
       resolveXaiCardTier(billing({ monthlyLimitCents: XAI_SUPERGROK_HEAVY_LIMIT_CENTS }))
     ).toBe('flagship');
-    // The monthly-limit fallback agrees with the subscription interface.
+
     expect(resolveXaiCardTier(billing({ monthlyLimitCents: 15_000 }))).toBe('premium');
     expect(resolveXaiCardTier(billing({ monthlyLimitCents: 3_000 }))).toBe('standard');
   });

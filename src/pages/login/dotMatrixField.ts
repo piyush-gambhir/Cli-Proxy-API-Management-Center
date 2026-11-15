@@ -5,22 +5,22 @@ export interface DotGrid {
   dotSize: number;
   columns: number;
   rows: number;
-  /** 每个格子的左上角坐标 */
+
   xs: Float32Array;
   ys: Float32Array;
-  /** 以右下角为原点的格子坐标（列向左递增、行向上递增） */
+
   cols: Int32Array;
   rowsIndex: Int32Array;
-  /** 雷达波揭示时刻（秒） */
+
   revealAt: Float32Array;
-  /** 每个点独立的闪烁节拍周期与相位 */
+
   period: Float32Array;
   phase: Float32Array;
-  /** 雷达波全部落定所需时长（秒） */
+
   introDuration: number;
 }
 
-/** 雷达波起点：桌面版从右下角（标题处）扩散；移动端顶部横幅从右上角向下扫向表单 */
+
 export type WaveOrigin = 'bottom-right' | 'top-right';
 
 export interface DotGridOptions {
@@ -32,13 +32,13 @@ export interface DotGridOptions {
 export const ROWS_PER_HEIGHT = 84;
 export const MIN_PITCH = 9;
 export const MAX_PITCH = 14;
-/** 点径 / 点距 */
+
 export const DOT_RATIO = 0.62;
 
 export const TONE_DIM = 0.22;
 export const TONE_MID = 0.47;
 
-/** 向左漂移速度（格/秒） */
+
 export const DRIFT_SPEED = 2;
 
 export const WAVE_DURATION = 0.72;
@@ -55,7 +55,7 @@ const DENSITY_MAX = 0.82;
 const SCATTER = 0.035;
 const MID_THRESHOLD = 0.8;
 const MID_CHANCE = 0.28;
-/** 每个点闪烁节拍的周期范围（秒） */
+
 const PERIOD_MIN = 1.2;
 const PERIOD_MAX = 3.2;
 
@@ -66,7 +66,7 @@ const smoothstep = (edge0: number, edge1: number, value: number) => {
   return t * t * (3 - 2 * t);
 };
 
-/** 整数格点哈希，返回 [0, 1) */
+
 export const hash2 = (ix: number, iy: number, seed: number): number => {
   let h = Math.imul(ix, 0x27d4eb2d) ^ Math.imul(iy, 0x165667b1) ^ Math.imul(seed, 0x9e3779b1);
   h = Math.imul(h ^ (h >>> 15), 0x85ebca6b);
@@ -92,12 +92,12 @@ const valueNoise = (x: number, y: number, seed: number): number => {
 };
 
 export const fieldAt = (col: number, row: number, time: number, seed: number): number => {
-  // col 以右侧为 0 向左递增，"内容向左移动" 即采样点向右（col 减小方向）回溯
+
   const x = col - DRIFT_SPEED * time;
   const primary =
     valueNoise(x / 11, row / 11, seed) * 0.62 + valueNoise(x / 5, row / 5, seed + 1) * 0.38;
   const secondary = valueNoise(x / 7 + time * 0.6, row / 7 - time * 0.8, seed + 2);
-  // 叠加后分布集中在 0.5 附近，拉伸对比度让云团轮廓和暗区更分明
+
   return clamp((primary * 0.62 + secondary * 0.38 - 0.5) * FIELD_CONTRAST + 0.5, 0, 1);
 };
 
@@ -142,7 +142,7 @@ export function createDotGrid(
   let index = 0;
   for (let row = 0; row < rows; row += 1) {
     for (let col = 0; col < columns; col += 1) {
-      // 以右下角为原点向左上排布；最左/最上一圈允许部分出界以铺满边缘
+
       const x = width - (col + 1) * pitch + inset;
       const y = height - (row + 1) * pitch + inset;
       grid.xs[index] = x;
@@ -162,7 +162,7 @@ export function createDotGrid(
   return grid;
 }
 
-/** 将各点的目标透明度写入 out；同一时刻结果确定。 */
+
 export function sampleDotTargets(
   grid: DotGrid,
   time: number,
@@ -173,7 +173,7 @@ export function sampleDotTargets(
   for (let i = 0; i < count; i += 1) {
     const col = grid.cols[i];
     const row = grid.rowsIndex[i];
-    // 每个点在自己的节拍上重新掷骰：节拍之间状态保持不变，切换是瞬时的
+
     const epoch = Math.floor(time / grid.period[i] + grid.phase[i]);
     const roll = hash2(col * 131 + epoch, row, seed + 23);
     const field = fieldAt(col, row, time, seed);

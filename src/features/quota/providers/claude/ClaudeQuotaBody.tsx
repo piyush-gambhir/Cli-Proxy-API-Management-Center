@@ -1,6 +1,6 @@
-/**
- * Claude plan windows, extra usage, and separate read-only dollar balances.
- */
+
+
+
 
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +43,7 @@ export function ClaudeQuotaBody({
 
   const hasUserDisabledReason =
     extraUsage?.userDisabled === true || extraUsage?.disabledReason === 'user_disabled';
-  // Consolidate upstream off signals into the single state beside the label.
+
   const extraUsageStatusKey =
     extraUsage?.isEnabled === false || hasUserDisabledReason
       ? 'claude_quota.extra_usage_disabled'
@@ -82,7 +82,7 @@ export function ClaudeQuotaBody({
         </div>
       )}
       {afterPlan}
-      {/* Keep the extra-usage state with its label; only numeric usage goes on the right. */}
+      {                                                                                      }
       {extraUsage && (
         <div className={classes.quotaRow}>
           <div className={classes.quotaRowHeader}>
@@ -100,7 +100,7 @@ export function ClaudeQuotaBody({
           </div>
           <div className={classes.quotaAmount}>
             {t('claude_quota.usage_spent_limit', {
-              // Extra-usage amounts are minor units; dollar windows are already dollars.
+
               spent: formatMoney(extraUsage.usedCredits, extraUsage.currency ?? 'USD', 100),
               limit: formatMoney(extraUsage.monthlyLimit, extraUsage.currency ?? 'USD', 100),
             })}

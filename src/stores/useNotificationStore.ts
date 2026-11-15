@@ -1,7 +1,7 @@
-/**
- * 通知状态管理
- * 替代原项目中的 showNotification 方法
- */
+
+
+
+
 
 import { create } from 'zustand';
 import type { ReactNode } from 'react';
@@ -54,8 +54,8 @@ export const useNotificationStore = create<NotificationState>((set) => ({
       notifications: [...state.notifications, notification],
     }));
 
-    // NotificationContainer owns readable-time expiry and cleans up timers on unmount.
-    // Keeping timers out of the store allows hover/focus/hidden-tab pauses.
+
+
   },
 
   removeNotification: (id) => {
@@ -79,7 +79,7 @@ export const useNotificationStore = create<NotificationState>((set) => ({
       confirmation: {
         ...state.confirmation,
         isOpen: false,
-        options: null, // Cleanup
+        options: null,
       },
     }));
   },

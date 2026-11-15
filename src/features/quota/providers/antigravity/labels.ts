@@ -1,9 +1,9 @@
-/**
- * Antigravity 额度标签 → i18n key 解析（纯函数，便于测试）。
- *
- * 上游 displayName 会随版本变化（如 "Five Hour Limit Remaining"），因此先按
- * 归一化后的文案匹配，匹配不到再回落到结构化的 `window` 字段。
- */
+
+
+
+
+
+
 
 const GROUP_LABEL_KEYS = new Map<string, string>([
   ['gemini models', 'group_gemini_models'],
@@ -32,9 +32,9 @@ const BUCKET_WINDOW_KEYS = new Map<string, string>([
   ['month', 'monthly_limit'],
 ]);
 
-/**
- * 上游分组描述未列出、但实际共享该分组额度的模型，追加到「此分组包含」列表末尾。
- */
+
+
+
 const GROUP_EXTRA_MODELS = new Map<string, readonly string[]>([
   ['group_gemini_models', ['Gemini Argon']],
 ]);
@@ -43,7 +43,7 @@ const GROUP_MODELS_PATTERN = /^models within this group:\s*(.+)$/i;
 
 const normalizeText = (value: string): string => value.trim().toLowerCase().replace(/\s+/g, ' ');
 
-/** 去掉上游常见的 "Remaining" 后缀，如 "Weekly Limit Remaining" → "weekly limit"。 */
+
 const stripRemainingSuffix = (value: string): string =>
   value.replace(/\s*(?:-|:)?\s*remaining$/, '').trim();
 
@@ -51,10 +51,10 @@ export function resolveAntigravityGroupLabelKey(label: string): string | null {
   return GROUP_LABEL_KEYS.get(normalizeText(label)) ?? null;
 }
 
-/**
- * 解析分组描述中的模型列表，并追加该分组的补充模型（大小写不敏感去重）。
- * 描述不是「Models within this group: ...」格式时返回 null，由调用方显示原文。
- */
+
+
+
+
 export function resolveAntigravityGroupModels(
   label: string,
   description: string | undefined
@@ -95,10 +95,10 @@ interface AntigravityBucketLike {
   remainingFraction: number;
 }
 
-/**
- * 满额桶是否显示「额度可用」。同组周限额已耗尽时，5 小时限额即使满额也不可用
- * （上游会把它标为 disabled 且 remainingFraction 仍为 1），此时不显示「额度可用」。
- */
+
+
+
+
 export function shouldShowAntigravityQuotaAvailable(
   bucket: AntigravityBucketLike,
   groupBuckets: readonly AntigravityBucketLike[]

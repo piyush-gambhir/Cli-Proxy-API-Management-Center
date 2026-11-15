@@ -1,4 +1,4 @@
-/** Match yaml.v3's typed bool decoder, including its YAML 1.1 string spellings. */
+
 export function readConfigBoolean(value: unknown, fallback: boolean): boolean {
   if (typeof value === 'boolean') return value;
   switch (value) {

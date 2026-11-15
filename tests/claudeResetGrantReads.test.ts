@@ -37,8 +37,8 @@ test('waits 2000ms; cleanup cancels and stale sessions cannot dispatch', async (
   const cancelActive = scheduleResetGrantRead(start, () => true);
   try {
     expect(reads).toBe(0);
-    cancel(); // Effect cleanup: refresh, unmount, or connection change.
-    session = 2; // Also guard a connection change before React cleanup runs.
+    cancel();
+    session = 2;
     await Bun.sleep(1900);
     expect(reads).toBe(0);
     await Bun.sleep(200);
@@ -73,7 +73,7 @@ test('shares concurrent credential reads only within a session and never caches 
   const staleResult = old.catch((error: unknown) => error);
   requests[0].resolve(status);
   expect(await staleResult).toMatchObject({ message: 'session' });
-  expect(read('a') === fresh).toBe(true); // Old cleanup must not delete the new session read.
+  expect(read('a') === fresh).toBe(true);
   const otherResult = other.catch((error: unknown) => error);
   requests[1].resolve(status);
   expect(await otherResult).toMatchObject({ message: 'session' });

@@ -44,10 +44,10 @@ const extractIp = (text: string): string | undefined => {
 
   const candidate = ipv6Match[0];
 
-  // Avoid treating time strings like "12:34:56" as IPv6 addresses.
+
   if (LOG_TIME_OF_DAY_REGEX.test(candidate)) return undefined;
 
-  // If no compression marker is present, a valid IPv6 address must contain 8 hextets.
+
   if (!candidate.includes('::') && candidate.split(':').length !== 8) return undefined;
 
   return candidate;
@@ -109,7 +109,7 @@ const extractHttpMethodAndPath = (text: string): { method?: HttpMethod; path?: s
   return { method, path };
 };
 
-// Pipes inside the backend's quoted request path are not field separators.
+
 const splitLogSegments = (text: string): string[] => {
   const segments: string[] = [];
   let start = 0;
@@ -187,7 +187,7 @@ export const parseLogLine = (raw: string): ParsedLogLine => {
       }
     }
 
-    // request id
+
     const requestIdIndex = segments.findIndex(
       (segment) => LOG_REQUEST_ID_REGEX.test(segment) || Boolean(extractNamedRequestId(segment))
     );
@@ -210,7 +210,7 @@ export const parseLogLine = (raw: string): ParsedLogLine => {
       }
     }
 
-    // status code
+
     const statusIndex = segments.findIndex((segment) => /^\d{3}$/.test(segment));
     if (statusIndex >= 0) {
       const match = segments[statusIndex].match(/^(\d{3})$/);
@@ -223,7 +223,7 @@ export const parseLogLine = (raw: string): ParsedLogLine => {
       }
     }
 
-    // latency
+
     const latencyIndex = segments.findIndex((segment) => LOG_LATENCY_REGEX.test(segment));
     if (latencyIndex >= 0) {
       const extracted = extractLatency(segments[latencyIndex]);
@@ -235,7 +235,7 @@ export const parseLogLine = (raw: string): ParsedLogLine => {
       }
     }
 
-    // ip
+
     const ipIndex = segments.findIndex((segment) => Boolean(extractIp(segment)));
     if (ipIndex >= 0) {
       const extracted = extractIp(segments[ipIndex]);
@@ -245,7 +245,7 @@ export const parseLogLine = (raw: string): ParsedLogLine => {
       }
     }
 
-    // method + path
+
     const methodIndex = segments.findIndex((segment) => {
       const { method: parsedMethod } = extractHttpMethodAndPath(segment);
       return Boolean(parsedMethod);
@@ -254,7 +254,7 @@ export const parseLogLine = (raw: string): ParsedLogLine => {
       const parsed = extractHttpMethodAndPath(segments[methodIndex]);
       method = parsed.method;
       path = parsed.path;
-      // Only remove the recognized request prefix; keep annotations and other text.
+
       const requestPrefix = segments[methodIndex].match(
         new RegExp(`^(?:${HTTP_METHODS.join('|')})\\s+(?:"[^"]*"|/\\S+)`)
       );

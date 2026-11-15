@@ -481,7 +481,7 @@ export function PluginStorePage() {
   const [overflowingDescriptionKeys, setOverflowingDescriptionKeys] = useState<string[]>([]);
   const descriptionRefs = useRef<Record<string, HTMLParagraphElement | null>>({});
 
-  // Multi-step install gauntlet, shown only for non-official (third-party) plugins.
+
   const [gateOpen, setGateOpen] = useState(false);
   const [gateEntry, setGateEntry] = useState<PluginStoreEntry | null>(null);
   const [gateIsUpdate, setGateIsUpdate] = useState(false);
@@ -569,7 +569,7 @@ export function PluginStorePage() {
         plugin.sourceUrl,
         plugin.license,
         ...plugin.tags,
-        // 翻译与根字段一起可搜，避免切语言后搜不到原文。
+
         display.name,
         display.description,
         display.author,
@@ -764,7 +764,7 @@ export function PluginStorePage() {
     if (!installOptionsEntry) return;
     const requestedVersion = installVersion.trim();
 
-    // Third-party plugins must clear the multi-step confirmation gauntlet first.
+
     if (!isOfficialPlugin(installOptionsEntry)) {
       setGateEntry(installOptionsEntry);
       setGateIsUpdate(installOptionsIsUpdate);
@@ -780,7 +780,7 @@ export function PluginStorePage() {
       setInstallOptionsEntry(null);
       setInstallVersion('');
     } catch {
-      // runInstall already surfaced a notification; keep the modal available for correction.
+
     }
   }, [installOptionsEntry, installOptionsIsUpdate, installVersion, runInstall]);
 
@@ -997,13 +997,13 @@ export function PluginStorePage() {
 
   return (
     <div className={styles.page}>
-      {/* ── Page Header ── */}
+      {                               }
       <div className={styles.pageHeader}>
         <h1 className={styles.title}>{t('plugin_store.title')}</h1>
         <p className={styles.description}>{t('plugin_store.description')}</p>
       </div>
 
-      {/* ── Security Banner ── */}
+      {                                   }
       <div className={styles.securityBanner} role="note">
         <IconShield size={20} />
         <div className={styles.securityBannerText}>
@@ -1012,7 +1012,7 @@ export function PluginStorePage() {
         </div>
       </div>
 
-      {/* ── Alerts ── */}
+      {                          }
       {error ? (
         <div className={styles.errorBox}>
           <span>{error.message}</span>
@@ -1052,7 +1052,7 @@ export function PluginStorePage() {
         </div>
       ) : null}
 
-      {/* ── Status Bar ── */}
+      {                              }
       {data ? (
         <div className={styles.statusBar}>
           <div className={styles.statusPill}>
@@ -1090,7 +1090,7 @@ export function PluginStorePage() {
         </div>
       ) : null}
 
-      {/* ── Toolbar ── */}
+      {                           }
       <div className={styles.toolbar}>
         <Input
           type="search"
@@ -1112,7 +1112,7 @@ export function PluginStorePage() {
         </Button>
       </div>
 
-      {/* ── Status Filter Chips ── */}
+      {                                       }
       <div className={styles.filterChips} role="group" aria-label={t('plugin_store.filter_label')}>
         {statusFilters.map((item) => (
           <button
@@ -1130,7 +1130,7 @@ export function PluginStorePage() {
         ))}
       </div>
 
-      {/* ── Plugin Cards ── */}
+      {                                }
       {loading ? (
         <div className={styles.cardGrid}>
           {Array.from({ length: 6 }, (_, index) => (

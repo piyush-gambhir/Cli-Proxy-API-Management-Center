@@ -1,7 +1,7 @@
-/**
- * Confirm before spending a Codex reset credit. Codex's redeem call carries no credit id, so
- * OpenAI decides which credit is used; the list is informational, not a choice.
- */
+
+
+
+
 
 import { useTranslation } from 'react-i18next';
 import { Modal } from '@/components/ui/Modal';
@@ -15,12 +15,12 @@ import styles from './ResetChooser.module.scss';
 type Props = {
   open: boolean;
   name: string;
-  /** Null when the provider gave no per-credit details. */
+
   resets: LedgerReset[] | null;
   count: number;
-  /** True while the fresh credit read that opening the dialog started is still running. */
+
   checking: boolean;
-  /** The fresh read failed, so the current credit count can't be trusted. */
+
   failed: boolean;
   busy: boolean;
   onConfirm: () => void;

@@ -14,7 +14,7 @@ describe('parseIsoToMs', () => {
   });
 
   test('tolerates over-precise fractional seconds', () => {
-    // Some providers emit nanoseconds, which Date rejects on some engines.
+
     expect(parseIsoToMs('2026-07-29T14:59:00.123456789Z')).toBe(
       Date.UTC(2026, 6, 29, 14, 59, 0, 123)
     );
@@ -68,7 +68,7 @@ describe('resolveResetMs', () => {
   });
 
   test('prefers an earlier candidate over a later one in the list', () => {
-    // Order is priority, not chronology — callers list their preferred key first.
+
     expect(resolveResetMs(['2026-01-01T00:00:00Z', 1_754_000_000])).toBe(
       Date.UTC(2026, 0, 1)
     );
@@ -93,7 +93,7 @@ describe('period derivation', () => {
   });
 
   test('derives the Claude period from its window key', () => {
-    // Claude states the period nowhere in the payload — only the key implies it.
+
     expect(claudePeriodHours('five_hour')).toBe(5);
     expect(claudePeriodHours('seven_day')).toBe(168);
     expect(claudePeriodHours('seven_day_opus')).toBe(168);

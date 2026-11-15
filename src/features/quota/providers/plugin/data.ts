@@ -63,12 +63,12 @@ const normalizeSubscription = (
 const normalizeProviderId = (value: unknown) =>
   typeof value === 'string' ? value.trim().toLowerCase() : '';
 
-/**
- * Compatibility heuristic for older v8 credentials without quotaPluginId.
- * Prefer a quota identifier, plugin ID, then any declared OAuth identifier. A
- * plugin matched only through DescribeQuota's supported providers is not exposed by /plugins,
- * so fall back to the sole quota plugin when exactly one is registered.
- */
+
+
+
+
+
+
 export const resolveQuotaPluginId = (
   plugins: readonly PluginListEntry[],
   provider: string
@@ -94,7 +94,7 @@ let pluginListCache: {
   promise: Promise<PluginListEntry[]>;
 } | null = null;
 
-/** Refresh-all fans out per credential; share one plugin list per connection. */
+
 const loadQuotaPlugins = (): Promise<PluginListEntry[]> => {
   const revision = apiClient.getConnectionRevision();
   const now = Date.now();
@@ -122,11 +122,11 @@ export const fetchPluginQuota = async (
   if (!authIndex) throw new Error(t('plugin_quota.missing_auth_index'));
 
   const provider = String(file.quotaProvider ?? file['quota_provider'] ?? '').trim();
-  // New v8 credentials carry the host's authoritative selection, including multi-provider
-  // plugins and healthy alternatives. Do not re-resolve it against a stale plugin list.
+
+
   let pluginId = file.quotaPluginId;
   if (!pluginId) {
-    // Older v8 servers may advertise declarative probes, which have no v8 quota route.
+
     if (!provider) throw new Error(t('plugin_quota.probe_unsupported'));
     pluginId = resolveQuotaPluginId(await loadQuotaPlugins(), provider) ?? undefined;
   }

@@ -100,7 +100,7 @@ observability:
       observability: { ...parseYaml(yaml).observability, logs: { debug: true } },
     });
     expect(output).toContain('# file values, not a runtime snapshot');
-    // The existing bounded validation still blocks invalid visual saves.
+
     expect(config.visualValidationErrors.redisUsageQueueRetentionSeconds).toBe(
       'integer_range_1_3600'
     );

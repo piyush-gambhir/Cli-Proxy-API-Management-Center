@@ -1,10 +1,10 @@
 const RFC3339_HIGH_PRECISION_REGEX =
   /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(\.(\d+))?(Z|[+-]\d{2}:\d{2})?$/i;
 
-/**
- * Some browsers mis-handle RFC3339 timestamps that include sub-millisecond
- * precision. Normalize them to millisecond precision before parsing.
- */
+
+
+
+
 export function normalizeTimestampForDateParse(value: string): string {
   const trimmed = value.trim();
   if (!trimmed) return '';

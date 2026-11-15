@@ -1,6 +1,6 @@
-/**
- * Kimi 额度数据层。React-free / SCSS-free。
- */
+
+
+
 
 import type { TFunction } from 'i18next';
 import type { AuthFileItem, KimiQuotaState } from '@/types';
@@ -60,7 +60,7 @@ const fetchKimiQuota = async (file: AuthFileItem, t: TFunction): Promise<KimiQuo
   }
 
   const planName = await fetchKimiPlanName(authIndex, url);
-  // Profile failures are optional, but session/file invalidation must still reject the result.
+
   assertCurrent();
   return { rows: buildKimiQuotaRows(payload), planName };
 };

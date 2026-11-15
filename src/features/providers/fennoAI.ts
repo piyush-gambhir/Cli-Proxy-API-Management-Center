@@ -87,8 +87,8 @@ export const isFennoAICodexProvider = (
 };
 
 export const buildFennoAIRaw = (config: Config | null | undefined): SponsorProviderRaw => ({
-  // FennoAI does not expose OpenAI in its protocol definition. Keep any
-  // name-matching OpenAI compatibility entry in the generic provider group.
+
+
   openai: [],
   claude: (config?.claudeApiKeys ?? [])
     .map((item, index) => ({ config: item, index }))

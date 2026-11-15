@@ -1,5 +1,5 @@
-// 两阶段保存：预览前读取 → 确认时再读取；服务端变化则重新预览。
-// 可视化仅提交 v8 字段差异，源码保留整份 YAML 保存。
+
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { parse as parseYaml, parseDocument } from 'yaml';
@@ -56,7 +56,7 @@ function normalizeYamlForVisualDiff(yamlContent: string): string {
 }
 
 export type UseConfigDocumentArgs = {
-  /** 当前编辑模式（旧实现中的 activeTab）。 */
+
   mode: ConfigEditorMode;
   visualDirty: boolean;
   visualParseError: string | null;
@@ -82,10 +82,10 @@ export function buildConfigSaveDraft(
   return applyVisualChanges(latestServerYaml);
 }
 
-/**
- * 未编辑源码的模式往返不应重载可视化值，否则会清空字段级 dirty，改变并发合并策略。
- * YAML 曾解析失败时仍须重试解析，避免仅靠切换模式绕过错误。
- */
+
+
+
+
 export function shouldReloadVisualDraft(sourceDirty: boolean, visualParseError: string | null) {
   return sourceDirty || visualParseError !== null;
 }
@@ -107,7 +107,7 @@ export function useConfigDocument({
   const [saving, setSaving] = useState(false);
   const [recoveryRequired, setRecoveryRequired] = useState(false);
   const [error, setError] = useState('');
-  // 仅表示用户在源码编辑器中改过草稿；可视化字段同步到 content 不得修改它。
+
   const [sourceDirty, setSourceDirty] = useState(false);
   const [diffModalOpen, setDiffModalOpen] = useState(false);
   const [serverYaml, setServerYaml] = useState('');
@@ -118,7 +118,7 @@ export function useConfigDocument({
   const previewRevision = useRef<number | null>(null);
   const operationId = useRef(0);
 
-  // Ignore old reads/completions after unmount, another load, or an ABA connection switch.
+
   const beginOperation = useCallback(() => {
     const id = ++operationId.current;
     const revision = apiClient.getConnectionRevision();
@@ -161,12 +161,12 @@ export function useConfigDocument({
     };
   }, [loadConfig]);
 
-  // After a partial mutation the current server, not the original load, must become the
-  // dirty baseline. Retain the intended edits while also adopting untouched concurrent values.
+
+
   const recoverVisualDraft = useCallback(
     (latestYaml: string) => {
-      // The server may already contain the list mutations. Replaying old visual IDs
-      // against that new order would apply deletions/reorders twice and lose conditions.
+
+
       const draftYaml = rebaseConfigDraft(previewServerYaml, mergedYaml, latestYaml);
       const result = rebaseVisualValuesFromYaml(latestYaml, draftYaml);
       if (!result.ok) throw new Error(result.error);
@@ -239,7 +239,7 @@ export function useConfigDocument({
       setPreviewServerYaml(latestContent);
       loadVisualValuesFromYaml(latestContent);
 
-      // Keep the global config store in sync so sidebar / other pages reflect YAML changes immediately.
+
       try {
         useConfigStore.getState().clearCache();
         await useConfigStore.getState().fetchConfig(true);
@@ -274,8 +274,8 @@ export function useConfigDocument({
             ? err.message
             : '';
       if (writeAttempted && previewMode === 'visual') {
-        // v8 field mutations are not a transaction. Never roll back with a full document.
-        // Re-read immediately so changing an already-applied value back remains a dirty edit.
+
+
         setDiffModalOpen(false);
         setRecoveryRequired(true);
         useConfigStore.getState().clearCache();
@@ -294,8 +294,8 @@ export function useConfigDocument({
           }
         } catch (recoveryError) {
           if (!operation.isCurrent()) return;
-          // Until readback succeeds, freeze editing against the stale baseline. Saving retries
-          // recovery; reloading can explicitly replace the draft from the server.
+
+
           showNotification(
             recoveryError instanceof ConfigDraftConflictError
               ? t('config_management.concurrent_list_conflict', {
@@ -309,7 +309,7 @@ export function useConfigDocument({
         try {
           await useConfigStore.getState().fetchConfig(true);
         } catch {
-          // Keep the primary mutation/readback error; the cache is already invalidated.
+
         }
       } else {
         showNotification(`${t('notification.save_failed')}: ${message}`, 'error');
@@ -364,8 +364,8 @@ export function useConfigDocument({
         }
       }
 
-      // Generated source still merges visual edits onto fresh YAML; a real source draft is
-      // preserved verbatim. The visible mode determines the wire protocol, not edit origin.
+
+
       const nextMergedYaml = recoveryRequired
         ? recoverVisualDraft(latestServerYaml)
         : buildConfigSaveDraft(
@@ -376,9 +376,9 @@ export function useConfigDocument({
             applyVisualChangesToYaml
           );
 
-      // In visual-origin saves, applyVisualChangesToYaml re-serializes YAML via parseDocument → toString,
-      // which may reformat comments/whitespace. Normalize the server YAML through the same pipeline
-      // so the diff only shows actual value changes, not cosmetic reformatting.
+
+
+
       let diffOriginal = latestServerYaml;
       if (!sourceDirty) {
         diffOriginal = normalizeYamlForVisualDiff(latestServerYaml);
@@ -432,12 +432,12 @@ export function useConfigDocument({
     visualParseError,
   ]);
 
-  /** 可视化→源码时只物化当前字段值，不把同步动作冒充为用户源码编辑。 */
+
   const syncContentFromVisual = useCallback((value: string) => {
     setContent(value);
   }, []);
 
-  /** 源码编辑器 onChange：写入内容并记录真正的源码草稿。 */
+
   const handleChange = useCallback((value: string) => {
     setContent(value);
     setSourceDirty(true);
@@ -461,7 +461,7 @@ export function useConfigDocument({
     });
   }, [isDirty, loadConfig, showConfirmation, t]);
 
-  /** 无需联网，直接恢复最近一次成功读取的原始服务端 YAML。 */
+
   const handleDiscard = useCallback(() => {
     if (!isDirty) return;
     if (recoveryRequired) {

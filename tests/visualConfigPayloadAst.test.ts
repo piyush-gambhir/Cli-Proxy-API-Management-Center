@@ -243,7 +243,7 @@ describe('multi-field payload conditions', () => {
         }
         expect(output).not.toContain('first-condition');
         expect(output).not.toContain('first-inline');
-        // Reload the emitted singleton maps, then remove the first two conditions.
+
         const reloaded = applyPayloadEdit(output, (values) => {
           const rule = values[field][0];
           const model = rule.models[0];

@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-// Every file this fork changes relative to upstream must be listed in FORK.md, and every row in
-// FORK.md must still match a changed file.
-//
-// Usage: node scripts/fork/check-fork-diff.mjs [upstream-ref] [--allow-stale]
-//        (default ref: upstream/main)
-//
-// The comparison base is the last upstream commit merged into HEAD, so upstream commits that
-// have not been synced yet do not count as fork changes. --allow-stale reports rows that no
-// longer match as a warning: the sync job uses it, so upstream catching up on a version does not
-// hold back a release, while pull requests and pushes still fail until the row is removed.
+
+
+
+
+
+
+
+
+
+
 
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
@@ -22,7 +22,7 @@ const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim();
 const base = git('merge-base', 'HEAD', upstreamRef);
 const changed = git('diff', '--name-only', '--no-renames', base, 'HEAD').split('\n').filter(Boolean);
 
-// Rows of the "Files that differ from upstream" table: | `path or glob` | kind | why |
+
 const doc = readFileSync(new URL('../../FORK.md', import.meta.url), 'utf8');
 const section = doc.split(/^## /m).find((part) => part.startsWith('Files that differ from upstream'));
 if (!section) {

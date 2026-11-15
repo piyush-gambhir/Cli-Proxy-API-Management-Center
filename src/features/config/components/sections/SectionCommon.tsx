@@ -15,10 +15,10 @@ import {
 
 const Icon = CONFIG_TAB_ICONS.common;
 
-/**
- * 「常用」tab：原简单模式的 6 个高频字段，别名视图（不占分区序号）。
- * 渲染源与正典分区共享（sharedFields），数据同为 useVisualConfig 一份状态。
- */
+
+
+
+
 export function SectionCommon({
   values,
   validationErrors,

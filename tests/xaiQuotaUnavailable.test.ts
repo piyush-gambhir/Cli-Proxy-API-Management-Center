@@ -1,11 +1,11 @@
-/**
- * xAI quota body: unknown usage must not masquerade as a zero.
- *
- * When the weekly endpoint omits creditUsagePercent the summary keeps
- * usagePercent null; the body should say the usage is unavailable and hide
- * the meter rather than render a fabricated "Used 0%". The legacy
- * zero-limit/zero-used monthly row is hidden only while weekly data exists.
- */
+
+
+
+
+
+
+
+
 
 import { beforeAll, describe, expect, test } from 'bun:test';
 import { createElement } from 'react';
@@ -100,7 +100,7 @@ describe('XaiQuotaBody unavailable weekly usage', () => {
     expect(markup).toContain(formatQuotaResetTime(WEEKLY_PERIOD_END));
     expect(markup).not.toContain('Used --');
     expect(markup).not.toContain('Used 0%');
-    // Zero-budget zero-used monthly row is hidden while weekly data exists.
+
     expect(markup).not.toContain('Monthly credits');
     expect(markup).not.toContain('$0.00 / $0.00');
   });

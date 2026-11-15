@@ -1,7 +1,7 @@
-/**
- * Claude quota data: plan windows, extra usage, and independent dollar balances.
- * React-free and SCSS-free so fixture tests can consume the data layer directly.
- */
+
+
+
+
 
 import type { TFunction } from 'i18next';
 import type {
@@ -100,8 +100,8 @@ export const buildClaudeQuotaWindows = (
       labelKey,
       usedPercent,
       resetLabel,
-      // Claude states the period nowhere in the payload, so it comes from the
-      // key: `five_hour` is the rolling window, everything else is weekly.
+
+
       resetAtMs: resolveResetMs([typedWindow.resets_at]),
       periodHours: claudePeriodHours(key),
     });
@@ -116,8 +116,8 @@ export const buildClaudeQuotaWindows = (
         labelKey: 'claude_quota.seven_day_fable',
         usedPercent,
         resetLabel: formatQuotaResetTime(fableLimit.resets_at ?? undefined),
-        // `weekly_scoped` is a 7-day window by definition, so the timeline can
-        // place this row alongside the ones derived from the named keys.
+
+
         resetAtMs: resolveResetMs([fableLimit.resets_at]),
         periodHours: claudePeriodHours('seven_day'),
       });
@@ -156,12 +156,12 @@ const parseClaudeProfilePayload = (payload: unknown): ClaudeProfileResponse | nu
   return null;
 };
 
-/**
- * The organization's rate-limit tier is the only field that separates Max 5x
- * from Max 20x (`default_claude_max_5x` / `default_claude_max_20x`); the account
- * flags only say "Max". Pro reports `default_claude_ai`, which Team/Free share,
- * so it is not used to identify Pro.
- */
+
+
+
+
+
+
 const resolveClaudeMaxTier = (profile: ClaudeProfileResponse): string | null => {
   const organization = profile.organization as
     (NonNullable<ClaudeProfileResponse['organization']> & { rateLimitTier?: string }) | undefined;
@@ -188,9 +188,9 @@ export const resolveClaudePlanType = (profile: ClaudeProfileResponse | null): st
     return 'plan_team';
   }
 
-  // Account flags include personal subscriptions even for a Team-scoped token.
-  // A Team-scoped token carries the Team organization's tier, so a personal
-  // Max seen through it stays the undifferentiated 'plan_max'.
+
+
+
   const maxTier = resolveClaudeMaxTier(profile);
   if (maxTier) return maxTier;
 
@@ -247,7 +247,7 @@ const fetchClaudeQuota = async (file: AuthFileItem, t: TFunction): Promise<Claud
     throw new Error(t('claude_quota.empty_windows'));
   }
   const dollarWindows = snapshot.dollarWindows;
-  // Full dollar balances get their own amount/reset rows, not a second plan meter.
+
   const windows = buildClaudeQuotaWindows(payload, t).filter(
     (window) =>
       window.id !== 'cloud-session-credits' ||

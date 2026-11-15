@@ -81,7 +81,7 @@ export const AUTH_FILE_MANUAL_REFRESH_PROVIDERS = new Set([
   'xai',
 ]);
 
-// 标签类型颜色配置：权威版本在 @/utils/quota/constants.ts，此处仅转发
+
 export { TYPE_COLORS } from '@/utils/quota';
 
 export const AUTH_FILE_ICONS: Record<string, AuthFileIconAsset> = {
@@ -131,7 +131,7 @@ export const getAuthFileStatusMessage = (file: AuthFileItem): string => {
   return String(raw).trim();
 };
 
-/** 这些 status_message 视为健康，不触发告警态。 */
+
 export const HEALTHY_AUTH_FILE_STATUS_MESSAGES = new Set([
   'ok',
   'healthy',
@@ -140,16 +140,16 @@ export const HEALTHY_AUTH_FILE_STATUS_MESSAGES = new Set([
   'available',
 ]);
 
-/** 是否存在非健康的 status_message（卡片告警态 / 谱条琥珀色共用判定）。 */
+
 export const hasAuthFileStatusWarning = (file: AuthFileItem): boolean => {
   const message = getAuthFileStatusMessage(file);
   return Boolean(message) && !HEALTHY_AUTH_FILE_STATUS_MESSAGES.has(message.toLowerCase());
 };
 
-/**
- * 是否为需要用户处理的问题凭证。
- * 主动停用是独立状态，不应进入“问题”筛选或“删除问题凭证”的批量操作。
- */
+
+
+
+
 export const isProblemAuthFile = (file: AuthFileItem): boolean => {
   const status = typeof file.status === 'string' ? file.status.trim().toLowerCase() : '';
   if (file.disabled === true || status === 'disabled') return false;
@@ -180,8 +180,8 @@ export const getAuthFileIcon = (type: string, resolvedTheme: ResolvedTheme): str
       : iconEntry.light;
 };
 
-// 与 AI 提供商界面（PROVIDER_LOGOS 的 themeSurface）保持一致：
-// 这些提供商的图标底座颜色随主题切换（浅色主题黑底，深色主题白底）
+
+
 export const THEME_SURFACE_ICON_PROVIDERS = new Set(['kimi']);
 
 export const isThemeSurfaceIconProvider = (type: string): boolean =>
@@ -271,7 +271,7 @@ export const formatModified = (item: AuthFileItem): string => {
   return Number.isNaN(date.getTime()) ? '-' : date.toLocaleString();
 };
 
-// 检查模型是否被 OAuth 排除
+
 export const isModelExcluded = (
   modelId: string,
   providerType: string,
@@ -281,7 +281,7 @@ export const isModelExcluded = (
   const excludedModels = excluded[providerKey] || excluded[providerType] || [];
   return excludedModels.some((pattern) => {
     if (pattern.includes('*')) {
-      // 支持通配符匹配：先转义正则特殊字符，再将 * 视为通配符
+
       const regexSafePattern = pattern
         .split('*')
         .map((segment) => segment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))

@@ -11,7 +11,7 @@ interface AnimatedNotification extends Notification {
   isExiting?: boolean;
 }
 
-// Matches the exit transition; each card owns and cleans up its removal timer.
+
 const EXIT_DURATION_MS = 160;
 
 const notificationIcons = {

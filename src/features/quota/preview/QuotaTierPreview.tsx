@@ -1,12 +1,12 @@
-/**
- * DEV-ONLY preview: plan tiers (standard / premium=gold / flagship=Hetian jade with gold bezel).
- *
- * Registered in App.tsx only when `import.meta.env.DEV` is true, outside the
- * auth guard, so it can be opened without a backend or real accounts:
- *   http://localhost:5173/#/__preview/quota-tiers
- * Renders the real QuotaCard with mocked quota states. Copy is intentionally
- * not localized — this page never ships.
- */
+
+
+
+
+
+
+
+
+
 
 import { useState } from 'react';
 import { useThemeStore } from '@/stores';
@@ -225,7 +225,7 @@ const buildAccounts = (): MockAccount[] => [
     quota: { status: 'error', windows: [], error: 'HTTP 401' } as CodexQuotaState,
   },
   {
-    // Idle card: no plan styling until quota data arrives.
+
     entry: {
       type: 'codex',
       file: file('codex-pro500-idle.json', 'codex', { plan_type: 'promax' }),

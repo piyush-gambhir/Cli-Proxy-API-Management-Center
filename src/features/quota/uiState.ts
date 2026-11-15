@@ -5,7 +5,7 @@ import {
   type QuotaTabId,
 } from './constants';
 
-/** 额度页 UI 偏好：会话级持久化（sessionStorage），跨会话不携带。 */
+
 export type QuotaUiState = {
   tab?: QuotaTabId;
   sortMode?: QuotaSortMode;
@@ -38,19 +38,19 @@ export const readQuotaUiState = (): QuotaUiState | null => {
   }
 };
 
-/**
- * Merge into whatever is already stored.
- *
- * Callers write one preference at a time — the tab strip knows nothing about
- * the sort control — so a whole-object write would silently drop the other
- * field every time either one changed.
- */
+
+
+
+
+
+
+
 export const writeQuotaUiState = (state: QuotaUiState) => {
   if (typeof window === 'undefined') return;
   try {
     const next = { ...readQuotaUiState(), ...state };
     window.sessionStorage.setItem(QUOTA_UI_STATE_KEY, JSON.stringify(next));
   } catch {
-    // ignore
+
   }
 };

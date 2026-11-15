@@ -1,7 +1,7 @@
-/**
- * 语言状态管理
- * 从原项目 src/modules/language.js 迁移
- */
+
+
+
+
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -24,7 +24,7 @@ export const useLanguageStore = create<LanguageState>()(
         if (!isSupportedLanguage(language)) {
           return;
         }
-        // 切换 i18next 语言
+
         i18n.changeLanguage(language);
         set({ language });
       },

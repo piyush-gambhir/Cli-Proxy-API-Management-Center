@@ -12,7 +12,7 @@ import { ModelAdvancedFields } from '@/features/providers/sheets/forms/ModelAdva
 import type { ModelEntryInput, ProviderBrand } from '@/features/providers/types';
 import type { ModelAlias } from '@/types';
 
-// Keep key-based assertions independent of other suites initializing the app's i18n.
+
 const translations = createInstance();
 await translations.init({ lng: 'cimode', resources: {}, react: { useSuspense: false } });
 

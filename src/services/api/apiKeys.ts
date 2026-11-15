@@ -1,4 +1,4 @@
-/** Client access keys are a direct config list, not upstream provider groups. */
+
 import { apiClient } from './client';
 import { getConfigValue, guardConfigConnection } from './configValue';
 

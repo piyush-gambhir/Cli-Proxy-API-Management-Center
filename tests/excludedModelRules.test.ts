@@ -39,17 +39,17 @@ describe('normalizeExcludedRules / parseExcludedRulesText', () => {
     expect(parseExcludedRulesText(formatExcludedRulesText(rules))).toEqual(rules);
   });
 
-  /**
-   * 凭证编辑器把 excluded_models 存成换行文本，保存时用 `JSON.stringify` 做**顺序敏感**的
-   * diff（useAuthFilesPrefixProxyEditor.ts:327）。picker 只要在读写之间保持顺序不变，
-   * 「打开但不修改就保存」就永远不会写出与原文件不同的内容。
-   */
+
+
+
+
+
   test('parse→format is a fixed point for already-normalized input (order preserved)', () => {
     const fromBackend = ['GPT-5-Codex', 'gpt-5-*', 'retired-model'];
     const text = fromBackend.join('\n');
 
     expect(formatExcludedRulesText(parseExcludedRulesText(text))).toBe(text);
-    // 再跑一轮仍是同一个不动点。
+
     expect(parseExcludedRulesText(formatExcludedRulesText(parseExcludedRulesText(text)))).toEqual(
       fromBackend
     );
@@ -72,7 +72,7 @@ describe('matchesExcludedRule', () => {
   });
 
   test('treats regex metacharacters in the rule as literals', () => {
-    // The `.` must be a literal dot, not "any character".
+
     expect(matchesExcludedRule('gpt-4.1', 'gpt-4.1')).toBe(true);
     expect(matchesExcludedRule('gpt-4.1', 'gpt-4x1')).toBe(false);
     expect(matchesExcludedRule('gpt-4.*', 'gpt-4.1-mini')).toBe(true);
@@ -93,7 +93,7 @@ describe('matchesExcludedRule', () => {
     expect(isWildcardRule('gpt-5-*')).toBe(true);
     expect(isWildcardRule('gpt-5-codex')).toBe(false);
     expect(isMatchedByWildcardRule(['gpt-5-*'], 'gpt-5-mini')).toBe(true);
-    // An exact rule matching the model is not a *wildcard* match.
+
     expect(isMatchedByWildcardRule(['gpt-5-mini'], 'gpt-5-mini')).toBe(false);
   });
 });
@@ -168,7 +168,7 @@ describe('splitExcludedRules', () => {
   });
 
   test('customRules keeps the original interleaved order, not bucket order', () => {
-    // `unlisted` appears before `a-*`; concatenating the buckets would reverse them.
+
     expect(splitExcludedRules(['unlisted', 'a-*'], ['gpt-5-codex']).customRules).toEqual([
       'unlisted',
       'a-*',

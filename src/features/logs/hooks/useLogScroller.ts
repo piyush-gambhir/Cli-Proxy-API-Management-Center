@@ -9,7 +9,7 @@ const LOAD_MORE_THRESHOLD_PX = 72;
 type LogAnchor = { id: number; offset: number };
 type LogRow = LogAnchor & { bottom: number };
 
-// IDs belong to the original stream, not to positions in a filtered buffer.
+
 export const findVisibleLogAnchor = (rows: readonly LogRow[]): LogAnchor | null => {
   const row = rows.find((entry) => entry.bottom > 0);
   return row ? { id: row.id, offset: row.offset } : null;
@@ -112,8 +112,8 @@ export function useLogScroller(options: UseLogScrollerOptions): UseLogScrollerRe
     }
   }, [setLogState]);
 
-  // A data arrival may finish in a closure from an older render. Only request
-  // scrolling here; resizing the window belongs to the explicit resume action.
+
+
   const requestScrollToBottom = useCallback(() => {
     followingRef.current = true;
     setIsFollowing(true);
@@ -126,7 +126,7 @@ export function useLogScroller(options: UseLogScrollerOptions): UseLogScrollerRe
     const node = logViewerRef.current;
     if (!node || pendingPrependScrollRef.current || !canLoadMore) return;
     anchorRef.current = findVisibleLogAnchor(readLogRows(node));
-    // Retain the height fallback for existing callers without data-log-id rows.
+
     pendingPrependScrollRef.current = {
       scrollHeight: node.scrollHeight,
       scrollTop: node.scrollTop,
@@ -148,8 +148,8 @@ export function useLogScroller(options: UseLogScrollerOptions): UseLogScrollerRe
         setIsFollowing(false);
         newestIdRef.current = rows.length ? rows[rows.length - 1].id : null;
       }
-      // Reaching the bottom while browsing does not discard the expanded history;
-      // the explicit resume action is what restores the 100-line live window.
+
+
       lastScrollTopRef.current = node.scrollTop;
       anchorRef.current = findVisibleLogAnchor(rows);
       if (!followingRef.current && node.scrollTop <= LOAD_MORE_THRESHOLD_PX) {

@@ -20,7 +20,7 @@ const originalWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
 let events: string[];
 
 const installAdapter = (adapter: AxiosAdapter) => {
-  // Both paths are intercepted, so a transport regression cannot make a real request.
+
   axios.defaults.adapter = adapter;
   instance.defaults.adapter = adapter;
 };

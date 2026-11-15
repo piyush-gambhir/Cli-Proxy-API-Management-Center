@@ -1,10 +1,10 @@
-/**
- * Routing board: CPA's priority tiers as one arrangement.
- *
- * Every move, weight and setting is a local draft until it is saved as one plan. Saving writes
- * credentials one by one, then the configuration once, and always reloads the board afterwards
- * so it shows what actually landed, including after a partial failure.
- */
+
+
+
+
+
+
+
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -53,7 +53,7 @@ import { TierLadder } from './components/TierLadder';
 import { WeightDialog } from './components/WeightDialog';
 import styles from './RoutingPage.module.scss';
 
-// Cooldown chips count down coarsely; one shared timer for the whole board.
+
 const cooldownClock = createSharedClock({ intervalMs: 5_000 });
 
 const EMPTY_CATALOG: RoutingModelCatalog = { channels: {}, credentials: {} };
@@ -78,7 +78,7 @@ export function RoutingPage() {
   const revealRef = useRevealGroup<HTMLDivElement>();
   const layoutRef = useRef<HTMLDivElement>(null);
   const pageTransitionLayer = usePageTransitionLayer();
-  // A page sliding out must not leave its portalled save bar behind.
+
   const isCurrentLayer = pageTransitionLayer ? pageTransitionLayer.isCurrentLayer : true;
 
   const [board, setBoard] = useState<RoutingBoard | null>(null);
@@ -152,13 +152,13 @@ export function RoutingPage() {
   useEffect(() => {
     void load();
     return () => {
-      // Late responses from this mount must not land on a later one.
+
       requestRef.current += 1;
     };
   }, [load]);
 
   useEffect(() => {
-    // A new connection is a new backend: model lists are not shared across it.
+
     catalogRef.current = EMPTY_CATALOG;
     setCatalog(EMPTY_CATALOG);
   }, [connectionStatus]);
@@ -169,7 +169,7 @@ export function RoutingPage() {
   );
   const dirty = Boolean(plan && plan.changes.length > 0);
 
-  // The global header refresh reloads the board; with a draft it asks first.
+
   const refresh = useCallback(() => {
     if (!dirty) return load();
     showConfirmation({
@@ -237,7 +237,7 @@ export function RoutingPage() {
   const handleStep = useCallback(
     (key: string, direction: 'up' | 'down') => {
       if (draft) applyTiers(stepMember(draft.tiers, key, direction));
-      // Keep keyboard focus on the moved card after it re-renders in its new tier.
+
       requestAnimationFrame(() => {
         const card = document.querySelector<HTMLElement>(
           `[data-member-key="${CSS.escape(key)}"] button`

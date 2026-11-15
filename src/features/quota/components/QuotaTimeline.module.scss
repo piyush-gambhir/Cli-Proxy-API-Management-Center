@@ -1,8 +1,8 @@
 @use '../../../styles/variables' as *;
 @use '../../../styles/mixins' as *;
 
-// Fixed-width lane column so every row's bars start at the same x — the whole
-// point of the chart is comparing when lanes end relative to each other.
+
+
 $lane-width: 210px;
 
 .timeline {
@@ -134,7 +134,7 @@ $lane-width: 210px;
     background: rgba(255, 255, 255, 0.014);
   }
 
-  // The current day is the reference point for reading the whole chart.
+
   &[data-today='1'] {
     background: rgba(255, 255, 255, 0.03);
   }
@@ -245,8 +245,8 @@ $lane-width: 210px;
   }
 }
 
-// Vertical "now" marker, above the grid but below the bars so it never hides
-// a label.
+
+
 .nowLine {
   position: absolute;
   top: 0;
@@ -271,28 +271,28 @@ $lane-width: 210px;
   position: absolute;
 }
 
-// Current window: solid, in the provider's colour — the row's focal point.
+
 .windowLive {
   background: color-mix(in srgb, var(--provider-accent) 26%, transparent);
   border: 1px solid color-mix(in srgb, var(--provider-accent) 45%, transparent);
   color: var(--text-primary);
 }
 
-// Upcoming: dashed outline, nothing consumed yet.
+
 .windowNext {
   background: transparent;
   border: 1px dashed color-mix(in srgb, var(--provider-accent) 32%, transparent);
   color: var(--text-quaternary);
 }
 
-// Elapsed: recedes.
+
 .windowPast {
   background: color-mix(in srgb, var(--provider-accent) 8%, transparent);
   border: 1px solid transparent;
   color: var(--text-quaternary);
 }
 
-// Consumed portion of the current window, drawn behind its label.
+
 .windowFill {
   position: absolute;
   left: 0;
@@ -309,8 +309,8 @@ $lane-width: 210px;
   font-variant-numeric: tabular-nums;
 }
 
-// A reset credit is use-it-or-lose-it, so its expiry sits above the window bar
-// as a narrow amber tick without competing with the bar's own label.
+
+
 .resetCreditTick {
   position: absolute;
   z-index: 3;
@@ -383,8 +383,8 @@ $lane-width: 210px;
 }
 
 @include mobile {
-  // The lane column can't shrink much before names become unreadable, so the
-  // chart scrolls horizontally rather than compressing to illegibility.
+
+
   .chart {
     overflow-x: auto;
   }

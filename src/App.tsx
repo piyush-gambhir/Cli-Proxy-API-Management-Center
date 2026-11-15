@@ -20,8 +20,8 @@ function RootShell() {
   );
 }
 
-// DEV-only design previews: statically false in production builds, so the
-// branch and its dynamic import are dropped from the single-file bundle.
+
+
 const devPreviewRoutes = import.meta.env.DEV
   ? [
       {
@@ -40,8 +40,8 @@ const router = createHashRouter([
     element: <RootShell />,
     children: [
       ...devPreviewRoutes,
-      // Ledger fork: our screens live under /ledger with their own shell and are the landing after
-      // login; upstream's login page and shell are wrapped only to route that landing.
+
+
       { path: '/login', element: <LoginEntry /> },
       {
         path: '/ledger/*',
@@ -55,7 +55,7 @@ const router = createHashRouter([
         path: '/*',
         element: (
           <ProtectedRoute>
-            {/* Links from upstream pages inside the ledger shell to classic paths stay there. */}
+            {                                                                                    }
             <ClassicRedirect>
               <ClassicEntry />
             </ClassicRedirect>
@@ -79,7 +79,7 @@ function App() {
   useEffect(() => {
     setLanguage(language);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // 仅用于首屏同步 i18n 语言
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = language;

@@ -1,4 +1,4 @@
-// Scoped to this modal; upstream's .modal header/body/footer keep their structure.
+
 .modal {
   :global(.modal-body) {
     display: flex;
@@ -58,7 +58,7 @@
     opacity: 0.5;
   }
 
-  // Informational rows (Codex credits) are not choices.
+
   &[data-static='true'] {
     cursor: default;
   }
@@ -86,7 +86,7 @@
 
   .option[data-checked='true'] & {
     background: var(--primary-contrast);
-    // Ring drawn as an inset fill so the dot needs no border.
+
     box-shadow: inset 0 0 0 5px var(--primary-color) !important;
   }
 }

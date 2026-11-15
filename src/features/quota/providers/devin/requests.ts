@@ -27,11 +27,11 @@ interface DevinQuotaDependencies {
   generation: (name: string) => DevinRequestGeneration;
 }
 
-/**
- * Share in-flight work between card/page/batch entry points. Limit upstream calls
- * to three at once. Every queued job and upstream response recheck both
- * session and file generations, so old jobs cannot run against a new connection.
- */
+
+
+
+
+
 export function createDevinQuotaFetcher(deps: DevinQuotaDependencies) {
   const inFlight = new Map<string, Promise<DevinQuotaData>>();
   const pools = new Map<number, { queue: Array<() => void>; active: number }>();

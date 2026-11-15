@@ -62,10 +62,10 @@ describe('ledger routing view', () => {
 
   test('prefer and demote move within the provider only', () => {
     const [claude, codex] = groupByProvider(members, {}, []);
-    // Top-level peers: preferring makes a level of its own above them.
+
     expect(preferPriority(claude, 'credential:claude-a.json')).toBe(10);
     expect(demotePriority(claude, 'credential:claude-a.json')).toBe(-10);
-    // Codex has two levels: the lower one joins the higher, the top one can't go further.
+
     expect(preferPriority(codex, 'credential:codex-b.json')).toBe(10);
     expect(preferPriority(codex, 'credential:codex-a.json')).toBeNull();
     expect(demotePriority(codex, 'credential:codex-a.json')).toBe(0);
@@ -95,8 +95,8 @@ describe('ledger routing view', () => {
       ]
     );
     expect(nextMemberKey(group, () => false)).toBe('credential:c.json');
-    // Only the highest available priority competes: with c cooling, b still wins over the
-    // lower tier even though it is ranked unusable, as the proxy falls back inside the tier.
+
+
     expect(nextMemberKey(group, (m) => m.name === 'c.json')).toBe('credential:b.json');
   });
 
@@ -114,7 +114,7 @@ describe('ledger routing view', () => {
       member('compat', 'openai-compatibility', 0, { kind: 'compat' }),
       member('codex.json', 'codex', 0),
     ];
-    // Codex never serves Claude's models, so only the compatible provider counts.
+
     expect(crossProviderReorders(list, { 'credential:claude-a.json': 10 })).toBe(1);
     expect(crossProviderReorders(list, {})).toBe(0);
   });

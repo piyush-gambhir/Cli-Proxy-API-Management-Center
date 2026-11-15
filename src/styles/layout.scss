@@ -19,8 +19,8 @@
   min-height: 100vh;
   height: 100vh;
   overflow: hidden;
-  // 与 .page-transition__layer 的不透明填充保持同色：外壳一旦用渐变，
-  // main-content 的 padding 圈就会和内容层拼出一道 4~7 级色差的硬边，看着像每页都有边框。
+
+
   background: var(--bg-secondary);
   color: var(--text-primary);
 
@@ -1017,8 +1017,8 @@
   }
 }
 
-// 仅桌面端：移动端侧栏本身依赖 transform 收起，不叠加入场。
-// 总时长不超过揭幕时长（640ms），揭幕结束时类名撤销不会跳变。
+
+
 @keyframes shellSidebarIn {
   from {
     opacity: 0;

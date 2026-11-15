@@ -1,13 +1,13 @@
-/**
- * Every v2 section shares one frame: a title row (one title, or title-sized tabs with the
- * inactive ones dimmed) at the top of the page, then the content one gap below. Sections that
- * embed an upstream screen hide that screen's own heading, which would repeat the title in a
- * different size and wording.
- *
- * Providers holds the provider-wide OAuth model alias and excluded model editors (classic reaches
- * them from Auth Files) at /ledger/models/*. Routing lives under Accounts (/ledger/routing): our
- * own per-provider view (routing/RoutingScreen.tsx) that orders those same accounts.
- */
+
+
+
+
+
+
+
+
+
+
 
 import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +25,7 @@ import styles from './LedgerLayout.module.scss';
 
 type TitleTab = { to: string; label: string; end?: boolean };
 
-/** Title-sized tabs; the page's h1 is provided separately. */
+
 export function TitleTabs({ label, tabs }: { label: string; tabs: TitleTab[] }) {
   const tab = ({ isActive }: { isActive: boolean }) =>
     `${styles.titleTab} ${isActive ? styles.titleTabActive : ''}`;
@@ -72,7 +72,7 @@ const useAccountTabs = (): TitleTab[] => {
   ];
 };
 
-/** Accounts and the routing board that orders them. */
+
 export function AccountTabs() {
   const { t } = useTranslation();
   return <TitleTabs label={t('ledger.nav_accounts')} tabs={useAccountTabs()} />;

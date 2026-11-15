@@ -16,7 +16,7 @@ interface PageTransitionProps {
   scrollContainerRef?: React.RefObject<HTMLElement | null>;
 }
 
-// Premium personality: enter > exit, decelerate-in / accelerate-out.
+
 const VERTICAL_ENTER_DURATION = 0.36;
 const VERTICAL_EXIT_DURATION = 0.22;
 const VERTICAL_ENTER_DISTANCE = 28;
@@ -32,11 +32,11 @@ const IOS_BACKGROUND_SCALE = 0.96;
 const IOS_BACKGROUND_OPACITY = 0.5;
 const IOS_SHADOW_VALUE = '-20px 0 36px rgba(0, 0, 0, 0.20)';
 
-// easeOutQuart: powerful but elegant deceleration for hero entrances.
+
 const easeOutQuart = (progress: number) => 1 - (1 - progress) ** 4;
-// easeInQuad: gentle start, accelerates away — exits should not linger.
+
 const easeInQuad = (progress: number) => progress * progress;
-// easeOutCubic: smooth Apple-style settle for iOS push/pop.
+
 const easeOutCubic = (progress: number) => 1 - (1 - progress) ** 3;
 
 const prefersReducedMotion = () =>
@@ -128,8 +128,8 @@ export function PageTransition({
           ? 'forward'
           : 'backward';
 
-    // When using iOS-style stacking, history POP within the same "section" can have equal route order.
-    // In that case, prefer treating navigation to an existing layer as a backward (pop) transition.
+
+
     if (nextVariant === 'ios' && layers.some((layer) => layer.key === location.key)) {
       nextDirection = 'backward';
     }
@@ -221,7 +221,7 @@ export function PageTransition({
     layers,
   ]);
 
-  // Run Motion animation when animating starts
+
   useLayoutEffect(() => {
     if (!isAnimating) return;
 
@@ -264,7 +264,7 @@ export function PageTransition({
     };
 
     if (reduceMotion) {
-      // Accessibility: skip spatial motion entirely, fall back to a quick crossfade.
+
       if (exitingLayerEl) {
         exitingLayerEl.style.transform =
           transitionVariant === 'ios'
@@ -294,8 +294,8 @@ export function PageTransition({
         ? IOS_ENTER_FROM_X_PERCENT
         : IOS_ENTER_FROM_X_PERCENT_BACKWARD;
 
-      // Background layer (the one being pushed back / coming forward from behind) gets
-      // scale + opacity dim to read as "behind". Top layer is the one sliding fully on/off.
+
+
       const exitScaleTo = isForward ? IOS_BACKGROUND_SCALE : 1;
       const exitOpacityTo = isForward ? IOS_BACKGROUND_OPACITY : 1;
       const enterScaleFrom = isForward ? 1 : IOS_BACKGROUND_SCALE;
@@ -309,7 +309,7 @@ export function PageTransition({
       currentLayerEl.style.transform = buildIosTransform(enterFromXPercent, 0, enterScaleFrom);
       currentLayerEl.style.opacity = String(enterOpacityFrom);
 
-      // Shadow sits on whichever layer is visually in front of the other during the slide.
+
       const topLayerEl = isForward ? currentLayerEl : exitingLayerEl;
       if (topLayerEl) {
         topLayerEl.style.boxShadow = IOS_SHADOW_VALUE;
@@ -351,7 +351,7 @@ export function PageTransition({
         )
       );
     } else {
-      // Vertical: split timing — exit leaves quickly (accelerate), enter settles slowly (decelerate).
+
       if (exitingLayerEl) {
         exitingLayerEl.style.transform = buildVerticalTransform(exitBaseY);
         activeAnimations.push(

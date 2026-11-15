@@ -24,13 +24,13 @@ import type { PluginListEntry } from '@/types';
 describe('OAuth dialog view resolution', () => {
   test('maps every flow state to exactly one view', () => {
     expect(resolveFlowView({})).toBe('idle');
-    // 正在生成链接：已进入步骤视图（骨架占位）
+
     expect(resolveFlowView({ status: 'waiting' })).toBe('flow');
     expect(resolveFlowView({ status: 'waiting', url: 'https://a.test' })).toBe('flow');
     expect(resolveFlowView({ status: 'success' })).toBe('success');
-    // 轮询网络失败但链接仍在：留在步骤视图，手动回调仍可恢复
+
     expect(resolveFlowView({ status: 'error', url: 'https://a.test' })).toBe('flow');
-    // 链接已失效（启动失败 / Devin 终态失败）：失败视图
+
     expect(resolveFlowView({ status: 'error', error: 'denied' })).toBe('failed');
   });
 
@@ -141,7 +141,7 @@ describe('OAuth provider gallery', () => {
       expect(markup).toContain('Vertex AI');
       expect(markup).toContain(i18n.t('siwc.bind'));
       expect(markup).not.toMatch(/auth_login\.|vertex_import\.|siwc\./);
-      // 每个磁贴都是打开对话框的按钮（提供商 + Vertex + SIWC 绑定）
+
       expect(markup.match(/aria-haspopup="dialog"/g)?.length).toBe(OAUTH_PROVIDERS.length + 2);
     });
   }
@@ -156,7 +156,7 @@ describe('OAuth provider gallery', () => {
         createElement(MemoryRouter, null, createElement(OAuthPage))
       )
     );
-    // 一张品牌卡（role=group），卡内两个站点登录入口 + 两个开放平台注册链接
+
     expect(markup.match(/role="group"/g)?.length).toBe(1);
     const card = markup.slice(markup.indexOf('role="group"'));
     expect(card).toContain('aria-label="Kimi 国内站"');
@@ -176,7 +176,7 @@ describe('OAuth provider gallery', () => {
         const name = messages[nameKey.replace('auth_login.', '')];
         const region = messages[provider.sponsor!.siteKey.replace('auth_login.', '')];
         expect(region).toBeTruthy();
-        // label-in-name：语音控制说出可见文字就能命中按钮
+
         expect(name.toLowerCase()).toContain(region.toLowerCase());
       }
       expect(messages.sponsor_kimi_caption).toBeTruthy();
@@ -190,7 +190,7 @@ describe('OAuth provider gallery', () => {
     const poolAnimationStart = styles.indexOf(".pool[data-pool='#{$name}']");
     expect(poolAnimationStart).toBeGreaterThanOrEqual(0);
     expect(reducedMotionStart).toBeGreaterThan(poolAnimationStart);
-    // 属性选择器与每个光池的动画规则保持同等优先级；仅 .pool 无法覆盖动画。
+
     expect(styles.slice(reducedMotionStart)).toMatch(
       /\.pool\[data-pool\]\s*,[^{}]*\{\s*animation:\s*none;/
     );
@@ -207,9 +207,8 @@ describe('OAuth provider gallery', () => {
       )
     );
     for (const url of [KIMI_CHINESE_AFFILIATE_URL, KIMI_INTERNATIONAL_AFFILIATE_URL]) {
-      const escaped = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/&/g, '&amp;');
-      expect(markup).toMatch(
-        new RegExp(`href="${escaped}" target="_blank" rel="noopener noreferrer"`)
+      expect(markup).toContain(
+        'href="' + url.replace(/&/g, '&amp;') + '" target="_blank" rel="noopener noreferrer"'
       );
     }
   });

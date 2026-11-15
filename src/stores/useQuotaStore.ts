@@ -1,6 +1,6 @@
-/**
- * Quota cache that survives route switches.
- */
+
+
+
 
 import { create } from 'zustand';
 import { getQuotaCacheFileName } from '@/utils/quota/identity';
@@ -25,12 +25,12 @@ interface QuotaStoreState {
   antigravityQuota: Record<string, AntigravityQuotaState>;
   claudeQuota: Record<string, ClaudeQuotaState>;
   codexQuota: Record<string, CodexQuotaState>;
-  /**
-   * Account-level, keyed by codexCreditOverageKey(). Survives per-file invalidation
-   * because removing one credential does not change the account setting.
-   */
+
+
+
+
   codexCreditOverage: Record<string, CodexCreditOverageEntry>;
-  /** A quota refresh must not release a pending or ambiguous mutation; auth resets it. */
+
   codexCreditOverageOperations: Record<string, CodexCreditOverageOperation>;
   devinQuota: Record<string, DevinQuotaState>;
   kimiQuota: Record<string, KimiQuotaState>;
@@ -210,7 +210,7 @@ export const commitIfQuotaCacheCurrent = (
 ): boolean => {
   const current = useQuotaStore.getState();
   if (current.cacheGeneration !== generation.cacheGeneration) return false;
-  // File-scoped requests survive mutations to unrelated credentials.
+
   if (name !== undefined) {
     if ((current.fileGenerations[name] ?? 0) !== (generation.fileGenerations[name] ?? 0)) {
       return false;

@@ -372,7 +372,7 @@ export function ProvidersWorkbenchPage({ fixedBrand }: ProvidersWorkbenchPagePro
     closeSheet();
   }, [closeSheet, showNotification, t]);
 
-  // 加载状态
+
   if (!workbench.snapshot && workbench.isPending) {
     return (
       <div className={styles.page}>

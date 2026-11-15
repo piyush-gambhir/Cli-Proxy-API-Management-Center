@@ -30,7 +30,7 @@ describe('Kimi effective quota domain', () => {
     [{ type: 'kimi', base_url: 'https://kimi.ai@evil.invalid/coding' }, KIMI_USAGE_URL],
     [{ type: 'kimi', base_url: 'not a URL' }, KIMI_USAGE_URL],
     [{ type: 'kimi', domain: ' ', base_url: 'https://api.kimi.ai/coding' }, KIMI_AI_USAGE_URL],
-    // The file synthesizer normalizes an unrecognized explicit domain to kimi.com.
+
     [{ type: 'kimi-ai', domain: 'unknown', base_url: 'https://api.kimi.ai' }, KIMI_USAGE_URL],
     [{ type: 'kimi' }, KIMI_USAGE_URL],
     [{ type: 'kimi-ai' }, KIMI_AI_USAGE_URL],

@@ -1,8 +1,8 @@
-/**
- * Spends one Codex reset credit for an account. Same steps as upstream's useQuotaActions.resetQuota
- * (adapter.resetQuota, then commit the fresh quota only if the cache generation still matches),
- * minus its built-in confirmation: the ledger shows its own confirm dialog first.
- */
+
+
+
+
+
 
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';

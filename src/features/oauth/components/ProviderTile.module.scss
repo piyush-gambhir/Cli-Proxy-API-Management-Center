@@ -1,9 +1,9 @@
 @use '../../../styles/mixins' as *;
 
-/* ============================================================
- * 提供商磁贴 — 凭证卡/额度卡同一配方（14px 圆角 / 1px 边框 / 82% 透感纸面）。
- * 品牌身份只由图标承载；状态走副行文字 + 小圆点（颜色只是辅助通道）。
- * ============================================================ */
+
+
+
+
 
 .tile {
   position: relative;
@@ -20,7 +20,7 @@
     transform var(--dur-press, 160ms) var(--ease-out-strong, ease-out),
     border-color var(--dur-hover, 200ms) var(--ease-out-strong, ease-out),
     box-shadow var(--dur-hover, 200ms) var(--ease-out-strong, ease-out);
-  /* backwards：只在延迟期间持有起始帧，结束后不压住 hover/press 的 transform */
+
   animation: oauth-tile-in 0.45s var(--ease-out-strong, ease-out) backwards;
   animation-delay: var(--tile-delay, 0ms);
 
@@ -36,12 +36,12 @@
   }
 }
 
-/* 进行中的磁贴边框略加深：扫一眼就能找到「还没完成」的那个 */
+
 .tile[data-status='waiting'] {
   border-color: color-mix(in srgb, var(--text-primary) 24%, var(--border-color));
 }
 
-/* ---------- 图标 ---------- */
+
 
 .glyph {
   display: flex;
@@ -62,7 +62,7 @@
   object-fit: contain;
 }
 
-/* ---------- 文字 ---------- */
+
 
 .text {
   display: flex;
@@ -71,7 +71,7 @@
   min-width: 0;
 }
 
-/* 整块磁贴的点击目标：::after 铺满磁贴（定位参照 .tile，按钮自身不可定位） */
+
 .main {
   @include button-reset;
   @include text-ellipsis;
@@ -120,7 +120,7 @@
   min-width: 0;
 }
 
-/* ---------- 状态 ---------- */
+
 
 .status {
   display: inline-flex;
@@ -160,7 +160,7 @@
   }
 }
 
-/* ---------- 尾部「+」：hover 时墨色填充，暗示「添加一个凭证」 ---------- */
+
 
 .trail {
   display: flex;

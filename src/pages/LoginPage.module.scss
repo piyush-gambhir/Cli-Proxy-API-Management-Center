@@ -10,7 +10,7 @@
   background: var(--login-bg);
   color: var(--text-primary);
 
-  // 移动端顶部点阵横幅的高度
+
   --hero-band: clamp(200px, 38dvh, 340px);
 }
 
@@ -21,7 +21,7 @@
   height: 100%;
   overflow: hidden;
 
-  // 移动端：点阵收为页面顶部的横幅，铺在品牌栏之后、向下淡入底色，表单在其下方
+
   @media (max-width: $breakpoint-mobile) {
     position: absolute;
     inset: 0 0 auto;
@@ -38,7 +38,7 @@
   height: 100%;
   min-height: 0;
   display: grid;
-  // 列必须允许收缩到 0，否则长文案/固定宽度控件会把列撑出面板
+
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr;
   padding: clamp(20px, 3.5vh, 36px) clamp(24px, 4vw, 56px);
@@ -135,10 +135,10 @@
   }
 }
 
-// 下拉层挂在 body 上，需要单独带上登录页配色
+
 .languageDropdown {
   @include login-palette;
-  // Select 下拉层：底色取 --bg-primary，悬停/高亮取 --bg-secondary
+
   --bg-primary: var(--login-dropdown-bg);
   --bg-secondary: var(--login-dropdown-hover);
   border-color: var(--login-dropdown-border);
@@ -152,7 +152,7 @@
 }
 
 .main {
-  // 固定在 1fr 行：启动页不渲染顶栏时也能占满剩余高度
+
   grid-row: 2;
   min-width: 0;
   display: flex;
@@ -161,7 +161,7 @@
   padding: 24px 0 32px;
 }
 
-// 自动外边距在矮屏归零，避免居中内容向上溢出到不可滚动区域。
+
 .column {
   width: 100%;
   max-width: 360px;
@@ -208,8 +208,8 @@
   }
 }
 
-// 移动端：表单落在顶部点阵横幅下缘附近，点阵在标题之上，不压住输入区。
-// 放在矮屏规则之后以覆盖其 padding；极矮屏（<560px）直接从顶部排布，交给滚动兜底。
+
+
 @media (max-width: $breakpoint-mobile) and (min-height: 560px) {
   .main {
     padding-top: calc(var(--hero-band) - 128px);
@@ -230,7 +230,7 @@
   }
 }
 
-// 时长与 useLoginTransitionStore 的 exit 保持一致（320ms / 减少动效 150ms）
+
 
 @keyframes exitToBase {
   to {
@@ -285,7 +285,7 @@
   }
 }
 
-// 在面板内垂直居中，底部留白略大使其视觉上稍偏上；矮屏时自动外边距归零。
+
 .splash {
   margin-block: auto;
   padding-bottom: 6vh;

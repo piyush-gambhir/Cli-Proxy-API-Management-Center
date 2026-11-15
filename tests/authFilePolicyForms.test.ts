@@ -79,7 +79,7 @@ describe('credential policy structured forms', () => {
     expect(html).not.toContain('(JSON)');
     expect(html).not.toContain('modelAliasesText');
     expect(html).not.toContain('errorRulesText');
-    // Textareas remain only for individual literal/regex conditions.
+
     expect(html.match(/<textarea\b/g)).toHaveLength(3);
     expect(html).toContain('aria-label="Alias" required=""');
     expect(html).not.toContain('Alias (optional)');

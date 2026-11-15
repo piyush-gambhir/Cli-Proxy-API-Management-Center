@@ -2,19 +2,19 @@
 @use 'sass:map';
 @use '../../../styles/mixins' as *;
 
-/* ============================================================
- * APIKEY.FUN 双 11 活动卡。
- *
- * 视觉语汇沿用 OAuth 赞助商卡（features/oauth/components/SponsorCard）：
- * 三团光池各自沿 Lissajous 轨迹漂移，同一组光池渲染两层 —— .field 是低透明光晕底，
- * .rim 被遮罩成 1px 描边。区别只在色板：品牌蓝换成节日红 / 橙 / 金，
- * 并用超大号「+11.11%」做唯一视觉焦点。
- *
- * 色彩分工：
- * - $festive-*：光晕、描边、水印等不承载文字的面
- * - $festive-cta / -end：承载白字的按钮底（#c2410c 5.2:1、#b91c1c 4.9:1，均过 AA）
- * - festive-ink()：活动色文字，向正文色混合 —— 浅色变深、深色变亮，两边都可读
- * ============================================================ */
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 $festive-red: #ef4444;
 $festive-orange: #f97316;
@@ -113,7 +113,7 @@ $card-radius: 12px;
   }
 }
 
-/* ---------- 光层 ---------- */
+
 
 .field,
 .rim {
@@ -214,8 +214,8 @@ $card-radius: 12px;
   }
 }
 
-/* 「11.11」水印：锚定在优惠列左侧、沉到卡片底边被裁切，给卡片一个一眼可辨的节日记号；
- * 以优惠列为参照定位，任何宽度 / 语言下都不会与主数字重叠 */
+
+
 .watermark {
   position: absolute;
   z-index: -1;
@@ -232,7 +232,7 @@ $card-radius: 12px;
   user-select: none;
 }
 
-/* ---------- 文案 ---------- */
+
 
 .body,
 .offer {
@@ -283,7 +283,7 @@ $card-radius: 12px;
   text-wrap: pretty;
 }
 
-/* ---------- 优惠 + 行动 ---------- */
+
 
 .offer {
   display: flex;
@@ -392,7 +392,7 @@ $card-radius: 12px;
   }
 }
 
-/* ---------- 主题 ---------- */
+
 
 :global([data-theme='dark']) {
   .card {
@@ -420,7 +420,7 @@ $card-radius: 12px;
   }
 }
 
-/* ---------- 窄屏：上下堆叠，优惠数字与按钮同行 ---------- */
+
 
 @include mobile {
   .card {
@@ -443,20 +443,20 @@ $card-radius: 12px;
     font-size: 38px;
   }
 
-  /* 窄屏没有留白可放水印，直接隐藏，避免与主数字叠影 */
+
   .watermark {
     display: none;
   }
 }
 
-/* 减弱动效：入场与光池漂移全部停下，光效停在静止构图 */
+
 @media (prefers-reduced-motion: reduce) {
   .card,
   .pool[data-pool] {
     animation: none;
   }
 
-  /* 保留颜色/投影反馈，去掉位移与缩放 */
+
   .cta,
   .cta:active,
   .cta:hover .ctaIcon {

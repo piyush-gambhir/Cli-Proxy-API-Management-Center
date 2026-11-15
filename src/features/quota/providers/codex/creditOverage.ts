@@ -1,11 +1,11 @@
-/**
- * Codex account-level "use credits after the usage limit" setting
- * (`can_consume_personal_credits_chatpass`).
- *
- * Issue #551 reports a write-only account-user setting. This feature never reads or
- * probes it: a value is known only after a write has been confirmed in this session.
- * React-free; tests/codexCreditOverage.test.ts consumes it.
- */
+
+
+
+
+
+
+
+
 
 import type { TFunction } from 'i18next';
 import {
@@ -43,7 +43,7 @@ export type CodexCreditOverageErrorCode =
   | 'opposite_pending'
   | 'failed';
 
-/** `unconfirmed` is the only code whose write may already have taken effect. */
+
 export class CodexCreditOverageError extends Error {
   readonly code: CodexCreditOverageErrorCode;
   readonly status?: number;
@@ -66,10 +66,10 @@ export function resolveCodexCreditOverageState(
   return entry.status;
 }
 
-/**
- * Knowledge only lives for the session, which rarely crosses midnight, so the date is
- * shown only when it does; the time alone keeps the card row on one line.
- */
+
+
+
+
 export function formatCodexCreditOverageConfirmedAt(at: number, now: number = Date.now()): string {
   const confirmed = new Date(at);
   const current = new Date(now);
@@ -85,11 +85,11 @@ export function formatCodexCreditOverageConfirmedAt(at: number, now: number = Da
   });
 }
 
-/**
- * Account-user identity. Team workspaces share one ChatGPT account ID across members
- * while this is an account-user setting, so the email narrows the key. Without an
- * email a credential shares its state with nobody rather than with the wrong user.
- */
+
+
+
+
+
 export function codexCreditOverageKey(file: AuthFileItem): string | null {
   const accountId = resolveCodexChatgptAccountId(file);
   if (!accountId) return null;
@@ -97,7 +97,7 @@ export function codexCreditOverageKey(file: AuthFileItem): string | null {
   return email ? `${accountId}|email:${email}` : `${accountId}|file:${file.name}`;
 }
 
-/** A missing user identity must never create a second lock for the same account. */
+
 export function codexCreditOverageWriteBlocked(
   operation: CodexCreditOverageOperation | undefined,
   value: boolean
@@ -108,7 +108,7 @@ export function codexCreditOverageWriteBlocked(
   );
 }
 
-/** Every card in the account observes its mutex and any unresolved write. */
+
 export function codexCreditOverageDisplayEntry(
   entry: CodexCreditOverageEntry | undefined,
   operation: CodexCreditOverageOperation | undefined
@@ -118,7 +118,7 @@ export function codexCreditOverageDisplayEntry(
   return entry;
 }
 
-/** How many credentials share each account user's setting. */
+
 export function countCodexCreditOverageKeys(files: readonly AuthFileItem[]): Map<string, number> {
   const counts = new Map<string, number>();
   files.forEach((file) => {
@@ -138,8 +138,8 @@ export function buildCodexCreditOverageRequest(file: AuthFileItem, value: boolea
     feature: CODEX_CREDIT_OVERAGE_FEATURE,
     value: String(value),
   });
-  // The whole payload lives in the query string. The backend substitutes $TOKEN$ with
-  // the outer Codex access token; the nested SIWC token is rejected by this endpoint.
+
+
   return {
     authIndex,
     method: 'PATCH',
@@ -148,7 +148,7 @@ export function buildCodexCreditOverageRequest(file: AuthFileItem, value: boolea
   };
 }
 
-/** The write response is the only source of the value; accept real booleans only. */
+
 export function parseCodexCreditOverageResponse(body: unknown): boolean | null {
   if (!isRecord(body)) return null;
   const value = body[CODEX_CREDIT_OVERAGE_FEATURE];
@@ -164,7 +164,7 @@ const codeForUpstreamStatus = (status: number): CodexCreditOverageErrorCode => {
   return 'unconfirmed';
 };
 
-/** Send one write and return the value ChatGPT confirmed. */
+
 export async function sendCodexCreditOverage(
   request: ApiCallRequest,
   value: boolean,
@@ -176,8 +176,8 @@ export async function sendCodexCreditOverage(
   } catch (err: unknown) {
     const status = getStatusFromError(err);
     const message = err instanceof Error ? err.message : String(err);
-    // A management 4xx rejected the call before it was forwarded (for example when the
-    // credential token cannot be resolved). Anything else may have reached ChatGPT.
+
+
     const forwarded = status === undefined || status < 400 || status >= 500;
     throw new CodexCreditOverageError(forwarded ? 'unconfirmed' : 'failed', message, status);
   }
@@ -209,12 +209,12 @@ const toCodexCreditOverageError = (err: unknown): CodexCreditOverageError =>
     ? err
     : new CodexCreditOverageError('unconfirmed', err instanceof Error ? err.message : String(err));
 
-/**
- * Write the setting for the file's account user and record what is known afterwards.
- * The account mutex is independent of the account-user snapshot. An ambiguous write
- * remains unresolved for this session, even after a same-value retry succeeds: an
- * earlier request may still arrive later. Opposite writes must not overtake it.
- */
+
+
+
+
+
+
 export async function applyCodexCreditOverage(
   file: AuthFileItem,
   value: boolean
@@ -243,8 +243,8 @@ export async function applyCodexCreditOverage(
   const isCurrent = () =>
     useQuotaStore.getState().cacheGeneration === generation &&
     apiClient.getConnectionRevision() === revision;
-  // Capture before notifying subscribers; neither request routing nor old response
-  // events may inherit a replacement connection or session.
+
+
   const api = captureApiCallApi(isCurrent);
   const accountWriting: CodexCreditOverageOperation = {
     status: 'writing',
@@ -253,9 +253,9 @@ export async function applyCodexCreditOverage(
   };
   const writing: CodexCreditOverageEntry = { status: 'writing', target: value };
   store.setCodexCreditOverageOperation(accountId, accountWriting);
-  // Missing emails cannot prove which other credential belongs to the same user.
-  // Conservatively expire this account's other snapshots rather than leave a
-  // contradictory confirmed value on another card.
+
+
+
   Object.keys(store.codexCreditOverage).forEach((otherKey) => {
     if (otherKey !== key && otherKey.startsWith(`${accountId}|`)) {
       store.setCodexCreditOverage(otherKey, undefined);
@@ -269,12 +269,12 @@ export async function applyCodexCreditOverage(
   ): boolean => {
     const current = useQuotaStore.getState();
     const active = isCurrent();
-    // Release only our own marker; a stale answer must not leak into the new session.
+
     if (current.codexCreditOverageOperations[accountId] !== accountWriting) return false;
     if (current.codexCreditOverage[key] === writing) {
       current.setCodexCreditOverage(key, active ? next : undefined);
     }
-    // A quota-only reset forgets observations, not the possibility of a late write.
+
     const retained =
       !active && apiClient.getConnectionRevision() === revision
         ? { status: 'unconfirmed' as const, target: value, at: Date.now() }
@@ -321,7 +321,7 @@ export function describeCodexCreditOverageError(
   }
 }
 
-/** What the dialog shows, captured when it opens so a refresh cannot swap the account. */
+
 export interface CodexCreditOverageContext {
   key: string;
   accountId: string;

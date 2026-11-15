@@ -4,10 +4,10 @@ import { obfuscatedStorage } from '@/services/storage/secureStorage';
 
 const STORAGE_PREFIX = 'api-key-names:v1:';
 
-/** Names persist across sessions, but the credentials used to identify them must not. */
+
 export function apiKeyNameFingerprint(apiBase: string, apiKey: string): string {
   const input = JSON.stringify(['api-key-name', apiBase, apiKey]);
-  // Pure JS hashing also works when the panel is served over non-localhost HTTP.
+
   return bytesToHex(sha256(new TextEncoder().encode(input)));
 }
 
@@ -26,7 +26,7 @@ export function readApiKeyNames(apiBase: string): Record<string, string> {
   }
 }
 
-/** Merge with current storage so edits do not discard names saved by another editor. */
+
 export function saveApiKeyName(apiBase: string, apiKey: string, name: string): boolean {
   try {
     const names = new Map(Object.entries(readApiKeyNames(apiBase)));

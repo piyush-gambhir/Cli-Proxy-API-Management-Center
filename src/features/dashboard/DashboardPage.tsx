@@ -23,7 +23,7 @@ import styles from './dashboard.module.scss';
 
 const DASH = '—';
 
-/** KPI 卡左上角色签：有语义色调的卡用状态色，其余保持中性 */
+
 const TILE_ACCENTS: Record<MeterTone, string> = {
   good: 'var(--viz-success)',
   warning: 'var(--amber-color)',
@@ -31,7 +31,7 @@ const TILE_ACCENTS: Record<MeterTone, string> = {
   idle: 'var(--text-quaternary)',
 };
 
-/** 大数字：六位以内用千分位，再往上压缩，避免撑破排版 */
+
 const formatHeadline = (value: number): string =>
   value < 100_000 ? value.toLocaleString() : formatCompactNumber(value);
 
@@ -45,7 +45,7 @@ export function DashboardPage() {
 
   useHeaderRefresh(refresh, connected);
 
-  /* Hero 与静态网格走分组级联；异步内容区（图表/供应商）保持整块 reveal */
+
   const heroRef = useRevealGroup<HTMLElement>();
   const statsRef = useRevealGroup<HTMLElement>(0.12);
   const trafficRef = useRevealOnScroll<HTMLElement>();
@@ -82,7 +82,7 @@ export function DashboardPage() {
   const unknownProviderLabel = t('dashboard.provider_unknown');
   const successRateTone = toneForSuccessRate(traffic.successRate);
 
-  /** 标题是算出来的判词，不是写死的口号；句尾句号充当状态灯 */
+
   const verdict = useMemo(() => {
     if (!connected) {
       return connectionStatus === 'connecting'
@@ -101,7 +101,7 @@ export function DashboardPage() {
     return { key: keyByTone[successRateTone], accent: TILE_ACCENTS[successRateTone] };
   }, [connected, connectionStatus, traffic.total, traffic.successRate, successRateTone]);
 
-  /* 句号状态灯只在「有活着的流量」时呼吸；离线/静默时保持安静 */
+
   const heroAlive = connected && traffic.total > 0;
 
   const connectionLabel = t(
@@ -228,7 +228,7 @@ export function DashboardPage() {
         <span className={styles.gridWash} />
       </div>
 
-      {/* ---------- Hero ---------- */}
+      {                                }
       <section className={styles.hero} ref={heroRef}>
         <div className={styles.heroCopy}>
           <h1 className={styles.heroTitle} data-reveal>
@@ -310,7 +310,7 @@ export function DashboardPage() {
         </div>
       </section>
 
-      {/* ---------- KPI ---------- */}
+      {                               }
       <section className={styles.statsRow} ref={statsRef} aria-label={t('dashboard.stats_aria')}>
         {statTiles.map((tile) => (
           <article
@@ -338,7 +338,7 @@ export function DashboardPage() {
         ))}
       </section>
 
-      {/* ---------- Traffic ---------- */}
+      {                                   }
       <section className={styles.section} ref={trafficRef}>
         <header className={styles.sectionHead}>
           <span className={styles.eyebrow}>{t('dashboard.traffic_eyebrow')}</span>
@@ -352,7 +352,7 @@ export function DashboardPage() {
         </div>
       </section>
 
-      {/* ---------- Provider fleet ---------- */}
+      {                                          }
       <section className={styles.section} ref={fleetRef}>
         <header className={styles.sectionHead}>
           <span className={styles.eyebrow}>{t('dashboard.fleet_eyebrow')}</span>
@@ -405,7 +405,7 @@ export function DashboardPage() {
         </div>
       </section>
 
-      {/* ---------- Credential health + runtime ---------- */}
+      {                                                       }
       <section className={styles.detailGrid} ref={detailRef}>
         <div className={styles.panel} data-reveal>
           <header className={styles.panelHead}>
@@ -517,7 +517,7 @@ export function DashboardPage() {
         </div>
       </section>
 
-      {/* ---------- CTA ---------- */}
+      {                               }
       <section className={styles.section} ref={ctaRef}>
         <header className={styles.sectionHead} data-reveal>
           <span className={styles.eyebrow}>{t('dashboard.cta_eyebrow')}</span>

@@ -1,14 +1,14 @@
-/**
- * Shared minute clock: snapshot stability and timer lifecycle.
- *
- * The stability case is the important one — a `getSnapshot` that returns a
- * fresh `Date.now()` makes React's useSyncExternalStore re-render forever.
- */
+
+
+
+
+
+
 
 import { describe, expect, test } from 'bun:test';
 import { createSharedClock } from '@/utils/time/sharedClock';
 
-/** Deterministic stand-in for setInterval: fires only when the test says so. */
+
 function makeFakeTimers() {
   const timers = new Map<number, () => void>();
   let nextId = 1;
@@ -52,7 +52,7 @@ describe('createSharedClock', () => {
 
     const first = clock.getSnapshot();
     advance(30_000);
-    // Wall time moved but no tick fired — the snapshot must not.
+
     expect(clock.getSnapshot()).toBe(first);
     expect(clock.getSnapshot()).toBe(first);
 
@@ -91,7 +91,7 @@ describe('createSharedClock', () => {
     const off2 = clock.subscribe(() => {});
 
     off1();
-    expect(timers.active()).toBe(1); // still one listener
+    expect(timers.active()).toBe(1);
     expect(timers.cleared()).toBe(0);
 
     off2();
@@ -106,7 +106,7 @@ describe('createSharedClock', () => {
 
   test('resynchronizes on the first subscribe so an idle clock is not stale', () => {
     const { clock, timers, advance } = makeClock();
-    advance(3_600_000); // an hour passes with nobody watching
+    advance(3_600_000);
 
     clock.subscribe(() => {});
     expect(clock.getSnapshot()).toBe(1_000_000 + 3_600_000);

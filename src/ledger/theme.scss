@@ -1,11 +1,11 @@
-/**
- * Ledger look, scoped to the ledger shell.
- *
- * LedgerLayout sets html[data-ui='ledger'] while it is mounted, so these rules never reach the
- * original dashboard, and they still cover dialogs that portal to <body>. The look: pure
- * neutral greys and black (no blue cast), a monochrome primary, and no borders or shadows
- * anywhere, including the upstream components the shell reuses. Separation comes from surface steps and spacing.
- */
+
+
+
+
+
+
+
+
 
 html[data-ui='ledger'] {
   --bg-secondary: #f5f5f5;
@@ -80,15 +80,15 @@ html[data-ui='ledger'][data-theme='dark'] {
   --track-color: #262626;
 }
 
-// Upstream forces white text on every dark-theme .btn; our dark primary is near-white, so its
-// label must use the contrast token or it disappears.
+
+
 html[data-ui='ledger'][data-theme='dark'] .btn.btn-primary {
   color: var(--primary-contrast);
 }
 
-// Upstream's ToggleSwitch draws its track with the border token (transparent here) and a white
-// thumb that vanishes on our near-white primary. Module class names are stable by config
-// (vite.config.ts generateScopedName), so match on the module prefix.
+
+
+
 html[data-ui='ledger'] {
   [class*='ToggleSwitch-module__track'] {
     background: var(--track-color);
@@ -107,8 +107,8 @@ html[data-ui='ledger'] {
   }
 }
 
-// Every modal in v2 (ours and upstream's) gets the same calm frame: compact header, 34px buttons,
-// a quiet close button, and no focus ring on the dialog itself when it opens.
+
+
 html[data-ui='ledger'] {
   .modal {
     border-radius: 14px;
@@ -160,8 +160,8 @@ html[data-ui='ledger'] {
       color: var(--text-primary);
     }
 
-    // The dialog focuses this button on open, which Chrome treats as focus-visible and rings
-    // in white; a filled background marks focus instead.
+
+
     &:focus-visible {
       outline: none;
       background: var(--bg-tertiary);
@@ -171,7 +171,7 @@ html[data-ui='ledger'] {
 }
 
 html[data-ui='ledger'] {
-  // No borders, no shadows. Border widths stay so nothing shifts; only the colour goes.
+
   *,
   *::before,
   *::after {
@@ -179,27 +179,27 @@ html[data-ui='ledger'] {
     border-color: transparent !important;
   }
 
-  // Spinners draw their ring with a border.
+
   .loading-spinner {
     border-color: color-mix(in srgb, currentColor 22%, transparent) !important;
     border-top-color: currentColor !important;
   }
 
-  // Focus rings were often shadows; keep keyboard focus visible with an outline instead.
+
   :focus-visible {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
   }
 
-  // Upstream checkboxes hide the native input and drew focus with a border or shadow; outline
-  // the label that wraps it instead.
+
+
   label:has(> input:is([type='checkbox'], [type='radio']):focus-visible) {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
     border-radius: 6px;
   }
 
-  // Without borders, fields need a fill to read as fields.
+
   :is(
     input:not([type='checkbox'], [type='radio'], [type='range'], [type='file']),
     textarea,

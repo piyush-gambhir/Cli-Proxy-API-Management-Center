@@ -21,15 +21,15 @@ import styles from './LoginPage.module.scss';
 
 export type LoginPhase = 'idle' | 'connecting' | 'success' | 'exiting';
 
-/** 左上角品牌名：产品全称，所有语言下保持英文，不走 i18n */
+
 export const LOGIN_BRAND_NAME = 'CLI Proxy API Management Center';
 
-/** 语言下拉层最小宽度：最长的语言名（繁體中文（台灣））单行显示 */
+
 const LANGUAGE_DROPDOWN_MIN_WIDTH = 180;
 
-/**
- * 将 API 错误转换为本地化的用户友好消息
- */
+
+
+
 function getLocalizedErrorMessage(error: unknown, t: (key: string) => string): string {
   if (error instanceof LegacyBackendError) return t('login.error_legacy_backend');
   const apiError = error as Partial<ApiError>;
@@ -59,7 +59,7 @@ function getLocalizedErrorMessage(error: unknown, t: (key: string) => string): s
     return `HTTP ${status}: ${summary}${backendDetail}`;
   };
 
-  // 根据 HTTP 状态码判断
+
   if (status === 401) {
     return withHttpStatus(t('login.error_unauthorized'));
   }
@@ -73,7 +73,7 @@ function getLocalizedErrorMessage(error: unknown, t: (key: string) => string): s
     return withHttpStatus(t('login.error_server'));
   }
 
-  // 根据 axios 错误码判断
+
   if (code === 'ECONNABORTED' || message.toLowerCase().includes('timeout')) {
     return t('login.error_timeout');
   }
@@ -84,12 +84,12 @@ function getLocalizedErrorMessage(error: unknown, t: (key: string) => string): s
     return t('login.error_ssl');
   }
 
-  // 检查 CORS 错误
+
   if (message.toLowerCase().includes('cors') || message.toLowerCase().includes('cross-origin')) {
     return t('login.error_cors');
   }
 
-  // 默认错误消息
+
   return withHttpStatus(t('login.error_invalid'));
 }
 
@@ -105,7 +105,7 @@ export function LoginPage() {
   const restoreSession = useAuthStore((state) => state.restoreSession);
 
   const detectedBase = useMemo(() => detectApiBaseFromLocation(), []);
-  // 首帧即用已保存的连接信息填好表单：没有可恢复会话时表单直接出现，不闪启动画面
+
   const [apiBase, setApiBase] = useState(() => useAuthStore.getState().apiBase || detectedBase);
   const [managementKey, setManagementKey] = useState(
     () => useAuthStore.getState().managementKey || ''
@@ -117,7 +117,7 @@ export function LoginPage() {
     return remembered || Boolean(key);
   });
   const [phase, setPhase] = useState<LoginPhase>('idle');
-  // 仅在确实会自动登录时显示启动画面
+
   const [autoLoading, setAutoLoading] = useState(() =>
     useAuthStore.getState().hasRestorableSession()
   );
@@ -175,14 +175,14 @@ export function LoginPage() {
         const autoLoggedIn = await restoreSession();
         if (autoLoggedIn) {
           setAutoLoginSuccess(true);
-          // 每次打开都会经过启动画面：网络快时补足最短停留，避免一闪而过；网络慢时不再额外等待
+
           const { splashMin } = getLoginTransitionTimings(prefersReducedMotion());
           const elapsed = performance.now() - splashStartedAt;
           leaveTo(redirectTarget, Math.max(0, splashMin - elapsed));
         } else {
-          // 按最新的已保存信息回填表单（restoreSession 可能迁移了旧版存储）。
-          // 自动登录被 401 拒绝时全局会登出并清空存储，此时保留首帧填入的地址与密钥，
-          // 用户修正后即可直接重试，自定义地址也不会丢失。
+
+
+
           const stored = useAuthStore.getState();
           setApiBase((previous) => stored.apiBase || previous || detectedBase);
           setManagementKey((previous) => stored.managementKey || previous);
@@ -207,7 +207,7 @@ export function LoginPage() {
     }
 
     const baseToUse = apiBase ? normalizeApiBase(apiBase) : detectedBase;
-    // 先进入 connecting：登录成功瞬间 isAuthenticated 变真时不会被立即重定向打断
+
     setPhase('connecting');
     setError('');
     try {
@@ -251,7 +251,7 @@ export function LoginPage() {
       </div>
 
       <div className={styles.formPanel}>
-        {/* 自动登录启动页自带大徽标与品牌名，此时不再渲染顶栏，避免重复 */}
+        {                                                                                                }
         {!showSplash && (
           <header className={styles.topBar}>
             <div className={styles.brandMark}>

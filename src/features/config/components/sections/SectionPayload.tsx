@@ -12,11 +12,11 @@ import { PayloadRulesEditor } from '../blocks/PayloadRulesEditor';
 const Icon = CONFIG_TAB_ICONS.payload;
 
 export type SectionPayloadProps = ConfigSectionProps & {
-  /** 有载荷校验错误时折叠组带 key 重挂载并强制展开，把错误带到眼前。 */
+
   hasPayloadValidationErrors: boolean;
 };
 
-/** 06 Payload 配置：默认值 / 原始 JSON / 覆盖 / 过滤 五个规则组。 */
+
 export function SectionPayload({
   values,
   disabled,

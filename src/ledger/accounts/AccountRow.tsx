@@ -1,8 +1,8 @@
-/**
- * One account: who it is, how much of each limit is left and when it resets, and its actions.
- * Every provider renders the same way (see ../limits.ts); upstream's per-provider bodies are
- * not used here.
- */
+
+
+
+
+
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -55,10 +55,10 @@ import styles from './AccountRow.module.scss';
 
 export type AccountRowProps = {
   file: AuthFileItem;
-  /** Null when the provider exposes no quota data. */
+
   entry: QuotaFileEntry | null;
   quota?: QuotaCardState;
-  /** The proxy poller's snapshot for this credential; painted when there is no live read. */
+
   scheduled?: SchedulerAccount;
   resolvedTheme: ResolvedTheme;
   showEmails: boolean;
@@ -68,14 +68,14 @@ export type AccountRowProps = {
   resetting: boolean;
   onToggleStatus: (enabled: boolean) => void;
   onRefreshQuota: () => void;
-  /** Unused since the ledger confirms and resets Codex itself (useCodexReset). */
+
   onResetQuota?: () => void;
   onShowModels: () => void;
   onOpenSettings: () => void;
   onDownload: () => void;
   onDelete: () => void;
   onReauthenticate?: () => void;
-  /** Clears the proxy's routing cooldown (upstream confirms first). */
+
   onClearCooldown?: () => void;
   clearingCooldown?: boolean;
 };
@@ -89,7 +89,7 @@ const toneOf = (remaining: number | null) =>
         ? styles.medium
         : styles.low;
 
-/** Short stable hash so stored keys never contain the file name (which holds the email). */
+
 const hashName = (name: string) => {
   let hash = 0;
   for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) | 0;
@@ -106,20 +106,20 @@ const writeStored = (key: string, value: string) => {
   try {
     localStorage.setItem(key, value);
   } catch {
-    // Storage blocked: the flag is re-learned from the next snapshot.
+
   }
 };
 
-/** Plan labels seen this session, by credential file name (kept in memory only). */
+
 const sessionPlans = new Map<string, string>();
 
-// Earlier builds cached plan labels in localStorage; remove what they left behind.
+
 try {
   Object.keys(localStorage)
     .filter((key) => key.startsWith('ledger.plan.'))
     .forEach((key) => localStorage.removeItem(key));
 } catch {
-  // Storage unavailable (tests, blocked site data): nothing to clean.
+
 }
 
 export function AccountRow(props: AccountRowProps) {
@@ -147,20 +147,20 @@ export function AccountRow(props: AccountRowProps) {
   const { t, i18n } = useTranslation();
   const now = useNow();
 
-  // Same gating as upstream's AuthFileCard: runtime-only credentials have no file to toggle,
-  // download, edit or delete, and no quota; only AI Studio still lists models.
+
+
   const runtimeOnly = isRuntimeOnlyAuthFile(file);
   const providerKey = normalizeProviderKey(String(file.type ?? file.provider ?? ''));
   const entry = runtimeOnly ? null : quotaEntry;
   const adapter = entry ? QUOTA_ADAPTERS[entry.type] : null;
-  // Paused only means out of rotation: quota still loads, shows and refreshes.
+
   const enabled = !isDisabledAuthFile(file);
   const canRefresh = Boolean(entry) && !disableControls;
 
   const rawIdentity = file.email?.trim() || getQuotaDisplayName(file);
   const identity = showEmails ? rawIdentity : maskEmails(rawIdentity);
   const [codexConfirmOpen, setCodexConfirmOpen] = useState(false);
-  // True from opening the confirm until the fresh read it started has finished.
+
   const [codexChecking, setCodexChecking] = useState(false);
   const sawCodexLoading = useRef(false);
   const codexReset = useCodexReset(identity);
@@ -173,12 +173,12 @@ export function AccountRow(props: AccountRowProps) {
     else if (sawCodexLoading.current) setCodexChecking(false);
   }, [codexChecking, loading]);
   const isClaude = entry?.type === 'claude';
-  // Claude keeps its last good snapshot through a failed or running refresh.
+
   const retained = isClaude && hasClaudeUsageData(quota as ClaudeQuotaState | undefined);
   const readable = status === 'success' || retained ? { ...quota, status: 'success' } : undefined;
   const liveLimits = entry ? accountLimits(entry.type, readable, t, i18n.language) : [];
-  // A live read (this session's row refresh or a reset) wins; otherwise the proxy's snapshot.
-  // Remember on this device once a Codex window is proven monthly (see schedulerLimits).
+
+
   const monthlyKey = `ledger.monthly.${hashName(file.name)}`;
   const provenMonthly = scheduled
     ? isMonthlyWindow(scheduled.weekly ?? scheduled.seven_day, schedulerObservedAt(scheduled))
@@ -192,15 +192,15 @@ export function AccountRow(props: AccountRowProps) {
       : [];
   const fromScheduler = liveLimits.length === 0 && snapshotLimits.length > 0;
   const limits = fromScheduler ? snapshotLimits : liveLimits;
-  // Clamped: a proxy clock a few seconds ahead must not read as "updated in 1 minute".
+
   const observedRaw = fromScheduler ? schedulerObservedAt(scheduled) : null;
   const observedAt = observedRaw === null ? null : Math.min(observedRaw, now);
   const liveFacts = entry
     ? accountFacts(entry.type, readable, t)
     : { plan: null, manualResets: null };
-  // The plan comes from profile/subscription reads that no longer run on load. A live read wins,
-  // then the last one seen this session, then the proxy snapshot's plan. Never persisted: it is
-  // billing data and stays out of browser storage.
+
+
+
   if (liveFacts.plan) sessionPlans.set(file.name, liveFacts.plan);
   const snapshotPlan =
     entry && scheduled?.plan
@@ -228,10 +228,10 @@ export function AccountRow(props: AccountRowProps) {
       ].join('\n')
     : undefined;
 
-  // Reading grants is a second call to Anthropic's rate-limited usage endpoint. Read once per
-  // visit, and again only after an explicit row refresh: the hook re-reads whenever its
-  // disabled flag or refresh token changes, so neither may follow quota loading state.
-  // Not read at all until the user asks to use a reset.
+
+
+
+
   const [grantReadToken, setGrantReadToken] = useState(0);
   const [grantsWanted, setGrantsWanted] = useState(false);
   const [openWhenReady, setOpenWhenReady] = useState(false);
@@ -243,7 +243,7 @@ export function AccountRow(props: AccountRowProps) {
     onRefreshQuota
   );
   const resetsLeft = isClaude ? claudeReset.count : facts.manualResets;
-  // Null when the provider gave no per-reset details; then only its aggregate count is known.
+
   const codexCredits =
     entry?.type === 'codex' && readable
       ? (readable as { rateLimitResetCredits?: unknown }).rateLimitResetCredits
@@ -256,27 +256,27 @@ export function AccountRow(props: AccountRowProps) {
       ? codexResets(codexCredits, now)
       : null;
   const resetsTotal = resets?.reduce((sum, reset) => sum + reset.count, 0) ?? 0;
-  // Reset counts are unknown until a live read, so the button shows whenever the account could
-  // have resets, and hides only once a read says there are none.
+
+
   const codexKnown = entry?.type === 'codex' && status === 'success' && quota !== undefined;
   const showCodexReset =
     entry?.type === 'codex' &&
     Boolean(adapter?.resetQuota) &&
     (!codexKnown || Boolean(quota && adapter?.canResetQuota?.(quota)));
   const showClaudeReset = isClaude && (resetsLeft === null || resetsLeft > 0);
-  // One compact button replaces the reset list: hovering it lists each reset's kind and expiry,
-  // and for Claude it opens the grant chooser so the exact reset to spend can be picked.
+
+
   const resetCount = resets ? resetsTotal : (resetsLeft ?? 0);
   const countKnown = isClaude ? resetsLeft !== null : codexKnown;
-  // With neither a live read nor a snapshot (a paused account the poller skips) there is
-  // nothing to act on yet; the row refresh comes first.
-  // A broken sign-in can't be fixed by a reset, so only Reauthenticate is offered then.
+
+
+
   const showResetButton =
     Boolean(isClaude ? showClaudeReset : showCodexReset) &&
     limits.length > 0 &&
     !health.authentication;
 
-  // The chooser opens once the grants read has started (the hook refuses to open while disabled).
+
   useEffect(() => {
     if (openWhenReady && grantsWanted && !claudeReset.blocked) {
       claudeReset.openDialog();
@@ -290,7 +290,7 @@ export function AccountRow(props: AccountRowProps) {
       return;
     }
     setCodexConfirmOpen(true);
-    // Always a fresh read: credits may have expired or been spent elsewhere since the last one.
+
     setCodexChecking(true);
     sawCodexLoading.current = false;
     onRefreshQuota();
@@ -308,8 +308,8 @@ export function AccountRow(props: AccountRowProps) {
     t(isClaude ? 'ledger.reset_hint_choose' : 'ledger.reset_hint_codex'),
   ].join('\n');
 
-  // A 429 on the quota lookup is its own message, and a 401 is already covered by the
-  // authentication line below, so neither repeats the provider's raw error.
+
+
   const error =
     status === 'error' && adapter
       ? quota?.errorStatus === 429
@@ -340,7 +340,7 @@ export function AccountRow(props: AccountRowProps) {
   const factsLine = [
     enabled ? null : t('ledger.paused'),
     facts.plan,
-    // The reset button carries the count when it shows; otherwise the facts line does.
+
     resetsLeft && !resets && !showResetButton
       ? t('ledger.resets_left', { count: resetsLeft })
       : null,
@@ -349,7 +349,7 @@ export function AccountRow(props: AccountRowProps) {
       : null,
   ].filter(Boolean);
   const failedLabel = failed > 0 ? t('ledger.failed_requests', { count: failed }) : null;
-  // The sub-line stays on one line and truncates; the title keeps the full text reachable.
+
   const subTitle = [...factsLine, failedLabel].filter(Boolean).join(' · ') || undefined;
 
   return (
@@ -432,20 +432,20 @@ export function AccountRow(props: AccountRowProps) {
           </button>
         )}
         {health.authentication && (
-          // A broken sign-in stops the account serving anything, so it is the loudest thing here.
+
           <p className={styles.authAlert} role="alert">
             <IconAlertTriangle size={14} aria-hidden="true" />
             {t(`ledger.auth_${health.authentication}`)}
           </p>
         )}
         {error && (
-          // With the proxy's snapshot on screen, a failed live check is a footnote, not an alarm.
+
           <p className={fromScheduler ? styles.stale : styles.error} role="alert">
             {error}
           </p>
         )}
         {cooldown && (
-          // The proxy has taken the account (or some models) out of rotation for a while.
+
           <p className={cooldown.accountUntil !== null ? styles.error : styles.stale}>
             {cooldown.accountUntil !== null
               ? t('ledger.cooldown_account', {
@@ -527,7 +527,7 @@ export function AccountRow(props: AccountRowProps) {
         )}
       </span>
       <div className={styles.actions}>
-        {/* Reauthenticate is a full button only when the credential needs it. */}
+        {                                                                        }
         {onReauthenticate &&
           (health.authentication ? (
             <button

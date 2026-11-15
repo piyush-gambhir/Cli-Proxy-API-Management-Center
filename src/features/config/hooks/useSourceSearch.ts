@@ -1,5 +1,5 @@
-// 源码模式的文档内搜索 —— 从旧 pages/ConfigPage.tsx 逐字提取。
-// 手写 indexOf 扫描 + 光标定位（大小写不敏感、回绕），不依赖 @codemirror/search 面板。
+
+
 
 import { useCallback, useRef, useState } from 'react';
 import type { ReactCodeMirrorRef } from '@uiw/react-codemirror';
@@ -35,31 +35,31 @@ export function useSourceSearch() {
       return;
     }
 
-    // Find current match based on cursor position
+
     const selection = view.state.selection.main;
     const cursorPos = direction === 'prev' ? selection.from : selection.to;
     let currentIndex = 0;
 
     if (direction === 'next') {
-      // Find next match after cursor
+
       for (let i = 0; i < matches.length; i++) {
         if (matches[i] > cursorPos) {
           currentIndex = i;
           break;
         }
-        // If no match after cursor, wrap to first
+
         if (i === matches.length - 1) {
           currentIndex = 0;
         }
       }
     } else {
-      // Find previous match before cursor
+
       for (let i = matches.length - 1; i >= 0; i--) {
         if (matches[i] < cursorPos) {
           currentIndex = i;
           break;
         }
-        // If no match before cursor, wrap to last
+
         if (i === 0) {
           currentIndex = matches.length - 1;
         }
@@ -69,7 +69,7 @@ export function useSourceSearch() {
     const matchPos = matches[currentIndex];
     setSearchResults({ current: currentIndex + 1, total: matches.length });
 
-    // Scroll to and select the match
+
     view.dispatch({
       selection: { anchor: matchPos, head: matchPos + query.length },
       scrollIntoView: true,
@@ -79,7 +79,7 @@ export function useSourceSearch() {
 
   const handleSearchChange = useCallback((value: string) => {
     setSearchQuery(value);
-    // Do not auto-search on each keystroke. Clear previous results when query changes.
+
     if (!value) {
       setSearchResults({ current: 0, total: 0 });
       setLastSearchedQuery('');

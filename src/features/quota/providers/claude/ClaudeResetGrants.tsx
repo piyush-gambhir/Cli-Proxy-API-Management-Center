@@ -19,7 +19,7 @@ import {
 import { canChooseResetGrant } from './resetGrantChoice';
 import { readResetGrantsForCard, scheduleResetGrantRead } from './resetGrantReads';
 
-/** Card-owned reads; the session-scoped journal owns spending and ambiguous retries. */
+
 export function useClaudeResetGrants(
   file: AuthFileItem,
   enabled: boolean,
@@ -132,8 +132,8 @@ export function useClaudeResetGrants(
       );
     } finally {
       lock.current = false;
-      // A concurrent page-wide refresh can invalidate this read generation.
-      // Release the local lock regardless, but never refresh a replacement account.
+
+
       setBusy(false);
       setReload((value) => value + 1);
       if (current()) onRefresh();

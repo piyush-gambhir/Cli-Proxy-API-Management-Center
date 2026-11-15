@@ -25,7 +25,7 @@ interface SelectProps {
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
-  /** 作用于挂到 body 的下拉层。 */
+
   dropdownClassName?: string;
   dropdownMinWidth?: number;
   disabled?: boolean;

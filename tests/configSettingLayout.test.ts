@@ -1,6 +1,6 @@
-// 两列排布不变量：渲染每个分区，逐个列表检查——任何一行都不会在右侧留下空格。
-// 落单补整行只看 SettingList 直接子元素的 props，包装组件把 wide 藏在内部就会算错奇偶；
-// 这里用真实分区渲染兜住这类回归。
+
+
+
 
 import { describe, expect, mock, test } from 'bun:test';
 import { join } from 'node:path';
@@ -9,7 +9,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { DEFAULT_VISUAL_VALUES } from '@/types/visualConfig';
 import { resolveRowSpans } from '@/features/config/components/fields/rowSpans';
 
-// bun 把 CSS Module 解析成路径字符串，类名全是 undefined；改成按原名回显，才能在标记里看到 rowWide。
+
 mock.module(
   join(import.meta.dir, '../src/features/config/components/fields/Field.module.scss'),
   () => ({
@@ -44,7 +44,7 @@ const render = (Section: ComponentType<Record<string, unknown>>, tlsEnable: bool
     )
   );
 
-/** 每个列表容器里按顺序排列的行：[fieldId, 是否占整行]。列表之间不嵌套。 */
+
 function listsOf(markup: string) {
   return markup
     .split('class="list"')
@@ -65,7 +65,7 @@ describe('two-column setting layout', () => {
         for (const rows of lists) {
           expect(rows.length).toBeGreaterThan(0);
           const wide = rows.map((row) => row.wide);
-          // 已经排好的版式再算一遍不应再有需要补整行的落单行
+
           expect({ rows: rows.map((row) => row.fieldId), wide: resolveRowSpans(wide) }).toEqual({
             rows: rows.map((row) => row.fieldId),
             wide,

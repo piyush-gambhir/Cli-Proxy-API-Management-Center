@@ -27,9 +27,9 @@ const asString = (value: unknown): string => {
   return String(value);
 };
 
-// Entry metadata is escaped by the backend's Go html.EscapeString. Undo only
-// that encoding in one pass: literal entity text must not be decoded twice.
-// These remain untrusted strings rendered through React text/attribute props.
+
+
+
 const pluginEntryEntities: Record<string, string> = {
   '&amp;': '&',
   '&lt;': '<',
@@ -49,7 +49,7 @@ const normalizePluginOAuthProvider = (value: unknown): string | undefined => {
   return isManagementOAuthProviderKey(provider) ? provider : undefined;
 };
 
-/** 同一插件可声明多个登录入口：按声明顺序去重，逐项做与单数字段相同的归一化。 */
+
 const normalizePluginOAuthProviders = (value: unknown): string[] => {
   if (!Array.isArray(value)) return [];
   const providers: string[] = [];
@@ -60,7 +60,7 @@ const normalizePluginOAuthProviders = (value: unknown): string[] => {
   return providers;
 };
 
-/** 入口级名称与图标，只保留插件真正声明过的 identifier。 */
+
 const normalizePluginOAuthProviderEntries = (
   value: unknown,
   providers: readonly string[]
@@ -148,7 +148,7 @@ const normalizePluginEntry = (value: unknown): PluginListEntry | null => {
   const configFields = normalizeConfigFields(value.config_fields);
   const supportsOAuth = asBoolean(value.supports_oauth);
   const oauthProvider = normalizePluginOAuthProvider(value.oauth_provider);
-  // 旧后端只发单数 `oauth_provider`，单数字段原样保留，既有消费方行为不变。
+
   const oauthProviders = normalizePluginOAuthProviders(value.oauth_providers);
   const oauthProviderEntries = normalizePluginOAuthProviderEntries(
     value.oauth_provider_entries,
@@ -206,7 +206,7 @@ const normalizeDeleteResult = (value: unknown): PluginDeleteResult => {
   };
 };
 
-/** 与后端 NormalizePluginLocales 一致：丢弃无法归一化或全空的 locale 块。 */
+
 const normalizeStoreLocales = (value: unknown): Record<string, PluginStoreLocale> | undefined => {
   if (!isRecord(value)) return undefined;
   const locales: Record<string, PluginStoreLocale> = {};
@@ -363,10 +363,10 @@ export const pluginsApi = {
   },
 
   async patchConfig(id: string, changes: PluginConfigObject) {
-    // Form fields are complete values: clearing removes a field and editing an
-    // object replaces that object. A v8 PATCH would instead retain nulls and
-    // recursively merge objects, so merge touched fields into the latest object
-    // and replace only this plugin instance (never the complete config tree).
+
+
+
+
     const assertConnection = guardConfigConnection();
     const next = { ...(await pluginsApi.getConfig(id)) };
     assertConnection();

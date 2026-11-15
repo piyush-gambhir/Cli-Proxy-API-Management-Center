@@ -1,7 +1,7 @@
-/**
- * Why an account needs attention, read from what the proxy already reports: the credential's own
- * status message, the quota lookup's error, and the proxy's routing cooldowns.
- */
+
+
+
+
 
 import type { AuthFileItem } from '@/types';
 import type { QuotaCardState } from '@/features/quota/providers';
@@ -31,7 +31,7 @@ const authenticationIssue = (message: string): AuthenticationIssue | null => {
   return null;
 };
 
-/** Credential health and a quota endpoint's response are independent signals. */
+
 export function accountHealth(file: AuthFileItem, quota?: QuotaCardState) {
   const accountAuth = authenticationIssue(file.statusMessage ?? '');
   const quotaAuth =
@@ -41,23 +41,23 @@ export function accountHealth(file: AuthFileItem, quota?: QuotaCardState) {
   return { authentication: accountAuth ?? quotaAuth };
 }
 
-/** Sign-in failures already show as the authentication alert; a cooldown can't fix them. */
+
 const AUTH_COOLDOWN_REASONS = new Set(['invalid_grant', 'unauthorized']);
 
 export type AccountCooldown = {
-  /** When the whole account is back in rotation; null when only some models wait. */
+
   accountUntil: number | null;
-  /** Distinct models cooling down, and when the first of them is back. */
+
   modelCount: number;
   modelsUntil: number | null;
-  /** Each active timer with its end time, for the hover breakdown. */
+
   active: Array<{ modelKey?: string; reason: string; until: number }>;
 };
 
-/**
- * The proxy's routing cooldowns that are still running, timed from the server's remaining
- * seconds anchored to when the list arrived (never the server's wall clock).
- */
+
+
+
+
 export function accountCooldown(file: AuthFileItem, now: number): AccountCooldown | null {
   const snapshot = file.cooldownSnapshot;
   if (!snapshot) return null;

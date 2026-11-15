@@ -27,10 +27,10 @@ const normalizeApiKeyList = (input: unknown): string[] => {
   return keys;
 };
 
-/**
- * 解析用于 /models 探测的 API 密钥列表:
- * 优先取已缓存配置中的 api-keys,否则回退到 /api-keys 接口,结果按连接缓存。
- */
+
+
+
+
 export function useApiKeysForModels() {
   const apiBase = useAuthStore((state) => state.apiBase);
   const configApiKeys = useConfigStore((state) => state.config?.apiKeys);

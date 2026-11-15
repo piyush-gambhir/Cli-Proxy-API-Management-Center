@@ -1,7 +1,7 @@
-/**
- * Codex 额度数据层：用量窗口 + 套餐 + 重置积分（含消费流程）。
- * React-free / SCSS-free —— 由 tests/codexQuota.test.ts 直接消费。
- */
+
+
+
+
 
 import type { TFunction } from 'i18next';
 import type {
@@ -109,7 +109,7 @@ export const buildCodexQuotaWindows = (
     const usedPercentRaw = normalizeNumberValue(window.used_percent ?? window.usedPercent);
     const isLimitReached = Boolean(limitReached) || allowed === false;
     const usedPercent = usedPercentRaw ?? (isLimitReached && resetLabel !== '-' ? 100 : null);
-    // Keep the raw instant beside the label — see utils/quota/resetInstants.
+
     const resetAtMs =
       resolveResetMs([window.reset_at, window.resetAt]) ??
       parseOffsetSecondsToMs(window.reset_after_seconds ?? window.resetAfterSeconds, Date.now());
@@ -172,7 +172,7 @@ export const buildCodexQuotaWindows = (
       }
     }
 
-    // For legacy payloads without window duration, fallback to primary/secondary ordering.
+
     if (allowOrderFallback) {
       if (!fiveHourWindow) {
         fiveHourWindow = primaryWindow && primaryWindow !== weeklyWindow ? primaryWindow : null;
@@ -525,7 +525,7 @@ const resetCodexQuota = async (file: AuthFileItem, t: TFunction): Promise<CodexQ
   const assertConnection = guardConfigConnection();
   const authIndex = await consumeCodexRateLimitResetCredit(file, t);
   try {
-    // Never clear a different connection's cooldown after awaiting redemption.
+
     assertConnection();
     const result = await authFilesApi.resetCooldown(authIndex);
     assertConnection();
@@ -533,7 +533,7 @@ const resetCodexQuota = async (file: AuthFileItem, t: TFunction): Promise<CodexQ
       throw new Error('Invalid cooldown reset response');
     }
   } catch {
-    // Redemption already succeeded: direct the operator to the existing clear action.
+
     throw new Error(t('codex_quota.reset_cooldown_failed'));
   }
   return fetchCodexQuota(file, t);

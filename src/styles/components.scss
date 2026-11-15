@@ -159,7 +159,7 @@ textarea {
   border: 1px solid var(--border-color);
   margin-bottom: $spacing-md;
 
-  // 确保后续内容换行显示
+
   + * {
     display: block;
   }
@@ -197,7 +197,7 @@ textarea {
 }
 
 .loading-spinner {
-  // Fallback: legacy white spinner (in case color-mix is unsupported)
+
   border: 3px solid rgba(255, 255, 255, 0.2);
   border-top-color: #fff;
   border-radius: 50%;
@@ -270,7 +270,7 @@ textarea {
   display: flex;
   flex-direction: column;
   position: relative;
-  // 关闭按钮中心位置: right 12px + 16px = 28px, top 12px + 16px = 28px
+
   transform-origin: calc(100% - 28px) 28px;
 
   &.modal-entering {

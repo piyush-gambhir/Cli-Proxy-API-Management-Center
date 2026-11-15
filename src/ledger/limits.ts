@@ -1,11 +1,11 @@
-/**
- * Every provider's quota as one flat list: label, share left, when it resets.
- *
- * Upstream renders each provider with its own body (tables, plan chips, credit blocks). The ledger
- * shows every account the same way, so it reads the provider states structurally here, the same
- * way upstream's timeline model does, and keeps only what answers "how much is left, and when
- * does it come back".
- */
+
+
+
+
+
+
+
+
 
 import type { TFunction } from 'i18next';
 import type { QuotaProviderType } from '@/features/quota/providers/types';
@@ -20,18 +20,18 @@ import {
 export interface LedgerLimit {
   id: string;
   label: string;
-  /** Share left, 0..100; null when the provider did not say. */
+
   remaining: number | null;
-  /** Replaces the percent for amount-based limits (Claude dollar credit). */
+
   amount?: string;
   resetAtMs: number | null;
-  /** The provider refused requests in this window (proxy snapshot only). */
+
   hardLimited?: boolean;
 }
 
 export interface LedgerFacts {
   plan: string | null;
-  /** Codex manual quota resets the account can still spend. */
+
   manualResets: number | null;
 }
 
@@ -39,7 +39,7 @@ type Labeled = { label?: string; labelKey?: string; labelParams?: Record<string,
 
 const clamp = (value: number) => Math.min(100, Math.max(0, value));
 const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
-/** Whole amounts without decimals ($250), anything else to the cent ($0.49, $12.50). */
+
 const formatMoney = (value: number, currency: string, locale?: string) =>
   new Intl.NumberFormat(locale, {
     style: 'currency',
@@ -104,7 +104,7 @@ export function accountLimits(
       };
     });
 
-    // Extra usage is a monthly budget in minor currency units, separate from the dollar windows.
+
     const extra = q.extraUsage as
       | {
           isEnabled: boolean | null;
@@ -144,8 +144,8 @@ export function accountLimits(
   }
 
   if (provider === 'xai') {
-    // Same split as upstream's xAI body: `usagePercent` is the weekly window (only when the active
-    // period is weekly), `usedPercent` the monthly spend, `onDemandUsedPercent` the on-demand cap.
+
+
     const billing = q.billing as
       | {
           mode?: string;
@@ -196,7 +196,7 @@ export function accountLimits(
       remainingFraction?: number | null;
       resetAtMs?: number | null;
     };
-    // Groups (e.g. Gemini vs Claude/GPT) can reuse bucket names, so ids and labels keep the group.
+
     type Group = { id?: string; label?: string; buckets?: Bucket[] };
     const groups = (q.groups as Group[] | undefined) ?? [];
     return groups.flatMap((group, groupIndex) =>
@@ -251,7 +251,7 @@ export function accountFacts(
   const q = quota as Record<string, unknown>;
 
   if (provider === 'codex') {
-    // Same order as upstream's CodexQuotaBody plan label.
+
     const normalized = normalizePlanType(q.planType);
     const plan = !normalized
       ? null
@@ -270,7 +270,7 @@ export function accountFacts(
     return { plan, manualResets: typeof resets === 'number' ? resets : null };
   }
   if (provider === 'claude' && typeof q.planType === 'string' && q.planType) {
-    // Anthropic renamed the $200 Max 20x plan to Ultra; upstream still says Max 20x.
+
     if (q.planType === 'plan_max20') return { ...none, plan: String(t('ledger.plan_ultra')) };
     return { ...none, plan: String(t(`claude_quota.${q.planType}`, { defaultValue: q.planType })) };
   }

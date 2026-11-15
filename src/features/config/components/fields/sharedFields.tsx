@@ -1,6 +1,6 @@
-// 6 个高频字段的唯一渲染源：SectionCommon（常用 tab）与各正典分区共用这些组件，
-// 两处渲染结构性不可能漂移（旧简单模式靠共享 JSX 常量达成同一目的）。
-// 注意：只挂载激活 tab，所以设置行的 DOM id 不会重复。
+
+
+
 
 import { useTranslation } from 'react-i18next';
 import type { VisualConfigValues } from '@/types/visualConfig';
@@ -13,10 +13,10 @@ export type SharedFieldProps = {
   values: VisualConfigValues;
   disabled: boolean;
   onChange: (patch: Partial<VisualConfigValues>) => void;
-  /**
-   * 原样转给设置行。SettingList 只看直接子元素的 props 排布两列，
-   * 所以「占整行」必须写在调用处（或由 SettingList 给落单行注入），不能藏在组件内部。
-   */
+
+
+
+
   wide?: boolean;
 };
 
@@ -61,7 +61,7 @@ export function PortField({
 
 export function ProxyUrlField({ values, disabled, onChange, wide }: SharedFieldProps) {
   const { t } = useTranslation();
-  // 代理 URL 较长，调用处传 wide 独占整行；说明位挂赞助跳转（数据见 sponsors.ts，空则不渲染）。
+
   const sponsor = SPONSORS[0];
   return (
     <TextSetting

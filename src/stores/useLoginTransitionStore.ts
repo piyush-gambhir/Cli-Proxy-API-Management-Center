@@ -4,7 +4,7 @@ export type LoginTransitionPhase = 'idle' | 'revealing';
 
 export interface LoginTransitionTimings {
   successHold: number;
-  /** 自动登录启动画面的最短停留（从页面打开算起），避免网络快时一闪而过 */
+
   splashMin: number;
   exit: number;
   reveal: number;
@@ -29,7 +29,7 @@ export const getLoginTransitionTimings = (reducedMotion: boolean): LoginTransiti
 
 interface LoginTransitionState {
   phase: LoginTransitionPhase;
-  /** 每次揭幕自增，供黑幕区分不同轮次 */
+
   revealId: number;
   startReveal: () => void;
   finishReveal: () => void;

@@ -45,7 +45,7 @@ export function readModelOptions(model: ModelAlias): ModelOptionsInput & {
       typeof thinking?.zero_allowed === 'boolean' ? thinking.zero_allowed : undefined,
     thinkingDynamicAllowed:
       typeof thinking?.dynamic_allowed === 'boolean' ? thinking.dynamic_allowed : undefined,
-    // Budget allowances are not discrete effort levels.
+
     thinkingLevels: readThinkingLevels({ levels: thinking?.levels }),
   };
 }
@@ -147,9 +147,9 @@ export function validateModelOptions(entries: ModelEntryInput[]): string | null 
       )
     )
       return 'providersPage.modelOptions.invalidBudget';
-    // Go uses zero for omitted bounds. Only min=max=0 means no numeric range;
-    // a zero maximum with a positive minimum is not an unlimited budget.
-    // Keep pre-existing configurations editable when their budget was not touched.
+
+
+
     if (
       (entry.thinkingBudgetTouched || !entry.thinkingJson?.trim()) &&
       Number(min ?? 0) > Number(max ?? 0)

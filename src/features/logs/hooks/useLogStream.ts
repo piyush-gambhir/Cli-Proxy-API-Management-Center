@@ -44,7 +44,7 @@ type LogStreamOptions = {
   onFollow: () => void;
 };
 
-/** Owns application-log requests and invalidates synchronously, including A→B→A switches. */
+
 export function useLogStream({ active, isFollowing, onFollow }: LogStreamOptions) {
   const { t } = useTranslation();
   const { showNotification, showConfirmation } = useNotificationStore();
@@ -88,7 +88,7 @@ export function useLogStream({ active, isFollowing, onFollow }: LogStreamOptions
   };
 
   async function loadLogs(incremental = false) {
-    // Queued reloads must read live context, not the render that started the old request.
+
     if (useAuthStore.getState().connectionStatus !== 'connected') {
       setLoading(false);
       return;
@@ -110,7 +110,7 @@ export function useLogStream({ active, isFollowing, onFollow }: LogStreamOptions
     if (logBufferRef.current.buffer.length === 0) setLoading(true);
 
     try {
-      // One owner drains at most three pages, then yields to the UI and other actions.
+
       for (let page = 0; page < 3; page++) {
         const cursor = logBufferRef.current.cursor;
         const data = await logsApi.fetchLogs(buildLogsQuery(cursor));
@@ -197,7 +197,7 @@ export function useLogStream({ active, isFollowing, onFollow }: LogStreamOptions
         } finally {
           if (requests.logs.isCurrent(request)) {
             setClearingLogs(false);
-            // Clear superseded the old read; recover it even when deletion fails.
+
             if (requests.logs.finish(request, clearFailed)) void loadLogs(false);
           }
         }
@@ -218,7 +218,7 @@ export function useLogStream({ active, isFollowing, onFollow }: LogStreamOptions
       requests.session.invalidate();
       requests.logs.invalidate();
     };
-    // Invalidate at store notification time, not after React commits a new render.
+
     const unsubscribeAuth = useAuthStore.subscribe((next, previous) => {
       if (
         next.apiBase === previous.apiBase &&

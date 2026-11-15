@@ -11,7 +11,7 @@ import {
 
 type Visual = ReturnType<typeof useVisualConfig>;
 
-// Render-phase updates exercise the actual hook/reducer without mocking React.
+
 function runSteps(...steps: ((visual: Visual) => void)[]) {
   function Harness() {
     const visual = useVisualConfig();
@@ -146,14 +146,14 @@ describe('visual config rebase', () => {
           v.loadVisualValuesFromYaml(original);
         },
         (v) => {
-          // Delete A and reorder the survivors. Their original indexes no longer exist.
+
           const entries = v.visualValues[field];
           v.setVisualValues({ [field]: [entries[2], entries[1]], requestRetry: '' });
         },
         (v) => {
           confirmed = v.applyVisualChangesToYaml(original);
           const saved = parse(confirmed);
-          // PATCH applied, DELETE failed; another client also changed an unrelated value.
+
           saved.routing = { retry: { 'request-retry': 3 } };
           saved.observability = { logs: { debug: true } };
           readback = stringify(saved);
@@ -222,11 +222,11 @@ describe('visual config rebase', () => {
         },
         (v) => {
           expect(() => v.applyVisualChangesToYaml(latest)).toThrow(ConfigDraftConflictError);
-          // Repeated previews/confirmations cannot silently accept the stale snapshot.
+
           expect(() => v.applyVisualChangesToYaml(latest)).toThrow(ConfigDraftConflictError);
           expect(v.visualDirty).toBe(true);
           expect(parse(v.applyVisualChangesToYaml(saved))).toEqual(parse(draft));
-          // A lost response from an already-applied write is not a conflict.
+
           expect(parse(v.applyVisualChangesToYaml(draft))).toEqual(parse(draft));
         }
       );
@@ -276,7 +276,7 @@ describe('visual config rebase', () => {
         const nextPreview = v.applyVisualChangesToYaml(sourcePreview, 'draft');
         expect(parse(nextPreview).requests.payload.default[0].params.temperature).toBe(3);
         expect(parse(v.applyVisualChangesToYaml(saved))).toEqual(parse(nextPreview));
-        // The same document from a real server must still trigger a conflict.
+
         expect(() => v.applyVisualChangesToYaml(sourcePreview)).toThrow(ConfigDraftConflictError);
       }
     );

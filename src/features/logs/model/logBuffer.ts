@@ -25,7 +25,7 @@ export function buildLogsQuery(cursor?: string): LogsQuery {
   return cursor ? { limit: LOG_PAGE_SIZE, cursor } : { limit: LOG_PAGE_SIZE };
 }
 
-/** Cursor pages contain new records, including legitimate identical adjacent lines. */
+
 export function applyLogPage(
   current: LogBuffer,
   response: LogsResponse,
@@ -39,7 +39,7 @@ export function applyLogPage(
   let textUnits =
     (append ? current.textUnits : 0) + incoming.reduce((n, line) => n + line.length + 1, 0);
   let drop = 0;
-  // Keep one oversized line intact; never silently truncate its contents.
+
   while (
     buffer.length - drop > 1 &&
     (buffer.length - drop > maxLines || textUnits > maxTextUnits)

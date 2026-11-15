@@ -18,9 +18,10 @@ export default tseslint.config(
       'react-refresh': reactRefresh,
     },
     rules: {
+      'no-empty': ['error', { allowEmptyCatch: true }],
       ...reactHooks.configs.recommended.rules,
-      // Pages in this app intentionally start async data loads from effects. Those loaders
-      // synchronously expose their loading state before awaiting the Management API.
+
+
       'react-hooks/set-state-in-effect': 'off',
       'react-refresh/only-export-components': [
         'warn',
