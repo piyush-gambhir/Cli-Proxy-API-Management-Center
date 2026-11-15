@@ -207,9 +207,8 @@ describe('OAuth provider gallery', () => {
       )
     );
     for (const url of [KIMI_CHINESE_AFFILIATE_URL, KIMI_INTERNATIONAL_AFFILIATE_URL]) {
-      const escaped = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/&/g, '&amp;');
-      expect(markup).toMatch(
-        new RegExp(`href="${escaped}" target="_blank" rel="noopener noreferrer"`)
+      expect(markup).toContain(
+        'href="' + url.replace(/&/g, '&amp;') + '" target="_blank" rel="noopener noreferrer"'
       );
     }
   });

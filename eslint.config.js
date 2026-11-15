@@ -18,6 +18,7 @@ export default tseslint.config(
       'react-refresh': reactRefresh,
     },
     rules: {
+      'no-empty': ['error', { allowEmptyCatch: true }],
       ...reactHooks.configs.recommended.rules,
 
 

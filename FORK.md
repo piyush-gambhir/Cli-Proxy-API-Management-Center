@@ -23,17 +23,21 @@ and push (`.github/workflows/fork.yml`) and before every sync release.
 | `.github/workflows/sync-upstream.yml` | fork only | Daily upstream merge, then publishes `management.html` as a `vX.Y.Z-ledger.N` release. CLIProxyAPI's panel updater downloads it when `panel-github-repository` points at this fork. |
 | `.github/workflows/security.yml` | fork only | CodeQL and the security gate. |
 | `.github/dependabot.yml` | fork only | Weekly updates for GitHub Actions and Bun dependencies. |
+| `.gitignore` | modified | Remove ordinary comments from repository ignore configuration. |
 | `.nvmrc` | fork only | Node version for local work. |
 | `src/ledger/**` | fork only | The Ledger shell (with upstream pages embedded under `/ledger`), accounts screen, account health, limits model and theme. |
 | `tests/accountHealth.test.ts` | fork only | Ledger tests. |
 | `tests/accountReauthentication.test.ts` | fork only | Ledger tests. |
 | `tests/ledger*.test.ts` | fork only | Ledger tests. |
 | `tests/quotaLedger.test.ts` | fork only | Ledger tests. |
+| `src/**` | modified | Remove ordinary code comments across the upstream application code. Existing functional differences are described below. |
+| `tests/**` | modified | Remove ordinary code comments and construct comment-preservation test input in the test itself. |
 | `src/App.tsx` | modified | Mounts `/ledger/*` and wraps upstream's login page and shell (`src/ledger/LandingRoutes.tsx`), so the Ledger is the landing after login. Also wraps the classic routes in `ClassicRedirect` (`src/ledger/classicRedirect.tsx`), so links from upstream pages embedded in the Ledger to classic paths open the Ledger equivalent. Upstream's routes are otherwise unchanged. |
 | `src/services/api/oauth.ts` | modified | `startAuth()` takes an optional target account and sends `target_auth_id`, so Reauthenticate refreshes an existing credential instead of adding a new one. |
 | `src/features/oauth/hooks/useOAuthFlows.ts` | modified | Passes that target through. |
 | `vite.config.ts` | modified | Dev server only: proxies `/v0`, `/v1` and `/v8` to a local CLIProxyAPI (`CPA_DEV_PROXY_TARGET`). No effect on the build. |
 | `src/i18n/locales/*.json` | modified | One `ledger` block appended at the end of each locale. Nothing else in the files changes. |
+| `eslint.config.js` | modified | Allow intentional empty catch blocks after their explanatory comments are removed. |
 | `package.json` | modified | Bun 1.4.4, Node 26 `engines`, the latest dependency releases, TypeScript 7 for type-checking (`typescript7` alias; TypeScript 6 stays for typescript-eslint), and security `overrides`. |
 | `bun.lock` | modified | Follows `package.json`. |
 | `.github/workflows/ci.yml` | modified | Node 26.13.1, Bun 1.4.4 and current action versions. |
